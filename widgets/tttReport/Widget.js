@@ -13,38 +13,65 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////
-
-define([
-    'dojo/_base/declare',
-    'jimu/BaseWidget'
-  ],
+define(['dojo/_base/declare', 'jimu/BaseWidget'],
   function(declare, BaseWidget) {
+    //To create a widget, you need to derive from BaseWidget.
+    return declare([BaseWidget], {
+      // Custom widget code goes here
 
-    return declare([BaseWidget, _WidgetsInTemplateMixin], {
-      name: 'Report',
-      baseClass: 'jimu-widget-query',
+      baseClass: 'jimu-widget-customwidget'
 
-      postMixInProperties: function(){
-      },
+      //this property is set by the framework when widget is loaded.
+      //name: 'CustomWidget',
 
-      postCreate:function(){
-      },
 
-      onOpen: function(){
-      },
+      //methods to communication with app container:
 
-      onActive: function(){
-      },
+      // postCreate: function() {
+      //   this.inherited(arguments);
+      //   console.log('postCreate');
+      // },
 
-      onDeActive: function(){
-      },
+      // startup: function() {
+      //  this.inherited(arguments);
+      //  this.mapIdNode.innerHTML = 'map id:' + this.map.id;
+      //  console.log('startup');
+      // },
 
-      onClose: function(){
-      },
+      // onOpen: function(){
+      //   console.log('onOpen');
+      // },
 
-      destroy: function(){
+      // onClose: function(){
+      //   console.log('onClose');
+      // },
 
-      }
+      // onMinimize: function(){
+      //   console.log('onMinimize');
+      // },
+
+      // onMaximize: function(){
+      //   console.log('onMaximize');
+      // },
+
+      // onSignIn: function(credential){
+      //   /* jshint unused:false*/
+      //   console.log('onSignIn');
+      // },
+
+      // onSignOut: function(){
+      //   console.log('onSignOut');
+      // }
+
+      // onPositionChange: function(){
+      //   console.log('onPositionChange');
+      // },
+
+      // resize: function(){
+      //   console.log('resize');
+      // }
+
+      //methods to communication between widgets:
 
     });
   });
