@@ -101,7 +101,7 @@
         },
         "placeholderIndex": 1,
         "id": "_7",
-        "name": "tttRoads",
+        "name": "tttSegmentRoads",
         "label": "Roads",
         "version": "2.20",
         "closeable": true,
@@ -117,7 +117,7 @@
         },
         "placeholderIndex": 1,
         "id": "_8",
-        "name": "tttTransit",
+        "name": "CustomWidgetTemplate",
         "label": "Transit",
         "version": "2.20",
         "closeable": true,
@@ -132,7 +132,7 @@
         },
         "placeholderIndex": 2,
         "id": "_9",
-        "name": "tttOpportunities",
+        "name": "CustomWidgetTemplate",
         "label": "Access to Opportunities",
         "version": "2.20",
         "closeable": true,
@@ -146,8 +146,8 @@
           "relativeTo": "map"
         },
         "placeholderIndex": 2,
-        "id": "_9",
-        "name": "tttSocioeconomics",
+        "id": "_9_",
+        "name": "CustomWidgetTemplate",
         "label": "Socioeconomics",
         "version": "2.20",
         "closeable": true,
@@ -163,12 +163,9 @@
         },
         "placeholderIndex": 1,
         "id": "_6",
-        "name": "tttRawModel",
-        "label": "Raw Model",
         "version": "2.20",
         "closeable": true,
-        "IsController": false,
-        "uri": "widgets/tttRawModel/Widget",
+        "uri": "",
         "icon": "configs\\tttRawModel\\icon__6.png"
       },
       {
@@ -179,11 +176,9 @@
         },
         "placeholderIndex": 2,
         "id": "_10",
-        "name": "Legend",
         "version": "2.20",
         "closeable": true,
-        "uri": "widgets/Legend/Widget",
-        "config": "configs/Legend/config__10.json"
+        "uri": ""
       },
       {
         "uri": "widgets/OverviewMap/Widget",
@@ -315,14 +310,22 @@
         "version": "2.20",
         "id": "widgets_Legend_Widget_18",
         "name": "Legend",
-        "index": 0
+        "index": 2
       },
       {
         "uri": "widgets/LayerList/Widget",
         "version": "2.20",
         "id": "widgets_LayerList_Widget_19",
         "name": "LayerList",
-        "index": 1
+        "index": 3
+      },
+      {
+        "name": "tttReport",
+        "label": "Report",
+        "version": "2.20",
+        "uri": "widgets/tttReport/Widget",
+        "index": 5,
+        "id": "widgets_tttReport_Widget_20"
       }
     ],
     "groups": []
