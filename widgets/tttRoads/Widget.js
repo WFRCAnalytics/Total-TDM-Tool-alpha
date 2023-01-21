@@ -191,15 +191,17 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         renderer_Vol_Absolute.addBreak(aBrk_Vol_Absolute[j]);
       }
       var aBrk_Vol_Change = new Array(
-        {minValue: -9999999, maxValue:   -25001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -10,000" },
-        {minValue:   -25000, maxValue:   -10001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-10,000 to -5,000" },
-        {minValue:   -10000, maxValue:    -5001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-5,000 to -1,000"  },
-        {minValue:    -5000, maxValue:    -1001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-1,000 to -500"    },
-        {minValue:    -1000, maxValue:      999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-500 to 500"       },
-        {minValue:     1000, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "500 to 2,500"      },
-        {minValue:     5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "2,500 to 5,000"    },
-        {minValue:    10000, maxValue:    24999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "5,000 to 10,000"   },
-        {minValue:    25000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[8]), 5.0000), label: "More than 10,000"  }
+        {minValue: -9999999, maxValue:   -25001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: ""},
+        {minValue:   -25000, maxValue:   -10001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: ""},
+        {minValue:   -10000, maxValue:    -5001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: ""},
+        {minValue:    -5000, maxValue:    -1001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: ""},
+        {minValue:    -1000, maxValue:      999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: ""},
+        {minValue:     1000, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: ""},
+        {minValue:     5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: ""},
+        {minValue:    10000, maxValue:    49999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: ""},
+        {minValue:    50000, maxValue:    74999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000), label: ""},
+        {minValue:    75000, maxValue:    99999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 5.0000), label: ""},
+        {minValue:   100000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 9.0000), label: ""}
       );
       renderer_Vol_Change = new ClassBreaksRenderer(null, 'Vol');
       for (var j=0;j<aBrk_Vol_Change.length;j++) {
