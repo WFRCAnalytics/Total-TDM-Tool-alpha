@@ -230,6 +230,12 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         renderer_Vol_PC_Change.addBreak(aBrk_Vol_PC_Change[j]);
       }
 
+
+
+
+
+
+
       //Lanes Renderers
       var aBrk_Lanes_Absolute = new Array(
         {minValue:  1, maxValue:  3, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(laneColorData[0]), 0.50), label:"3 Lanes or Less" },
@@ -552,51 +558,35 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         }
       } else {
           if (curRoadPCOption=='Abs') {
-            console.log(curRoadPCOption);
             if (curRoadOption=='Vol') {
-              console.log(curRoadOption);
               _renderer = renderer_Vol_Change;
             } else if (curRoadOption=='AMSpd') {
-              console.log(curRoadOption);
               _renderer = renderer_AMSpd_Change;
             } else if (curRoadOption=='AMVC') {
-              console.log(curRoadOption);
               _renderer = renderer_AMVC_Change;
             } else if (curRoadOption=='Lanes') {
-              console.log(curRoadOption);
               _renderer = renderer_Lanes_Change;
             }else if (curRoadOption=='PMSpd') {
-              console.log(curRoadOption);
               _renderer = renderer_PMSpd_Change;
             } else if (curRoadOption=='PMVC') {
-              console.log(curRoadOption);
               _renderer = renderer_PMVC_Change;
             } else if (curRoadOption=='VolTrk') {
-              console.log(curRoadOption);
               _renderer = renderer_VolTrk_Change;
             }
           } else {
-            console.log(curRoadPCOption);
             if (curRoadOption=='Vol') {
-              console.log(curRoadOption);
               _renderer = renderer_Vol_PC_Change;
             } else if (curRoadOption=='AMSpd') {
-              console.log(curRoadOption);
               _renderer = renderer_AMSpd_PC_Change;
             } else if (curRoadOption=='AMVC') {
-              console.log(curRoadOption);
               _renderer = renderer_AMVC_PC_Change;
             } else if (curRoadOption=='Lanes') {
-              console.log(curRoadOption);
               _renderer = renderer_Lanes_PC_Change;
             }else if (curRoadOption=='PMSpd') {
-              console.log(curRoadOption);
               _renderer = renderer_PMSpd_PC_Change;
             } else if (curRoadOption=='PMVC') {
-              console.log(curRoadOption);
               _renderer = renderer_PMVC_PC_Change;
             } else if (curRoadOption=='VolTrk') {
-              console.log(curRoadOption);
               _renderer = renderer_VolTrk_PC_Change;
             }
           }
@@ -611,8 +601,8 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
       // run multiple times to avoid 2000 limit on returned features
       tttR._queryFeatures("SEGID <= '" + strMiddleSeg1 + "'");
-//      tttR._queryFeatures("SEGID  > '" + strMiddleSeg1 + "' AND SEGID <= '" + strMiddleSeg2 + "'");
-//      tttR._queryFeatures("SEGID  > '" + strMiddleSeg2 + "'");
+      tttR._queryFeatures("SEGID  > '" + strMiddleSeg1 + "' AND SEGID <= '" + strMiddleSeg2 + "'");
+      tttR._queryFeatures("SEGID  > '" + strMiddleSeg2 + "'");
     },
 
     _queryFeatures: function(_filterstring){ 
@@ -786,23 +776,23 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
                   _dispValue_PMVC2     = _mainValue_PMVC2  - _compValue_PMVC2 ;
                   _dispValue_VolTrk    = _mainValue_VolTrk - _compValue_VolTrk;
                 } else{
-                  if (_compValue_Vol   >0) {_dispValue_Vol       = ((_mainValue_Vol    - _compValue_Vol   ) / _compValue_Vol   ) * 100;} else {console.log("bad news")}
-                  if (_compValue_Lanes >0) {_dispValue_Lanes     = ((_mainValue_Lanes  - _compValue_Lanes ) / _compValue_Lanes ) * 100;} else {console.log("bad news")}
-                  if (_compValue_Lanes1>0) {_dispValue_Lanes1    = ((_mainValue_Lanes1 - _compValue_Lanes1) / _compValue_Lanes1) * 100;} else {console.log("bad news")}
-                  if (_compValue_Lanes2>0) {_dispValue_Lanes2    = ((_mainValue_Lanes2 - _compValue_Lanes2) / _compValue_Lanes2) * 100;} else {console.log("bad news")}
-                  if (_compValue_AMSpd >0) {_dispValue_AMSpd     = ((_mainValue_AMSpd  - _compValue_AMSpd ) / _compValue_AMSpd ) * 100;} else {console.log("bad news")}
-                  if (_compValue_AMSpd1>0) {_dispValue_AMSpd1    = ((_mainValue_AMSpd1 - _compValue_AMSpd1) / _compValue_AMSpd1) * 100;} else {console.log("bad news")}
-                  if (_compValue_AMSpd2>0) {_dispValue_AMSpd2    = ((_mainValue_AMSpd2 - _compValue_AMSpd2) / _compValue_AMSpd2) * 100;} else {console.log("bad news")}
-                  if (_compValue_AMVC  >0) {_dispValue_AMVC      = ((_mainValue_AMVC   - _compValue_AMVC  ) / _compValue_AMVC  ) * 100;} else {console.log("bad news")}
-                  if (_compValue_AMVC1 >0) {_dispValue_AMVC1     = ((_mainValue_AMVC1  - _compValue_AMVC1 ) / _compValue_AMVC1 ) * 100;} else {console.log("bad news")}
-                  if (_compValue_AMVC2 >0) {_dispValue_AMVC2     = ((_mainValue_AMVC2  - _compValue_AMVC2 ) / _compValue_AMVC2 ) * 100;} else {console.log("bad news")}
-                  if (_compValue_PMSpd >0) {_dispValue_PMSpd     = ((_mainValue_PMSpd  - _compValue_PMSpd ) / _compValue_PMSpd ) * 100;} else {console.log("bad news")}
-                  if (_compValue_PMSpd1>0) {_dispValue_PMSpd1    = ((_mainValue_PMSpd1 - _compValue_PMSpd1) / _compValue_PMSpd1) * 100;} else {console.log("bad news")}
-                  if (_compValue_PMSpd2>0) {_dispValue_PMSpd2    = ((_mainValue_PMSpd2 - _compValue_PMSpd2) / _compValue_PMSpd2) * 100;} else {console.log("bad news")}
-                  if (_compValue_PMVC  >0) {_dispValue_PMVC      = ((_mainValue_PMVC   - _compValue_PMVC  ) / _compValue_PMVC  ) * 100;} else {console.log("bad news")}
-                  if (_compValue_PMVC1 >0) {_dispValue_PMVC1     = ((_mainValue_PMVC1  - _compValue_PMVC1 ) / _compValue_PMVC1 ) * 100;} else {console.log("bad news")}
-                  if (_compValue_PMVC2 >0) {_dispValue_PMVC2     = ((_mainValue_PMVC2  - _compValue_PMVC2 ) / _compValue_PMVC2 ) * 100;} else {console.log("bad news")}
-                  if (_compValue_VolTrk>0) {_dispValue_VolTrk    = ((_mainValue_VolTrk - _compValue_VolTrk) / _compValue_VolTrk) * 100;} else {console.log("bad news")}
+                  if (_compValue_Vol   >0) _dispValue_Vol       = ((_mainValue_Vol    - _compValue_Vol   ) / _compValue_Vol   ) * 100;
+                  if (_compValue_Lanes >0) _dispValue_Lanes     = ((_mainValue_Lanes  - _compValue_Lanes ) / _compValue_Lanes ) * 100;
+                  if (_compValue_Lanes1>0) _dispValue_Lanes1    = ((_mainValue_Lanes1 - _compValue_Lanes1) / _compValue_Lanes1) * 100;
+                  if (_compValue_Lanes2>0) _dispValue_Lanes2    = ((_mainValue_Lanes2 - _compValue_Lanes2) / _compValue_Lanes2) * 100;
+                  if (_compValue_AMSpd >0) _dispValue_AMSpd     = ((_mainValue_AMSpd  - _compValue_AMSpd ) / _compValue_AMSpd ) * 100;
+                  if (_compValue_AMSpd1>0) _dispValue_AMSpd1    = ((_mainValue_AMSpd1 - _compValue_AMSpd1) / _compValue_AMSpd1) * 100;
+                  if (_compValue_AMSpd2>0) _dispValue_AMSpd2    = ((_mainValue_AMSpd2 - _compValue_AMSpd2) / _compValue_AMSpd2) * 100;
+                  if (_compValue_AMVC  >0) _dispValue_AMVC      = ((_mainValue_AMVC   - _compValue_AMVC  ) / _compValue_AMVC  ) * 100;
+                  if (_compValue_AMVC1 >0) _dispValue_AMVC1     = ((_mainValue_AMVC1  - _compValue_AMVC1 ) / _compValue_AMVC1 ) * 100;
+                  if (_compValue_AMVC2 >0) _dispValue_AMVC2     = ((_mainValue_AMVC2  - _compValue_AMVC2 ) / _compValue_AMVC2 ) * 100;
+                  if (_compValue_PMSpd >0) _dispValue_PMSpd     = ((_mainValue_PMSpd  - _compValue_PMSpd ) / _compValue_PMSpd ) * 100;
+                  if (_compValue_PMSpd1>0) _dispValue_PMSpd1    = ((_mainValue_PMSpd1 - _compValue_PMSpd1) / _compValue_PMSpd1) * 100;
+                  if (_compValue_PMSpd2>0) _dispValue_PMSpd2    = ((_mainValue_PMSpd2 - _compValue_PMSpd2) / _compValue_PMSpd2) * 100;
+                  if (_compValue_PMVC  >0) _dispValue_PMVC      = ((_mainValue_PMVC   - _compValue_PMVC  ) / _compValue_PMVC  ) * 100;
+                  if (_compValue_PMVC1 >0) _dispValue_PMVC1     = ((_mainValue_PMVC1  - _compValue_PMVC1 ) / _compValue_PMVC1 ) * 100;
+                  if (_compValue_PMVC2 >0) _dispValue_PMVC2     = ((_mainValue_PMVC2  - _compValue_PMVC2 ) / _compValue_PMVC2 ) * 100;
+                  if (_compValue_VolTrk>0) _dispValue_VolTrk    = ((_mainValue_VolTrk - _compValue_VolTrk) / _compValue_VolTrk) * 100;
                 }
 
               } catch(err) {
@@ -861,6 +851,8 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             updateFeature.attributes['PMVC1' ] = _dispValue_PMVC1 ;
             updateFeature.attributes['PMVC2' ] = _dispValue_PMVC2 ;
             updateFeature.attributes['VolTrk'] = _dispValue_VolTrk;
+
+
             
             tttR.map.graphics.add(updateFeature);
 
