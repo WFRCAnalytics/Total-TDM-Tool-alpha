@@ -102,6 +102,8 @@ var tttR;
 
 var iPixelSelectionTolerance = 5;
 
+var renderer_Vol_PC_Change;
+
 define(['dojo/_base/declare',
   'jimu/BaseWidget',
   'jimu/LayerInfos/LayerInfos',
@@ -212,28 +214,74 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       for (var j=0;j<aBrk_Vol_Change.length;j++) {
         renderer_Vol_Change.addBreak(aBrk_Vol_Change[j]);
       }
-      var aBrk_Vol_PC_Change = new Array(
-        {minValue: -9999999, maxValue:     -201, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -200%"},
-        {minValue:     -200, maxValue:      -41, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-200% to -40%"},
-        {minValue:      -40, maxValue:      -21, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-40% to -20%"},
-        {minValue:      -20, maxValue:       -6, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-20% to -5%"},
-        {minValue:       -5, maxValue:        4, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-5% to +5%"},
-        {minValue:        5, maxValue:       19, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "+5% to +20%"},
-        {minValue:       20, maxValue:       39, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "+20% to +40%"},
-        {minValue:       40, maxValue:       99, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "+40% to +100%"},
-        {minValue:      100, maxValue:      199, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000), label: "+100% to +200%"},
-        {minValue:      200, maxValue:      399, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 5.0000), label: "+200% to +400%"},
-        {minValue:      400, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 9.0000), label: "More than +400%"}
-      );
-      renderer_Vol_PC_Change = new ClassBreaksRenderer(null, 'Vol');
-      for (var j=0;j<aBrk_Vol_PC_Change.length;j++) {
-        renderer_Vol_PC_Change.addBreak(aBrk_Vol_PC_Change[j]);
-      }
+      //var aBrk_Vol_PC_Change = new Array(
+      //  {minValue: -9999999, maxValue:     -201, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -200%"},
+      //  {minValue:     -200, maxValue:      -41, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-200% to -40%"},
+      //  {minValue:      -40, maxValue:      -21, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-40% to -20%"},
+      //  {minValue:      -20, maxValue:       -6, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-20% to -5%"},
+      //  {minValue:       -5, maxValue:        4, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-5% to +5%"},
+      //  {minValue:        5, maxValue:       19, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "+5% to +20%"},
+      //  {minValue:       20, maxValue:       39, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "+20% to +40%"},
+      //  {minValue:       40, maxValue:       99, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "+40% to +100%"},
+      //  {minValue:      100, maxValue:      199, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000), label: "+100% to +200%"},
+      //  {minValue:      200, maxValue:      399, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 5.0000), label: "+200% to +400%"},
+      //  {minValue:      400, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 9.0000), label: "More than +400%"}
+      //);
+      //renderer_Vol_PC_Change = new ClassBreaksRenderer(null, 'Vol');
+      //for (var j=0;j<aBrk_Vol_PC_Change.length;j++) {
+      //  renderer_Vol_PC_Change.addBreak(aBrk_Vol_PC_Change[j]);
+      //}
 
-
-
-
-
+      var roadPCGroup = ['Vol', 'Lanes','Lanes1','Lanes2','AMSpd','AMSpd1','AMSpd2','AMVC','AMVC1','AMVC2','PMSpd','PMSpd1','PMSpd2','PMVC','PMVC1','PMVC2','VolTrk']
+        renderer_Vol_PC_Change = new UniqueValueRenderer({
+          type: "unique-value",  // autocasts as new UniqueValueRenderer()
+          valueExpression: "var p = $feature." + 'Vol' + ";" +
+                           "var ft = $feature.FT;" +
+                           "if      (p< -200 && ft>= 20)              { return 'class_f1' ; }" +
+                           "else if ((p< -40 && p>= -200) && ft>= 20) { return 'class_f2' ; }" +
+                           "else if ((p< -20 && p>= -40)  && ft>= 20) { return 'class_f3' ; }" +
+                           "else if ((p< -5  && p>= -20)  && ft>= 20) { return 'class_f4' ; }" +
+                           "else if ((p< 5   && p>= -5)   && ft>= 20) { return 'class_f5' ; }" +
+                           "else if ((p< 20  && p>= 5)    && ft>= 20) { return 'class_f6' ; }" +
+                           "else if ((p< 40  && p>= 20)   && ft>= 20) { return 'class_f7' ; }" +
+                           "else if ((p< 100 && p>= 40)   && ft>= 20) { return 'class_f8' ; }" +
+                           "else if ((p< 200 && p>= 100)  && ft>= 20) { return 'class_f9' ; }" +
+                           "else if ((p< 400 && p>= 200)  && ft>= 20) { return 'class_f10'; }" +
+                           "else if (p> 400  && ft>= 20)              { return 'class_f11'; }" +
+                           "else if (p< -200 && ft < 20)             { return 'class_r1' ; }" +
+                           "else if ((p< -40 && p>= -200) && ft< 20) { return 'class_r2' ; }" +
+                           "else if ((p< -20 && p>= -40)  && ft< 20) { return 'class_r3' ; }" +
+                           "else if ((p< -5  && p>= -20)  && ft< 20) { return 'class_r4' ; }" +
+                           "else if ((p< 5   && p>= -5)   && ft< 20) { return 'class_r5' ; }" +
+                           "else if ((p< 20  && p>= 5)    && ft< 20) { return 'class_r6' ; }" +
+                           "else if ((p< 40  && p>= 20)   && ft< 20) { return 'class_r7' ; }" +
+                           "else if ((p< 100 && p>= 40)   && ft< 20) { return 'class_r8' ; }" +
+                           "else if ((p< 200 && p>= 100)  && ft< 20) { return 'class_r9' ; }" +
+                           "else if ((p< 400 && p>= 200)  && ft< 20) { return 'class_r10'; }" +
+                           "else if (p> 400  && ft< 20)              { return 'class_r11'; }",
+          uniqueValueInfos: [{value:"class_f1",  label:"Freeway Less than -200%" , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 8.0000)},
+                             {value:"class_f2",  label:"Freeway -200% to -40%"   , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 5.5000)},
+                             {value:"class_f3",  label:"Freeway -40% to -20%"    , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 4.2500)},
+                             {value:"class_f4",  label:"Freeway -20% to -5%"     , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 3.6250)},
+                             {value:"class_f5",  label:"Freeway -5% to +5%"      , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 3.3125)},
+                             {value:"class_f6",  label:"Freeway +5% to +20%"     , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 3.6250)},
+                             {value:"class_f7",  label:"Freeway +20% to +40%"    , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 4.2500)},
+                             {value:"class_f8",  label:"Freeway +40% to +100%"   , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 5.5000)},
+                             {value:"class_f9",  label:"Freeway +100% to +200%"  , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 7.5000)},
+                             {value:"class_f10", label:"Freeway +200% to +400%"  , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"),      8.0000)},
+                             {value:"class_f11", label:"Freeway More than +400%" , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"),      12.0000)},
+                             {value:"class_r1",  label:"Arterial Less than -200%", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000)},
+                             {value:"class_r2",  label:"Arterial -200% to -40%"  , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000)},
+                             {value:"class_r3",  label:"Arterial -40% to -20%"   , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500)},
+                             {value:"class_r4",  label:"Arterial -20% to -5%"    , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250)},
+                             {value:"class_r5",  label:"Arterial -5% to +5%"     , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125)},
+                             {value:"class_r6",  label:"Arterial +5% to +20%"    , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250)},
+                             {value:"class_r7",  label:"Arterial +20% to +40%"   , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500)},
+                             {value:"class_r8",  label:"Arterial +40% to +100%"  , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000)},
+                             {value:"class_r9",  label:"Arterial +100% to +200%" , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000)},
+                             {value:"class_r10", label:"Arterial +200% to +400%" , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"),      5.0000)},
+                             {value:"class_r11", label:"Arterial More than +400%", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"),      9.0000)}]
+        });
 
 
       //Lanes Renderers
@@ -722,6 +770,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
                 _mainValue_Lanes1   = dataRoadComp[_segid][dataFNConv['D1_LANES']];
                 _mainValue_Lanes2   = dataRoadComp[_segid][dataFNConv['D2_LANES']];
+                _ft = dataRoadComp[_segid][dataFNConv['FT']];
     
                 if (dataRoadComp[_segid][dataFNConv['D1_LANES']]>0) {
 
@@ -851,6 +900,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             updateFeature.attributes['PMVC1' ] = _dispValue_PMVC1 ;
             updateFeature.attributes['PMVC2' ] = _dispValue_PMVC2 ;
             updateFeature.attributes['VolTrk'] = _dispValue_VolTrk;
+            updateFeature.attributes['FT']= _ft;
 
 
             
