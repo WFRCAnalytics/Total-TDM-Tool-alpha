@@ -21,7 +21,13 @@ var dRoadOptions = [
   {value:"VolTrk",label:"Daily Trucks"}
 ];
 
-var sRoadOption = "Vol";
+var dRoadPCOptions = [
+  {value: "Abs" , label:"Absolute Change"},
+  {value: "PC"  , label:"Percent Change"}
+];
+
+var curRoadOption       = "Vol";
+var curRoadPCOption     = "Abs";
 
 var sCBertGrad9 = "#Af2944"; //rgb(175,41,68)
 var sCBertGrad8 = "#E5272d"; //rgb(229,39,45)
@@ -80,7 +86,6 @@ var aCR_Change9  = new Array(sCBlue4,sCBlue3,sCBlue2,sCBlue1,sCDefaultGrey,sCRed
 
 //Tranist Variables
 var curMode = "";
-var curRoadOption = sRoadOption;
 var lyrLinks;
 var sLinks = "LinksWithRiders_v2";
 
@@ -207,6 +212,23 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       for (var j=0;j<aBrk_Vol_Change.length;j++) {
         renderer_Vol_Change.addBreak(aBrk_Vol_Change[j]);
       }
+      var aBrk_Vol_PC_Change = new Array(
+        {minValue: -9999999, maxValue:     -201, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -200%"},
+        {minValue:     -200, maxValue:      -41, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-200% to -40%"},
+        {minValue:      -40, maxValue:      -21, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-40% to -20%"},
+        {minValue:      -20, maxValue:       -6, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-20% to -5%"},
+        {minValue:       -5, maxValue:        4, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-5% to +5%"},
+        {minValue:        5, maxValue:       19, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "+5% to +20%"},
+        {minValue:       20, maxValue:       39, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "+20% to +40%"},
+        {minValue:       40, maxValue:       99, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "+40% to +100%"},
+        {minValue:      100, maxValue:      199, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000), label: "+100% to +200%"},
+        {minValue:      200, maxValue:      399, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 5.0000), label: "+200% to +400%"},
+        {minValue:      400, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 9.0000), label: "More than +400%"}
+      );
+      renderer_Vol_PC_Change = new ClassBreaksRenderer(null, 'Vol');
+      for (var j=0;j<aBrk_Vol_PC_Change.length;j++) {
+        renderer_Vol_PC_Change.addBreak(aBrk_Vol_PC_Change[j]);
+      }
 
       //Lanes Renderers
       var aBrk_Lanes_Absolute = new Array(
@@ -238,6 +260,23 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       renderer_Lanes_Change = new ClassBreaksRenderer(null, 'Lanes');
       for (var j=0;j<aBrk_Lanes_Change.length;j++) {
         renderer_Lanes_Change.addBreak(aBrk_Lanes_Change[j]);
+      }
+      var aBrk_Lanes_PC_Change = new Array(
+        {minValue: -9999999, maxValue:     -201, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -200%"},
+        {minValue:     -200, maxValue:      -41, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-200% to -40%"},
+        {minValue:      -40, maxValue:      -21, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-40% to -20%"},
+        {minValue:      -20, maxValue:       -6, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-20% to -5%"},
+        {minValue:       -5, maxValue:        4, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-5% to +5%"},
+        {minValue:        5, maxValue:       19, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "+5% to +20%"},
+        {minValue:       20, maxValue:       39, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "+20% to +40%"},
+        {minValue:       40, maxValue:       99, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "+40% to +100%"},
+        {minValue:      100, maxValue:      199, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000), label: "+100% to +200%"},
+        {minValue:      200, maxValue:      399, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 5.0000), label: "+200% to +400%"},
+        {minValue:      400, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 9.0000), label: "More than +400%"}
+      );
+      renderer_Lanes_PC_Change = new ClassBreaksRenderer(null, 'Lanes');
+      for (var j=0;j<aBrk_Lanes_PC_Change.length;j++) {
+        renderer_Lanes_PC_Change.addBreak(aBrk_Lanes_PC_Change[j]);
       }
 
       //PM Speed Renderers
@@ -279,6 +318,27 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       for (var j=0;j<aBrk_Spd_Change.length;j++) {
         renderer_PMSpd_Change.addBreak(aBrk_Spd_Change[j]);
       }
+      var aBrk_Spd_PC_Change = new Array(
+        {minValue: -9999999, maxValue:     -201, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -200%"},
+        {minValue:     -200, maxValue:      -41, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-200% to -40%"},
+        {minValue:      -40, maxValue:      -21, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-40% to -20%"},
+        {minValue:      -20, maxValue:       -6, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-20% to -5%"},
+        {minValue:       -5, maxValue:        4, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-5% to +5%"},
+        {minValue:        5, maxValue:       19, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "+5% to +20%"},
+        {minValue:       20, maxValue:       39, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "+20% to +40%"},
+        {minValue:       40, maxValue:       99, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "+40% to +100%"},
+        {minValue:      100, maxValue:      199, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000), label: "+100% to +200%"},
+        {minValue:      200, maxValue:      399, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 5.0000), label: "+200% to +400%"},
+        {minValue:      400, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 9.0000), label: "More than +400%"}
+      );
+      renderer_AMSpd_PC_Change = new ClassBreaksRenderer(null, 'AMSpd');
+      for (var j=0;j<aBrk_Spd_PC_Change.length;j++) {
+        renderer_AMSpd_PC_Change.addBreak(aBrk_Spd_PC_Change[j]);
+      }
+      renderer_PMSpd_PC_Change = new ClassBreaksRenderer(null, 'PMSpd');
+      for (var j=0;j<aBrk_Spd_PC_Change.length;j++) {
+        renderer_PMSpd_PC_Change.addBreak(aBrk_Spd_PC_Change[j]);
+      }
 
       //PM V/C Renderers
       var aBrk_VC_Absolute = new Array(
@@ -319,6 +379,27 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       for (var j=0;j<aBrk_VC_Change.length;j++) {
         renderer_PMVC_Change.addBreak(aBrk_VC_Change[j]);
       }
+      var aBrk_VC_PC_Change = new Array(
+        {minValue: -9999999, maxValue:     -201, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -200%"},
+        {minValue:     -200, maxValue:      -41, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-200% to -40%"},
+        {minValue:      -40, maxValue:      -21, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-40% to -20%"},
+        {minValue:      -20, maxValue:       -6, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-20% to -5%"},
+        {minValue:       -5, maxValue:        4, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-5% to +5%"},
+        {minValue:        5, maxValue:       19, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "+5% to +20%"},
+        {minValue:       20, maxValue:       39, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "+20% to +40%"},
+        {minValue:       40, maxValue:       99, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "+40% to +100%"},
+        {minValue:      100, maxValue:      199, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000), label: "+100% to +200%"},
+        {minValue:      200, maxValue:      399, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 5.0000), label: "+200% to +400%"},
+        {minValue:      400, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 9.0000), label: "More than +400%"}
+      );
+      renderer_AMVC_PC_Change = new ClassBreaksRenderer(null, 'AMVC');
+      for (var j=0;j<aBrk_VC_PC_Change.length;j++) {
+        renderer_AMVC_PC_Change.addBreak(aBrk_VC_PC_Change[j]);
+      }
+      renderer_PMVC_PC_Change = new ClassBreaksRenderer(null, 'PMVC');
+      for (var j=0;j<aBrk_VC_PC_Change.length;j++) {
+        renderer_PMVC_PC_Change.addBreak(aBrk_VC_PC_Change[j]);
+      }
 
       //Truck Volume Renderers
       var aBrk_VolTrk_Absolute = new Array(
@@ -351,6 +432,24 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       for (var j=0;j<aBrk_TrkVol_Change.length;j++) {
         renderer_VolTrk_Change.addBreak(aBrk_TrkVol_Change[j]);
       }
+      var aBrk_TrkVol_PC_Change = new Array(
+        {minValue: -9999999, maxValue:     -201, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -200%"},
+        {minValue:     -200, maxValue:      -41, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-200% to -40%"},
+        {minValue:      -40, maxValue:      -21, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-40% to -20%"},
+        {minValue:      -20, maxValue:       -6, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-20% to -5%"},
+        {minValue:       -5, maxValue:        4, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-5% to +5%"},
+        {minValue:        5, maxValue:       19, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "+5% to +20%"},
+        {minValue:       20, maxValue:       39, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "+20% to +40%"},
+        {minValue:       40, maxValue:       99, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "+40% to +100%"},
+        {minValue:      100, maxValue:      199, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000), label: "+100% to +200%"},
+        {minValue:      200, maxValue:      399, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 5.0000), label: "+200% to +400%"},
+        {minValue:      400, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 9.0000), label: "More than +400%"}
+      );
+      renderer_VolTrk_PC_Change = new ClassBreaksRenderer(null, 'VolTrk');
+      for (var j=0;j<aBrk_TrkVol_PC_Change.length;j++) {
+        renderer_VolTrk_PC_Change.addBreak(aBrk_TrkVol_PC_Change[j]);
+      }
+      
 
       dojo.xhrGet({
         url: "widgets/tttScenarioManager/data/segsummaries/_config_segsummary_fieldname_conversion.json",
@@ -366,12 +465,43 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         }
       });
 
+      
+      var divRoadPCOptions = dom.byId("divRoadPCOptions");
+
+      for (d in dRoadPCOptions) {
+
+        if (dRoadPCOptions[d].value == curRoadPCOption) {
+          b2Checked = true;
+        } else {
+          b2Checked = false;
+        }
+        
+        var rbRoadPCOption = new RadioButton({ name:"RoadPCOption", label:dRoadPCOptions[d].label, id:"rb_" + dRoadPCOptions[d].value, value: dRoadPCOptions[d].value, checked: b2Checked});
+        rbRoadPCOption.startup();
+        rbRoadPCOption.placeAt(divRoadPCOptions);
+        
+        dojo.create('label', {
+          innerHTML: dRoadPCOptions[d].label,
+          for: rbRoadPCOption.id
+        }, divRoadPCOptions);
+        
+        dojo.place("<br/>", divRoadPCOptions);
+
+        //Radio Buttons Change Event
+        dom.byId("rb_" + dRoadPCOptions[d].value).onchange = function(isChecked) {
+          if(isChecked) {
+            curRoadPCOption = this.value;
+            console.log('Radio button select: ' + curRoadPCOption);
+            tttR.updateRoadDisplay();
+          }
+        }
+      }
 
       var divRoadOptions = dom.byId("divRoadOptions");
       
       for (d in dRoadOptions) {
 
-        if (dRoadOptions[d].value == sRoadOption) {
+        if (dRoadOptions[d].value == curRoadOption) {
           bChecked = true;
         } else {
           bChecked = false;
@@ -381,7 +511,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         rbRoadOption.startup();
         rbRoadOption.placeAt(divRoadOptions);
         
-        var lblDOWPeak = dojo.create('label', {
+        dojo.create('label', {
           innerHTML: dRoadOptions[d].label,
           for: rbRoadOption.id
         }, divRoadOptions);
@@ -397,9 +527,6 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           }
         }
       }
-
-      
-
 
       tttR.updateRoadDisplay();
     },
@@ -424,21 +551,55 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           _renderer = renderer_VolTrk_Absolute;
         }
       } else {
-        if (curRoadOption=='Vol') {
-          _renderer = renderer_Vol_Change;
-        } else if (curRoadOption=='AMSpd') {
-          _renderer = renderer_AMSpd_Change;
-        } else if (curRoadOption=='AMVC') {
-          _renderer = renderer_AMVC_Change;
-        } else if (curRoadOption=='Lanes') {
-          _renderer = renderer_Lanes_Change;
-        }else if (curRoadOption=='PMSpd') {
-          _renderer = renderer_PMSpd_Change;
-        } else if (curRoadOption=='PMVC') {
-          _renderer = renderer_PMVC_Change;
-        } else if (curRoadOption=='VolTrk') {
-          _renderer = renderer_VolTrk_Change;
-        }
+          if (curRoadPCOption=='Abs') {
+            console.log(curRoadPCOption);
+            if (curRoadOption=='Vol') {
+              console.log(curRoadOption);
+              _renderer = renderer_Vol_Change;
+            } else if (curRoadOption=='AMSpd') {
+              console.log(curRoadOption);
+              _renderer = renderer_AMSpd_Change;
+            } else if (curRoadOption=='AMVC') {
+              console.log(curRoadOption);
+              _renderer = renderer_AMVC_Change;
+            } else if (curRoadOption=='Lanes') {
+              console.log(curRoadOption);
+              _renderer = renderer_Lanes_Change;
+            }else if (curRoadOption=='PMSpd') {
+              console.log(curRoadOption);
+              _renderer = renderer_PMSpd_Change;
+            } else if (curRoadOption=='PMVC') {
+              console.log(curRoadOption);
+              _renderer = renderer_PMVC_Change;
+            } else if (curRoadOption=='VolTrk') {
+              console.log(curRoadOption);
+              _renderer = renderer_VolTrk_Change;
+            }
+          } else {
+            console.log(curRoadPCOption);
+            if (curRoadOption=='Vol') {
+              console.log(curRoadOption);
+              _renderer = renderer_Vol_PC_Change;
+            } else if (curRoadOption=='AMSpd') {
+              console.log(curRoadOption);
+              _renderer = renderer_AMSpd_PC_Change;
+            } else if (curRoadOption=='AMVC') {
+              console.log(curRoadOption);
+              _renderer = renderer_AMVC_PC_Change;
+            } else if (curRoadOption=='Lanes') {
+              console.log(curRoadOption);
+              _renderer = renderer_Lanes_PC_Change;
+            }else if (curRoadOption=='PMSpd') {
+              console.log(curRoadOption);
+              _renderer = renderer_PMSpd_PC_Change;
+            } else if (curRoadOption=='PMVC') {
+              console.log(curRoadOption);
+              _renderer = renderer_PMVC_PC_Change;
+            } else if (curRoadOption=='VolTrk') {
+              console.log(curRoadOption);
+              _renderer = renderer_VolTrk_PC_Change;
+            }
+          }
       }
 
       // divider seg
@@ -450,8 +611,8 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
       // run multiple times to avoid 2000 limit on returned features
       tttR._queryFeatures("SEGID <= '" + strMiddleSeg1 + "'");
-      tttR._queryFeatures("SEGID  > '" + strMiddleSeg1 + "' AND SEGID <= '" + strMiddleSeg2 + "'");
-      tttR._queryFeatures("SEGID  > '" + strMiddleSeg2 + "'");
+//      tttR._queryFeatures("SEGID  > '" + strMiddleSeg1 + "' AND SEGID <= '" + strMiddleSeg2 + "'");
+//      tttR._queryFeatures("SEGID  > '" + strMiddleSeg2 + "'");
     },
 
     _queryFeatures: function(_filterstring){ 
@@ -605,23 +766,44 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
                 _compValue_VolTrk = dataRoadComp[_segid][dataFNConv['DY_LT']] + dataRoadComp[_segid][dataFNConv['DY_MD']] + dataRoadComp[_segid][dataFNConv['DY_HV']];
 
-                _dispValue_Vol       = _mainValue_Vol    - _compValue_Vol   ;
-                _dispValue_Lanes     = _mainValue_Lanes  - _compValue_Lanes ;
-                _dispValue_Lanes1    = _mainValue_Lanes1 - _compValue_Lanes1;
-                _dispValue_Lanes2    = _mainValue_Lanes2 - _compValue_Lanes2;
-                _dispValue_AMSpd     = _mainValue_AMSpd  - _compValue_AMSpd ;
-                _dispValue_AMSpd1    = _mainValue_AMSpd1 - _compValue_AMSpd1;
-                _dispValue_AMSpd2    = _mainValue_AMSpd2 - _compValue_AMSpd2;
-                _dispValue_AMVC      = _mainValue_AMVC   - _compValue_AMVC  ;
-                _dispValue_AMVC1     = _mainValue_AMVC1  - _compValue_AMVC1 ;
-                _dispValue_AMVC2     = _mainValue_AMVC2  - _compValue_AMVC2 ;
-                _dispValue_PMSpd     = _mainValue_PMSpd  - _compValue_PMSpd ;
-                _dispValue_PMSpd1    = _mainValue_PMSpd1 - _compValue_PMSpd1;
-                _dispValue_PMSpd2    = _mainValue_PMSpd2 - _compValue_PMSpd2;
-                _dispValue_PMVC      = _mainValue_PMVC   - _compValue_PMVC  ;
-                _dispValue_PMVC1     = _mainValue_PMVC1  - _compValue_PMVC1 ;
-                _dispValue_PMVC2     = _mainValue_PMVC2  - _compValue_PMVC2 ;
-                _dispValue_VolTrk    = _mainValue_VolTrk - _compValue_VolTrk;
+                
+                if (curRoadPCOption=='Abs') {
+                  _dispValue_Vol       = _mainValue_Vol    - _compValue_Vol   ;
+                  _dispValue_Lanes     = _mainValue_Lanes  - _compValue_Lanes ;
+                  _dispValue_Lanes1    = _mainValue_Lanes1 - _compValue_Lanes1;
+                  _dispValue_Lanes2    = _mainValue_Lanes2 - _compValue_Lanes2;
+                  _dispValue_AMSpd     = _mainValue_AMSpd  - _compValue_AMSpd ;
+                  _dispValue_AMSpd1    = _mainValue_AMSpd1 - _compValue_AMSpd1;
+                  _dispValue_AMSpd2    = _mainValue_AMSpd2 - _compValue_AMSpd2;
+                  _dispValue_AMVC      = _mainValue_AMVC   - _compValue_AMVC  ;
+                  _dispValue_AMVC1     = _mainValue_AMVC1  - _compValue_AMVC1 ;
+                  _dispValue_AMVC2     = _mainValue_AMVC2  - _compValue_AMVC2 ;
+                  _dispValue_PMSpd     = _mainValue_PMSpd  - _compValue_PMSpd ;
+                  _dispValue_PMSpd1    = _mainValue_PMSpd1 - _compValue_PMSpd1;
+                  _dispValue_PMSpd2    = _mainValue_PMSpd2 - _compValue_PMSpd2;
+                  _dispValue_PMVC      = _mainValue_PMVC   - _compValue_PMVC  ;
+                  _dispValue_PMVC1     = _mainValue_PMVC1  - _compValue_PMVC1 ;
+                  _dispValue_PMVC2     = _mainValue_PMVC2  - _compValue_PMVC2 ;
+                  _dispValue_VolTrk    = _mainValue_VolTrk - _compValue_VolTrk;
+                } else{
+                  if (_compValue_Vol   >0) {_dispValue_Vol       = ((_mainValue_Vol    - _compValue_Vol   ) / _compValue_Vol   ) * 100;} else {console.log("bad news")}
+                  if (_compValue_Lanes >0) {_dispValue_Lanes     = ((_mainValue_Lanes  - _compValue_Lanes ) / _compValue_Lanes ) * 100;} else {console.log("bad news")}
+                  if (_compValue_Lanes1>0) {_dispValue_Lanes1    = ((_mainValue_Lanes1 - _compValue_Lanes1) / _compValue_Lanes1) * 100;} else {console.log("bad news")}
+                  if (_compValue_Lanes2>0) {_dispValue_Lanes2    = ((_mainValue_Lanes2 - _compValue_Lanes2) / _compValue_Lanes2) * 100;} else {console.log("bad news")}
+                  if (_compValue_AMSpd >0) {_dispValue_AMSpd     = ((_mainValue_AMSpd  - _compValue_AMSpd ) / _compValue_AMSpd ) * 100;} else {console.log("bad news")}
+                  if (_compValue_AMSpd1>0) {_dispValue_AMSpd1    = ((_mainValue_AMSpd1 - _compValue_AMSpd1) / _compValue_AMSpd1) * 100;} else {console.log("bad news")}
+                  if (_compValue_AMSpd2>0) {_dispValue_AMSpd2    = ((_mainValue_AMSpd2 - _compValue_AMSpd2) / _compValue_AMSpd2) * 100;} else {console.log("bad news")}
+                  if (_compValue_AMVC  >0) {_dispValue_AMVC      = ((_mainValue_AMVC   - _compValue_AMVC  ) / _compValue_AMVC  ) * 100;} else {console.log("bad news")}
+                  if (_compValue_AMVC1 >0) {_dispValue_AMVC1     = ((_mainValue_AMVC1  - _compValue_AMVC1 ) / _compValue_AMVC1 ) * 100;} else {console.log("bad news")}
+                  if (_compValue_AMVC2 >0) {_dispValue_AMVC2     = ((_mainValue_AMVC2  - _compValue_AMVC2 ) / _compValue_AMVC2 ) * 100;} else {console.log("bad news")}
+                  if (_compValue_PMSpd >0) {_dispValue_PMSpd     = ((_mainValue_PMSpd  - _compValue_PMSpd ) / _compValue_PMSpd ) * 100;} else {console.log("bad news")}
+                  if (_compValue_PMSpd1>0) {_dispValue_PMSpd1    = ((_mainValue_PMSpd1 - _compValue_PMSpd1) / _compValue_PMSpd1) * 100;} else {console.log("bad news")}
+                  if (_compValue_PMSpd2>0) {_dispValue_PMSpd2    = ((_mainValue_PMSpd2 - _compValue_PMSpd2) / _compValue_PMSpd2) * 100;} else {console.log("bad news")}
+                  if (_compValue_PMVC  >0) {_dispValue_PMVC      = ((_mainValue_PMVC   - _compValue_PMVC  ) / _compValue_PMVC  ) * 100;} else {console.log("bad news")}
+                  if (_compValue_PMVC1 >0) {_dispValue_PMVC1     = ((_mainValue_PMVC1  - _compValue_PMVC1 ) / _compValue_PMVC1 ) * 100;} else {console.log("bad news")}
+                  if (_compValue_PMVC2 >0) {_dispValue_PMVC2     = ((_mainValue_PMVC2  - _compValue_PMVC2 ) / _compValue_PMVC2 ) * 100;} else {console.log("bad news")}
+                  if (_compValue_VolTrk>0) {_dispValue_VolTrk    = ((_mainValue_VolTrk - _compValue_VolTrk) / _compValue_VolTrk) * 100;} else {console.log("bad news")}
+                }
 
               } catch(err) {
                 _dispValue_Vol       = _mainValue_Vol   ;
