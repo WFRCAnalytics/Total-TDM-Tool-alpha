@@ -171,6 +171,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     postCreate: function() {
       this.inherited(arguments);
       console.log('postCreate');
+      dom.byId("_7_panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
     },
 
     startup: function() {

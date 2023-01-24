@@ -13,13 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////
-define(['dojo/_base/declare', 'jimu/BaseWidget'],
-  function(declare, BaseWidget) {
+define(['dojo/_base/declare',
+        'jimu/BaseWidget',
+        'dojo/dom',
+        'dojo/dom-style'],
+  function(declare, BaseWidget, dom, domStyle) {
     //To create a widget, you need to derive from BaseWidget.
     return declare([BaseWidget], {
       // Custom widget code goes here
 
-      baseClass: 'jimu-widget-customwidget'
+      baseClass: 'jimu-widget-customwidget',
 
       //this property is set by the framework when widget is loaded.
       //name: 'CustomWidget',
@@ -27,10 +30,11 @@ define(['dojo/_base/declare', 'jimu/BaseWidget'],
 
       //methods to communication with app container:
 
-      // postCreate: function() {
-      //   this.inherited(arguments);
-      //   console.log('postCreate');
-      // },
+      postCreate: function() {
+        this.inherited(arguments);
+        console.log('postCreate');
+        dom.byId("_9__panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
+      }//,
 
       // startup: function() {
       //  this.inherited(arguments);

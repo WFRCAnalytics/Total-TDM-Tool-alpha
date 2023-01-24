@@ -116,9 +116,15 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
     baseClass: 'jimu-widget-demo',
     
+    
+    preCreate: function() {
+      console.log('preCreate');
+    },
+
     postCreate: function() {
       this.inherited(arguments);
       console.log('postCreate');
+      dom.byId("_8_panel").style.left = '55px';
     },
 
     startup: function() {
