@@ -131,7 +131,7 @@
           "relativeTo": "map"
         },
         "placeholderIndex": 2,
-        "id": "_9",
+        "id": "_10",
         "name": "tttOpportunities",
         "label": "Access to Opportunities",
         "version": "2.20",
@@ -147,7 +147,7 @@
         },
         "placeholderIndex": 2,
         "id": "_9_",
-        "name": "tttSocopeconomics",
+        "name": "tttSocioeconomics",
         "label": "Socioeconomics",
         "version": "2.20",
         "closeable": true,
