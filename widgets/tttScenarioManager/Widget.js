@@ -44,6 +44,9 @@ var dataRawModelComp = [];
 
 var dataRoadMain = [];
 var dataRoadComp = [];
+var dataTransitModeMain = [];
+var dataTransitModeComp = [];
+
 
 define(['dojo/_base/declare',
         'jimu/BaseWidget',
@@ -234,6 +237,24 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                                 or if the request was unsuccessful altogether. */
                 }
             });
+
+            //Get transit mode file
+            strTransitModeMain = curScenarioMain + '.json';
+            //Raw Model Data
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/transitdetailbymode/" + strTransitModeMain,
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log(strTransitModeMain);
+                    dataTransitModeMain = obj;
+                    tttSM.publishData({message: "transitmode"});
+                },
+                error: function(err) {
+                        /* this will execute if the response couldn't be converted to a JS object,
+                                or if the request was unsuccessful altogether. */
+                }
+            });
         },
 
         readInScenarioCompJSON: function() {
@@ -271,6 +292,24 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 error: function(err) {
                       /* this will execute if the response couldn't be converted to a JS object,
                               or if the request was unsuccessful altogether. */
+                }
+            });
+            
+            //Get transit mode file
+            strTransitModeComp = curScenarioComp + '.json';
+            //Raw Model Data
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/transitdetailbymode/" + strTransitModeComp,
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log(strTransitModeComp);
+                    dataTransitModeComp = obj;
+                    tttSM.publishData({message: "transitmode"});
+                },
+                error: function(err) {
+                        /* this will execute if the response couldn't be converted to a JS object,
+                                or if the request was unsuccessful altogether. */
                 }
             });
         },
