@@ -194,6 +194,7 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
 
         changeZoomExtents: function() {
             tttSM.publishData({message: "road"});
+            tttSM.publishData({message: "transitmode"});
         },
 
         readInScenarioMainJSON: function() {
