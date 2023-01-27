@@ -240,42 +240,44 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       this.setLegendBar();
       this.showLegend();
 
-      var divYears = dom.byId("divYears");
-      
-      for (d in dYears) {
+//      var divYears = dom.byId("divYears");
+//      
+//      for (d in dYears) {
 
-        if (dYears[d].value == sYear) {
-          bChecked = true;
-        } else {
-          bChecked = false;
-        }
-        
-        var rbYear = new RadioButton({ name:"year", label:dYears[d].label, id:"rb_" + dYears[d].value, value: dYears[d].value, checked: bChecked});
-        rbYear.startup();
-        rbYear.placeAt(divYears);
-        
-        var lblDOWPeak = dojo.create('label', {
-          innerHTML: dYears[d].label,
-          for: rbYear.id
-        }, divYears);
-        
-        dojo.place("<br/>", divYears);
+//        if (dYears[d].value == sYear) {
+//          bChecked = true;
+//        } else {
+//          bChecked = false;
+//        }
+//        
+//        var rbYear = new RadioButton({ name:"year", label:dYears[d].label, id:"rb_" + dYears[d].value, value: dYears[d].value, checked: bChecked});
+//        rbYear.startup();
+//        rbYear.placeAt(divYears);
+//        
+//        var lblDOWPeak = dojo.create('label', {
+//          innerHTML: dYears[d].label,
+//          for: rbYear.id
+//        }, divYears);
+//        
+//        dojo.place("<br/>", divYears);
 
-        //Radio Buttons Change Event
-        dom.byId("rb_" + dYears[d].value).onchange = function(isChecked) {
-          if(isChecked) {
-            curYear = this.value;
-            console.log('Radio button select: ' + curYear);
-            rW.updateDisplay();
-          }
-        }
-      }
+//        //Radio Buttons Change Event
+//        dom.byId("rb_" + dYears[d].value).onchange = function(isChecked) {
+//          if(isChecked) {
+//            curYear = this.value;
+//            console.log('Radio button select: ' + curYear);
+//            rW.updateDisplay();
+//          }
+//        }
+//      }
     },
 
     updateDisplay: function() {
-      sFieldName = 'M' + curMode + '_' + curYear;
+//      sFieldName = 'M' + curMode + '_' + curYear;
 
-      console.log('updateDisplay to ' + sFieldName);
+//      console.log('updateDisplay to ' + sFieldName);
+
+      
       
       var vcClassRenderer = new UniqueValueRenderer({
         type: "unique-value",  // autocasts as new UniqueValueRenderer()
