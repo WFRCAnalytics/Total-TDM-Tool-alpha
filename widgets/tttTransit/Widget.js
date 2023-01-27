@@ -43,6 +43,8 @@ var tttT;
 
 var iPixelSelectionTolerance = 5;
 
+var renderer_Riders;
+
 define(['dojo/_base/declare',
     'jimu/BaseWidget',
     'jimu/LayerInfos/LayerInfos',
@@ -79,7 +81,7 @@ define(['dojo/_base/declare',
     'esri/InfoTemplate',
     'esri/Color',
     'esri/map',
-    'esri/renderers/UniqueValueRenderer',
+    'esri/renderers/ClassBreaksRenderer',
     'esri/geometry/Extent',
     'dojo/store/Memory',
     'dojox/charting/StoreSeries',
@@ -94,7 +96,7 @@ define(['dojo/_base/declare',
     'dojo/store/Observable',
     'dojox/charting/axis2d/Default',
     'dojo/domReady!'],
-function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart, Claro, Julie, SimpleTheme, Scatter, Markers, Columns, Legend, Tooltip, TableContainer, ScrollPane, ContentPane, PanelManager, TextBox, ToggleButton, LayerInfos, Query, QueryTask, FeatureLayer, FeatureTable, SimpleFillSymbol, SimpleLineSymbol, SimpleMarkerSymbol, TextSymbol, Font, LabelClass, InfoTemplate, Color, Map, UniqueValueRenderer, Extent, Memory, StoreSeries, Dialog, Button, RadioButton, MutliSelect, CheckedMultiSelect, Select, ComboBox, CheckBox, Observable) {
+function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart, Claro, Julie, SimpleTheme, Scatter, Markers, Columns, Legend, Tooltip, TableContainer, ScrollPane, ContentPane, PanelManager, TextBox, ToggleButton, LayerInfos, Query, QueryTask, FeatureLayer, FeatureTable, SimpleFillSymbol, SimpleLineSymbol, SimpleMarkerSymbol, TextSymbol, Font, LabelClass, InfoTemplate, Color, Map, ClassBreaksRenderer, Extent, Memory, StoreSeries, Dialog, Button, RadioButton, MutliSelect, CheckedMultiSelect, Select, ComboBox, CheckBox, Observable) {
   //To create a widget, you need to derive from BaseWidget.
   
   return declare([BaseWidget], {
@@ -104,11 +106,6 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     //templateString: template,
 
     baseClass: 'jimu-widget-demo',
-    
-    
-    preCreate: function() {
-      console.log('preCreate');
-    },
 
     postCreate: function() {
       this.inherited(arguments);
@@ -256,33 +253,48 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       sFieldName = 'M' + curMode;
 
       console.log('updateDisplay to ' + sFieldName);
+      
+      //Lanes Renderers
+      var aBrk_Riders_Absolute = new Array(
+        {minValue:        1, maxValue:      249, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.50), label:   "Less than 250"},
+        {minValue:      250, maxValue:      499, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.25), label:      "250 to 500"},
+        {minValue:      500, maxValue:      999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 2.00), label:    "500 to 1,000"},
+        {minValue:     1000, maxValue:     1999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 2.75), label:  "1,000 to 2,000"},
+        {minValue:     2000, maxValue:     2999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 3.50), label:  "2,000 to 3,000"},
+        {minValue:     3000, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[5]), 4.25), label:  "3,000 to 5,000"},
+        {minValue:     5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 5.00), label: "5,000 to 10,000"},
+        {minValue:    10000, maxValue:    14999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 5.75), label:"10,000 to 15,000"},
+        {minValue:    15000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 6.50), label:"More than 15,000"}
+      );
+      renderer_Riders = new ClassBreaksRenderer(null, 'Riders');
+      for (var j=0;j<aBrk_Riders_Absolute.length;j++) {
+        renderer_Riders.addBreak(aBrk_Riders_Absolute[j]);
+      }
 
-      
-      
-      vcClassRenderer_Riders = new UniqueValueRenderer({
-        type: "unique-value",  // autocasts as new UniqueValueRenderer()
-        valueExpression: "var r = $feature.Riders;" +
-                          "if      (r==0    ) { return 'class_0'; }" +
-                          "else if (r<   250) { return 'class_1'; }" +
-                          "else if (r<   500) { return 'class_2'; }" +
-                          "else if (r<  1000) { return 'class_3'; }" +
-                          "else if (r<  2000) { return 'class_4'; }" +
-                          "else if (r<  3000) { return 'class_5'; }" +
-                          "else if (r<  5000) { return 'class_6'; }" +
-                          "else if (r< 10000) { return 'class_7'; }" +
-                          "else if (r< 15000) { return 'class_8'; }" +
-                          "else if (r>=15000) { return 'class_9'; }",
-        uniqueValueInfos: [//{value:"class_0", label:      "No Transit", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(sCBertGrad0     ), 0.1)},
-                           {value:"class_1", label:   "Less than 250", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.7)},
-                           {value:"class_2", label:      "250 to 500", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.7)},
-                           {value:"class_3", label:    "500 to 1,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 2.7)},
-                           {value:"class_4", label:  "1,000 to 2,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 3.7)},
-                           {value:"class_5", label:  "2,000 to 3,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 4.7)},
-                           {value:"class_6", label:  "3,000 to 5,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[5]), 5.7)},
-                           {value:"class_7", label: "5,000 to 10,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 6.7)},
-                           {value:"class_8", label:"10,000 to 15,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 7.7)},
-                           {value:"class_9", label:"More than 15,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 8.7)}]
-      });
+//      vcClassRenderer_Riders = new ClassBreaksRenderer({
+//        type: "unique-value",  // autocasts as new ClassBreaksRenderer()
+//        valueExpression: "var r = $feature.Riders;" +
+//                          "if      (r==0    ) { return 'class_0'; }" +
+//                          "else if (r<   250) { return 'class_1'; }" +
+//                          "else if (r<   500) { return 'class_2'; }" +
+//                          "else if (r<  1000) { return 'class_3'; }" +
+//                          "else if (r<  2000) { return 'class_4'; }" +
+//                          "else if (r<  3000) { return 'class_5'; }" +
+//                          "else if (r<  5000) { return 'class_6'; }" +
+//                          "else if (r< 10000) { return 'class_7'; }" +
+//                          "else if (r< 15000) { return 'class_8'; }" +
+//                          "else if (r>=15000) { return 'class_9'; }",
+//        uniqueValueInfos: [//{value:"class_0", label:      "No Transit", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(sCBertGrad0     ), 0.1)},
+//                           {value:"class_1", label:   "Less than 250", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.7)},
+//                           {value:"class_2", label:      "250 to 500", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.7)},
+//                           {value:"class_3", label:    "500 to 1,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 2.7)},
+//                           {value:"class_4", label:  "1,000 to 2,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 3.7)},
+//                           {value:"class_5", label:  "2,000 to 3,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 4.7)},
+//                           {value:"class_6", label:  "3,000 to 5,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[5]), 5.7)},
+//                           {value:"class_7", label: "5,000 to 10,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 6.7)},
+//                           {value:"class_8", label:"10,000 to 15,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 7.7)},
+//                           {value:"class_9", label:"More than 15,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 8.7)}]
+//      });
 
       // divider seg
       strMiddleSeg1 = '2102_003.0';
@@ -290,6 +302,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
       // clear all graphics
       tttT.map.graphics.clear();
+      tttT.map.graphics.refresh();
 
       // run multiple times to avoid 2000 limit on returned features
       tttT._queryFeatures("SEGID <= '" + strMiddleSeg1 + "'");
@@ -306,6 +319,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       //query.where = "1=1";
       query.where = _filterstring
 
+      _renderer = renderer_Riders;
       
       lyrSegments.queryFeatures(query,function(featureSet) {
         //Update values
@@ -330,14 +344,14 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
                 _compValue_Riders = dataTransitModeComp.data.find(o => o.SEGID === _segid)['M' + curMode];
                 
                 if (curRoadPCOption=='Abs') {
-                  _dispValue_Riders = _mainValue_Riders - _compValue_Riders   ;
+                  _dispValue_Riders = _mainValue_Riders - _compValue_Riders;
 
                 } else{
-                  if (_compValue_Riders   >0) _dispValue_Riders = ((_compValue_Riders    - _compValue_Riders   ) / _compValue_Riders   ) * 100;
+                  if (_compValue_Riders >0) _dispValue_Riders = ((_compValue_Riders - _compValue_Riders) / _compValue_Riders) * 100;
                 }
 
               } catch(err) {
-                _dispValue_Riders = _mainValue_Riders   ;
+                _dispValue_Riders = _mainValue_Riders;
               }
             } else {
               _dispValue_Riders = _mainValue_Riders;
