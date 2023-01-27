@@ -42,12 +42,12 @@ var iPixelSelectionTolerance = 5;
 var dataRawModelMain = [];
 var dataRawModelComp = [];
 
-var dataRoadMain = [];
-var dataRoadComp = [];
-var dataTransitModeMain = [];
-var dataTransitModeComp = [];
-var dataTransitRouteMain = [];
-var dataTransitRouteComp = [];
+var dataRoadMain;
+var dataRoadComp;
+var dataTransitModeMain;
+var dataTransitModeComp;
+var dataTransitRouteMain;
+var dataTransitRouteComp;
 
 define(['dojo/_base/declare',
         'jimu/BaseWidget',
