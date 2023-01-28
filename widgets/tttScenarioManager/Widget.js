@@ -24,8 +24,8 @@ var curMode = "";
 var curYear = sYear;
 var lyrLinks;
 var lyrSegments;
-var curMasterNetworkLinks = "master20211115";
-var curSegments = "wfsegs20211117";
+//var curMasterNetworkLinks = "master20211115";
+var curSegments = "Road and Transit Segments";
 
 var minScaleForLabels = 87804;
 var labelClassOn;
@@ -144,11 +144,8 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
             //Initialize Selection Layer, FromLayer, and ToLayer and define selection colors
             var layerInfosObject = LayerInfos.getInstanceSync();
             for (var j=0, jl=layerInfosObject._layerInfos.length; j<jl; j++) {
-                var currentLayerInfo = layerInfosObject._layerInfos[j];        
-                if (currentLayerInfo.title == curMasterNetworkLinks) { //must mach layer title
-                    console.log('Link Layer Found')
-                    lyrLinks = layerInfosObject._layerInfos[j].layerObject;
-                } else if (currentLayerInfo.title == curSegments) { //must mach layer title
+                var currentLayerInfo = layerInfosObject._layerInfos[j];
+                if (currentLayerInfo.title == curSegments) { //must mach layer title
                     console.log('Segment Layer Found')
                     lyrSegments = layerInfosObject._layerInfos[j].layerObject;
                 } 
