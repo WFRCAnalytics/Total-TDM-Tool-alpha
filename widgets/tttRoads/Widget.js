@@ -1,16 +1,6 @@
 //javascript for controlling Transit Ridership App
 //written by Bill Hereth February 2022
 
-var dModeOptions = [
-  { label: "All Transit"    , name: "all" , value: "0", selected: true },
-  { label: "Local Bus"    , name: "lcl" , value: "4"         },
-  { label: "Core Route"     , name: "brt5", value: "5"         },
-  { label: "Express Bus"    , name: "exp" , value: "6"         },
-  { label: "Bus Rapid Transit", name: "brt9", value: "9"         },
-  { label: "Light Rail"     , name: "lrt" , value: "7"         },
-  { label: "Commuter Rail"  , name: "crt" , value: "8"         }
-];
-
 var dRoadOptions = [
   {value:"Lanes" ,label:"Lanes"},
   {value:"Vol"   ,label:"Daily Volume (2-Way)"},
@@ -28,66 +18,6 @@ var dRoadPCOptions = [
 
 var curRoadOption       = "Vol";
 var curRoadPCOption     = "Abs";
-
-var sCBertGrad9 = "#Af2944"; //rgb(175,41,68)
-var sCBertGrad8 = "#E5272d"; //rgb(229,39,45)
-var sCBertGrad7 = "#Eb672d"; //rgb(235,103,45)
-var sCBertGrad6 = "#E09d2e"; //rgb(224,157,46)
-var sCBertGrad5 = "#8dc348"; //rgb(141,195,72)
-var sCBertGrad4 = "#6cb74a"; //rgb(108,183,74)
-var sCBertGrad3 = "#00a74e"; //rgb(0,167,78)
-var sCBertGrad2 = "#1ba9e6"; //rgb(27,169,230)
-var sCBertGrad1 = "#31398a"; //rgb(49,57,138)
-
-var sCLaneGrad9 = "#000000"; //rgb(175,41,68)
-var sCLaneGrad8 = "#222222"; //rgb(229,39,45)
-var sCLaneGrad7 = "#800000"; //rgb(235,103,45)
-var sCLaneGrad6 = "#FF0000"; //rgb(224,157,46)
-var sCLaneGrad5 = "#66023C"; //rgb(141,195,72)
-var sCLaneGrad4 = "#3c59ff"; //rgb(108,183,74)
-var sCLaneGrad3 = "#86DC3D"; //rgb(0,167,78)
-var sCLaneGrad2 = "#333333"; //rgb(27,169,230)
-var sCLaneGrad1 = "#CCCCCC"; //rgb(49,57,138)
-
-var sCVCGrad9 = "#000000"; //rgb(175,41,68)
-var sCVCGrad8 = "#750227"; //rgb(229,39,45)
-var sCVCGrad7 = "#AC131C"; //rgb(235,103,45)
-var sCVCGrad6 = "#FF0D0D"; //rgb(224,157,46)
-var sCVCGrad5 = "#FF0000"; //rgb(141,195,72)
-var sCVCGrad4 = "#FD9A01"; //rgb(108,183,74)
-var sCVCGrad3 = "#FEFB01"; //rgb(0,167,78)
-var sCVCGrad2 = "#87FA00"; //rgb(27,169,230)
-var sCVCGrad1 = "#00ED01"; //rgb(49,57,138)
-
-var sCBertGrad0 = "#EEEEEE";
-
-laneColorData = [sCLaneGrad1,sCLaneGrad2,sCLaneGrad3,sCLaneGrad4,sCLaneGrad5,sCLaneGrad6,sCLaneGrad7,sCLaneGrad8,sCLaneGrad9];
-bertColorData = [sCBertGrad1,sCBertGrad2,sCBertGrad3,sCBertGrad4,sCBertGrad5,sCBertGrad6,sCBertGrad7,sCBertGrad8,sCBertGrad9];
-vcColorData   = [sCVCGrad1,sCVCGrad2,sCVCGrad3,sCVCGrad4,sCVCGrad5,sCVCGrad6,sCVCGrad7,sCVCGrad8,sCVCGrad9];
-
-//Typical Colors
-var sCLightGrey     = "#EEEEEE";
-var sCDefaultGrey   = "#CCCCCC";
-var sCBlue1         = "#BED2FF";
-var sCBlue2         = "#73B2FF";
-var sCBlue3         = "#0070FF";
-var sCBlue4         = "#005CE6";
-var sCBlue5         = "#004DA8";
-var sCRed1          = "#FFBEBE";
-var sCRed2          = "#FF7F7F";
-var sCRed3          = "#E60000";
-var sCRed4          = "#730000";
-var sCGreen1        = "#54ff00";
-var sCGreen2        = "#4ce600";
-var sCWhite         = "#ffffff";
-var sSelectionColor = "#ffff00";//"#FF69B4"; //Hot Pink
-
-var aCR_Change9  = new Array(sCBlue4,sCBlue3,sCBlue2,sCBlue1,sCDefaultGrey,sCRed1,sCRed2,sCRed3,sCRed4);
-
-//Tranist Variables
-var curMode = "";
-var lyrLinks;
-var sLinks = "LinksWithRiders_v2";
 
 var minScaleForLabels = 87804;
 var labelClassOn;
@@ -447,52 +377,52 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
       if (curScenarioComp=='none') {
         if (curRoadOption=='Vol') {
-          _renderer = renderer_Vol_Absolute;
+          _renderer_road = renderer_Vol_Absolute;
         } else if (curRoadOption=='AMSpd') {
-          _renderer = renderer_AMSpd_Absolute;
+          _renderer_road = renderer_AMSpd_Absolute;
         } else if (curRoadOption=='AMVC') {
-          _renderer = renderer_AMVC_Absolute;
+          _renderer_road = renderer_AMVC_Absolute;
         } else if (curRoadOption=='Lanes') {
-          _renderer = renderer_Lanes_Absolute;
+          _renderer_road = renderer_Lanes_Absolute;
         }else if (curRoadOption=='PMSpd') {
-          _renderer = renderer_PMSpd_Absolute;
+          _renderer_road = renderer_PMSpd_Absolute;
         } else if (curRoadOption=='PMVC') {
-          _renderer = renderer_PMVC_Absolute;
+          _renderer_road = renderer_PMVC_Absolute;
         } else if (curRoadOption=='VolTrk') {
-          _renderer = renderer_VolTrk_Absolute;
+          _renderer_road = renderer_VolTrk_Absolute;
         }
       } else {
           if (curRoadPCOption=='Abs') {
             if (curRoadOption=='Vol') {
-              _renderer = renderer_Vol_Change;
+              _renderer_road = renderer_Vol_Change;
             } else if (curRoadOption=='AMSpd') {
-              _renderer = renderer_AMSpd_Change;
+              _renderer_road = renderer_AMSpd_Change;
             } else if (curRoadOption=='AMVC') {
-              _renderer = renderer_AMVC_Change;
+              _renderer_road = renderer_AMVC_Change;
             } else if (curRoadOption=='Lanes') {
-              _renderer = renderer_Lanes_Change;
+              _renderer_road = renderer_Lanes_Change;
             }else if (curRoadOption=='PMSpd') {
-              _renderer = renderer_PMSpd_Change;
+              _renderer_road = renderer_PMSpd_Change;
             } else if (curRoadOption=='PMVC') {
-              _renderer = renderer_PMVC_Change;
+              _renderer_road = renderer_PMVC_Change;
             } else if (curRoadOption=='VolTrk') {
-              _renderer = renderer_VolTrk_Change;
+              _renderer_road = renderer_VolTrk_Change;
             }
           } else {
             if (curRoadOption=='Vol') {
-              _renderer = tttR.getPercentChangeRenderer('Vol');
+              _renderer_road = tttR.getPercentChangeRenderer('Vol');
             } else if (curRoadOption=='AMSpd') {
-              _renderer = tttR.getPercentChangeRenderer('AMSpd');
+              _renderer_road = tttR.getPercentChangeRenderer('AMSpd');
             } else if (curRoadOption=='AMVC') {
-              _renderer = tttR.getPercentChangeRenderer('AMVC');
+              _renderer_road = tttR.getPercentChangeRenderer('AMVC');
             } else if (curRoadOption=='Lanes') {
-              _renderer = tttR.getPercentChangeRenderer('Lanes');
+              _renderer_road = tttR.getPercentChangeRenderer('Lanes');
             }else if (curRoadOption=='PMSpd') {
-              _renderer = tttR.getPercentChangeRenderer('PMSpd');
+              _renderer_road = tttR.getPercentChangeRenderer('PMSpd');
             } else if (curRoadOption=='PMVC') {
-              _renderer = tttR.getPercentChangeRenderer('PMVC');
+              _renderer_road = tttR.getPercentChangeRenderer('PMVC');
             } else if (curRoadOption=='VolTrk') {
-              _renderer = tttR.getPercentChangeRenderer('VolTrk');
+              _renderer_road = tttR.getPercentChangeRenderer('VolTrk');
             }
           }
       }
@@ -783,9 +713,9 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           }
         }
 
-        lyrSegments.setRenderer(_renderer);
+        lyrSegments.setRenderer(_renderer_road);
 
-        tttR.map.graphics.setRenderer(_renderer);
+        tttR.map.graphics.setRenderer(_renderer_road);
         tttR.map.graphics.refresh();
 
       });
@@ -908,6 +838,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     onOpen: function(){
       console.log('onOpen');
       tttR.updateRoadDisplay();
+      lastOpenedWidget = 'road';
     },
 
     onClose: function(){

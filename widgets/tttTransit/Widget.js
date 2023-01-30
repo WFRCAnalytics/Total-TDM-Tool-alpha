@@ -1,7 +1,6 @@
 //javascript for controlling Transit Ridership App
 //written by Bill Hereth February 2022
 
-
 var dModeOptions = [
   { label: "All Transit"      , name: "all" , value: "T", selected: true },
   { label: "Local Bus"        , name: "lcl" , value: "4"                 },
@@ -12,19 +11,6 @@ var dModeOptions = [
   { label: "Commuter Rail"    , name: "crt" , value: "8"                 }
 ];
 
-var sCBertGrad9 = "#Af2944"; //rgb(175,41,68)
-var sCBertGrad8 = "#E5272d"; //rgb(229,39,45)
-var sCBertGrad7 = "#Eb672d"; //rgb(235,103,45)
-var sCBertGrad6 = "#E09d2e"; //rgb(224,157,46)
-var sCBertGrad5 = "#8dc348"; //rgb(141,195,72)
-var sCBertGrad4 = "#6cb74a"; //rgb(108,183,74)
-var sCBertGrad3 = "#00a74e"; //rgb(0,167,78)
-var sCBertGrad2 = "#1ba9e6"; //rgb(27,169,230)
-var sCBertGrad1 = "#31398a"; //rgb(49,57,138)
-
-var sCBertGrad0 = "#EEEEEE";
-
-bertColorData = [sCBertGrad1,sCBertGrad2,sCBertGrad3,sCBertGrad4,sCBertGrad5,sCBertGrad6,sCBertGrad7,sCBertGrad8,sCBertGrad9];
 
 //Tranist Variables
 var curMode = "T"; //T is total
@@ -128,13 +114,6 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       //pos.width = 500;
       //panel.setPosition(pos);
       //panel.panelManager.normalizePanel(panel);
-      
-      var parent = this;
-
-      //when zoom finishes run changeZoom to update label display
-      //this.map.on("zoom-end", function (){  
-      //  parent.changeZoom();  
-      //});  
       
       cmbMode = new Select({
         id: "selectMode",
@@ -260,9 +239,9 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       console.log('updateDisplay to ' + sFieldName);
 
       if (curScenarioComp=='none') {
-        _renderer = renderer_Riders;
+        _renderer_transit = renderer_Riders;
       } else {
-        _renderer = renderer_Riders_Change;
+        _renderer_transit = renderer_Riders_Change;
       }
 
       // divider seg
@@ -334,9 +313,9 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           }
         }
 
-        lyrSegments.setRenderer(_renderer);
+        lyrSegments.setRenderer(_renderer_transit);
 
-        tttT.map.graphics.setRenderer(_renderer);
+        tttT.map.graphics.setRenderer(_renderer_transit);
         tttT.map.graphics.refresh();
 
         
@@ -363,6 +342,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     onOpen: function(){
       console.log('onOpen');
       tttT.updateDisplayMode();
+      lastOpenedWidget = 'transit';
     },
 
     onClose: function(){
@@ -403,7 +383,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     //Receiving messages from other widgets
     onReceiveData: function(name, widgetId, data, historyData) {
       //filter out messages
-      if(data.message=='transitmode'){
+      if(data.message=='transit'){
         tttT.updateDisplayMode();
       }
     },

@@ -1,29 +1,12 @@
 //javascript for controlling Transit Ridership App
 //written by Bill Hereth February 2022
 
-var sYear = "50";
-var curScenarioMain = "id_37001244863cadd40e1b8f7.52642706"  //v9 Beta 2019
+var curScenarioMain = "id_37001244863cadd40e1b8f7.52642706";  //v9 Beta 2019
 //var curScenarioComp = "id_112358168963ceca332cc148.76455495" //v9 2019 Observed
-var curScenarioComp = "none"
+var curScenarioComp = "none";
 
-var sCBertGrad9 = "#Af2944"; //rgb(175,41,68)
-var sCBertGrad8 = "#E5272d"; //rgb(229,39,45)
-var sCBertGrad7 = "#Eb672d"; //rgb(235,103,45)
-var sCBertGrad6 = "#E09d2e"; //rgb(224,157,46)
-var sCBertGrad5 = "#8dc348"; //rgb(141,195,72)
-var sCBertGrad4 = "#6cb74a"; //rgb(108,183,74)
-var sCBertGrad3 = "#00a74e"; //rgb(0,167,78)
-var sCBertGrad2 = "#1ba9e6"; //rgb(27,169,230)
-var sCBertGrad1 = "#31398a"; //rgb(49,57,138)
+var lastOpenedWidget = "none";
 
-var sCBertGrad0 = "#EEEEEE";
-
-bertColorData = [sCBertGrad1,sCBertGrad2,sCBertGrad3,sCBertGrad4,sCBertGrad5,sCBertGrad6,sCBertGrad7,sCBertGrad8,sCBertGrad9];
-
-//Tranist Variables
-var curMode = "";
-var curYear = sYear;
-var lyrLinks;
 var lyrSegments;
 //var curMasterNetworkLinks = "master20211115";
 var curSegments = "Road and Transit Segments";
@@ -51,6 +34,63 @@ var dataTransitRouteMain;
 var dataTransitRouteComp;
 
 var pm; // panel manager
+
+var sCBertGrad9 = "#Af2944"; //rgb(175,41,68)
+var sCBertGrad8 = "#E5272d"; //rgb(229,39,45)
+var sCBertGrad7 = "#Eb672d"; //rgb(235,103,45)
+var sCBertGrad6 = "#E09d2e"; //rgb(224,157,46)
+var sCBertGrad5 = "#8dc348"; //rgb(141,195,72)
+var sCBertGrad4 = "#6cb74a"; //rgb(108,183,74)
+var sCBertGrad3 = "#00a74e"; //rgb(0,167,78)
+var sCBertGrad2 = "#1ba9e6"; //rgb(27,169,230)
+var sCBertGrad1 = "#31398a"; //rgb(49,57,138)
+
+var sCBertGrad0 = "#EEEEEE";
+
+var sCLaneGrad9 = "#000000"; //rgb(175,41,68)
+var sCLaneGrad8 = "#222222"; //rgb(229,39,45)
+var sCLaneGrad7 = "#800000"; //rgb(235,103,45)
+var sCLaneGrad6 = "#FF0000"; //rgb(224,157,46)
+var sCLaneGrad5 = "#66023C"; //rgb(141,195,72)
+var sCLaneGrad4 = "#3c59ff"; //rgb(108,183,74)
+var sCLaneGrad3 = "#86DC3D"; //rgb(0,167,78)
+var sCLaneGrad2 = "#333333"; //rgb(27,169,230)
+var sCLaneGrad1 = "#CCCCCC"; //rgb(49,57,138)
+
+var sCVCGrad9 = "#000000"; //rgb(175,41,68)
+var sCVCGrad8 = "#750227"; //rgb(229,39,45)
+var sCVCGrad7 = "#AC131C"; //rgb(235,103,45)
+var sCVCGrad6 = "#FF0D0D"; //rgb(224,157,46)
+var sCVCGrad5 = "#FF0000"; //rgb(141,195,72)
+var sCVCGrad4 = "#FD9A01"; //rgb(108,183,74)
+var sCVCGrad3 = "#FEFB01"; //rgb(0,167,78)
+var sCVCGrad2 = "#87FA00"; //rgb(27,169,230)
+var sCVCGrad1 = "#00ED01"; //rgb(49,57,138)
+
+var sCBertGrad0 = "#EEEEEE";
+
+laneColorData = [sCLaneGrad1,sCLaneGrad2,sCLaneGrad3,sCLaneGrad4,sCLaneGrad5,sCLaneGrad6,sCLaneGrad7,sCLaneGrad8,sCLaneGrad9];
+bertColorData = [sCBertGrad1,sCBertGrad2,sCBertGrad3,sCBertGrad4,sCBertGrad5,sCBertGrad6,sCBertGrad7,sCBertGrad8,sCBertGrad9];
+vcColorData   = [sCVCGrad1,sCVCGrad2,sCVCGrad3,sCVCGrad4,sCVCGrad5,sCVCGrad6,sCVCGrad7,sCVCGrad8,sCVCGrad9];
+
+//Typical Colors
+var sCLightGrey     = "#EEEEEE";
+var sCDefaultGrey   = "#CCCCCC";
+var sCBlue1         = "#BED2FF";
+var sCBlue2         = "#73B2FF";
+var sCBlue3         = "#0070FF";
+var sCBlue4         = "#005CE6";
+var sCBlue5         = "#004DA8";
+var sCRed1          = "#FFBEBE";
+var sCRed2          = "#FF7F7F";
+var sCRed3          = "#E60000";
+var sCRed4          = "#730000";
+var sCGreen1        = "#54ff00";
+var sCGreen2        = "#4ce600";
+var sCWhite         = "#ffffff";
+var sSelectionColor = "#ffff00";//"#FF69B4"; //Hot Pink
+
+var aCR_Change9  = new Array(sCBlue4,sCBlue3,sCBlue2,sCBlue1,sCDefaultGrey,sCRed1,sCRed2,sCRed3,sCRed4);
 
 define(['dojo/_base/declare',
         'jimu/BaseWidget',
@@ -124,6 +164,8 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
 
             tttSM = this;
             
+            pm = PanelManager.getInstance();
+
             this.inherited(arguments);
             this.map.setInfoWindowOnClick(false); // turn off info window (popup) when clicking a feature
             
@@ -136,12 +178,12 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
 
             //when zoom finishes run changeZoomExtents to display
             this.map.on("zoom-end", function () {
-                tttSM.changeZoomExtents();
+                tttSM._updateDisplay();
             });
             
             //when pan finishes run changeZoomExtents to display
             this.map.on("pan-end", function () {
-                tttSM.changeZoomExtents();
+                tttSM._updateDisplay();
             });
 
             //Initialize Selection Layer, FromLayer, and ToLayer and define selection colors
@@ -192,37 +234,17 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
             });
         },
 
-        changeZoomExtents: function() {
-            tttSM.publishData({message: "road"});
-            tttSM.publishData({message: "transitmode"});
+        _updateDisplay: function() {
+          tttSM.publishData({message: lastOpenedWidget});
         },
 
         readInScenarioMainJSON: function() {
             console.log('readInScenarioMainJSON');
 
-            //create GraphicsLayer
-            //var tempGraphicsLayer = new GraphicsLayer({ id: "billLayer" });
-            //var tempGraphicsLayer = new GraphicsLayer();
-
-            ////Get rawmodelscenariofile
-            //strRawMain = (curScenarioMain).replace('id_', 'rm_') + '.json';
-            ////Raw Model Data
-            //dojo.xhrGet({
-            //    url: "widgets/tttScenarioManager/data/" + strRawMain,
-            //    handleAs: "json",
-            //    load: function(obj) {
-            //        /* here, obj will already be a JS object deserialized from the JSON response */
-            //        console.log(strRawMain);
-            //        dataRawModelMain = obj;
-            //        tttSM.publishData({message: "rawmodel"});
-            //     },
-            //     error: function(err) {
-            //          /* this will execute if the response couldn't be converted to a JS object,
-            //                  or if the request was unsuccessful altogether. */
-            //      }
-            //});
-            
-            pm = PanelManager.getInstance();
+            if (curScenarioMain=='none') {
+                console.log('no scenario selected');
+                return;
+            }
 
             //Get roadscenariofile
             strRoadMain = (curScenarioMain).replace('id_', 'ss_') + '.json';
@@ -234,17 +256,11 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strRoadMain);
                     dataRoadMain = obj;
-                    //Check if "Roads" widget is open and then send message
-                    for (var p=0; p < pm.panels.length; p++) {
-                      if (pm.panels[p].label == "Roads") {
-                        tttSM.publishData({message: "road"});
-                      }
-                    }
-                    
+                    tttSM._updateDisplay();
                 },
                 error: function(err) {
-                        /* this will execute if the response couldn't be converted to a JS object,
-                                or if the request was unsuccessful altogether. */
+                    dataRoadMain = [];
+                    tttSM._updateDisplay();
                 }
             });
 
@@ -258,16 +274,11 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitRouteMain);
                     dataTransitRouteMain = obj;
-                    //Check if "Transit" widget is open and then send message
-                    for (var p=0; p < pm.panels.length; p++) {
-                      if (pm.panels[p].label == "Transit") {
-                        tttSM.publishData({message: "transitroute"});
-                      }
-                    }
+                    tttSM._updateDisplay();
                 },
                 error: function(err) {
-                        /* this will execute if the response couldn't be converted to a JS object,
-                                or if the request was unsuccessful altogether. */
+                    dataTransitRouteMain = [];
+                    tttSM._updateDisplay();
                 }
             });
 
@@ -281,39 +292,22 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitModeMain);
                     dataTransitModeMain = obj;
-                    //Check if "Transit" widget is open and then send message
-                    for (var p=0; p < pm.panels.length; p++) {
-                      if (pm.panels[p].label == "Transit") {
-                      tttSM.publishData({message: "transitmode"});
-                      }
-                    }
+                    tttSM._updateDisplay();
                 },
                 error: function(err) {
-                        /* this will execute if the response couldn't be converted to a JS object,
-                                or if the request was unsuccessful altogether. */
+                    dataTransitModeMain = [];
+                    tttSM._updateDisplay();
                 }
             });
         },
 
         readInScenarioCompJSON: function() {
             console.log('readInScenarioCompJSON');
-            ////Get rawmodelscenariofile
-            //strRawComp = (curScenarioComp).replace('id_', 'rm_') + '.json';
-            //Raw Model Data
-            //dojo.xhrGet({
-            //    url: "widgets/tttScenarioManager/data/" + strRawComp,
-            //    handleAs: "json",
-            //    load: function(obj) {
-            //        /* here, obj will already be a JS object deserialized from the JSON response */
-            //        console.log(strRawComp);
-            //        dataRawModelComp = obj;
-            //        tttSM.publishData({message: "rawmodel"});
-            //    },
-            //    error: function(err) {
-            //          /* this will execute if the response couldn't be converted to a JS object,
-            //                  or if the request was unsuccessful altogether. */
-            //    }
-            //});
+
+            if (curScenarioMain=='none') {
+                console.log('no compare scenario selected');
+                return;
+            }
 
             //Get roadscenariofile
             strRoadComp = (curScenarioComp).replace('id_', 'ss_') + '.json';
@@ -325,16 +319,11 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strRoadComp);
                     dataRoadComp = obj;
-                    //Check if "Roads" widget is open and then send message
-                    for (var p=0; p < pm.panels.length; p++) {
-                      if (pm.panels[p].label == "Roads") {
-                        tttSM.publishData({message: "road"});
-                      }
-                    }
+                    tttSM._updateDisplay();
                 },
                 error: function(err) {
-                      /* this will execute if the response couldn't be converted to a JS object,
-                              or if the request was unsuccessful altogether. */
+                    dataRoadComp = [];
+                    tttSM._updateDisplay();
                 }
             });
 
@@ -348,16 +337,11 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitRouteComp);
                     dataTransitRouteComp = obj;
-                    //Check if "Transit" widget is open and then send message
-                    for (var p=0; p < pm.panels.length; p++) {
-                      if (pm.panels[p].label == "Transit") {
-                        tttSM.publishData({message: "transitmode"});
-                      }
-                    }
+                    tttSM._updateDisplay();
                 },
                 error: function(err) {
-                        /* this will execute if the response couldn't be converted to a JS object,
-                                or if the request was unsuccessful altogether. */
+                    dataTransitRouteComp = [];
+                    tttSM._updateDisplay();
                 }
             });
 
@@ -371,36 +355,17 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitModeComp);
                     dataTransitModeComp = obj;
-                    //Check if "Transit" widget is open and then send message
-                    for (var p=0; p < pm.panels.length; p++) {
-                      if (pm.panels[p].label == "Transit") {
-                        tttSM.publishData({message: "transitroute"});
-                      }
-                    }
+                    tttSM._updateDisplay();
                 },
                 error: function(err) {
-                        /* this will execute if the response couldn't be converted to a JS object,
-                                or if the request was unsuccessful altogether. */
+                    dataTransitModeComp = [];
+                    tttSM._updateDisplay();
                 }
             });
         },
 
         numberWithCommas: function(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        },
-
-                
-        setLegendBar: function() {
-            console.log('setLegendBar');
-
-            var _sLegend = 'Number of Daily Riders per Link'
-
-            dom.byId("LegendName").innerHTML = _sLegend;
-
-            if (typeof bertColorData !== 'undefined') {
-                for (var i=0;i<bertColorData.length;i++)
-                    dom.byId("divColor" + (i + 1).toString()).style.backgroundColor = bertColorData[i];
-            }
         },
 
         showLegend: function(){
