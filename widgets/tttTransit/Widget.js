@@ -44,6 +44,7 @@ var tttT;
 var iPixelSelectionTolerance = 5;
 
 var renderer_Riders;
+var renderer_Riders_Change;
 
 define(['dojo/_base/declare',
     'jimu/BaseWidget',
@@ -213,88 +214,56 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           }
         }
       }
-      this.setLegendBar();
-      this.showLegend();
-      this.updateDisplayMode();
-
-//      var divYears = dom.byId("divYears");
-//      
-//      for (d in dYears) {
-
-//        if (dYears[d].value == sYear) {
-//          bChecked = true;
-//        } else {
-//          bChecked = false;
-//        }
-//        
-//        var rbYear = new RadioButton({ name:"year", label:dYears[d].label, id:"rb_" + dYears[d].value, value: dYears[d].value, checked: bChecked});
-//        rbYear.startup();
-//        rbYear.placeAt(divYears);
-//        
-//        var lblDOWPeak = dojo.create('label', {
-//          innerHTML: dYears[d].label,
-//          for: rbYear.id
-//        }, divYears);
-//        
-//        dojo.place("<br/>", divYears);
-
-//        //Radio Buttons Change Event
-//        dom.byId("rb_" + dYears[d].value).onchange = function(isChecked) {
-//          if(isChecked) {
-//            curYear = this.value;
-//            console.log('Radio button select: ' + curYear);
-//            tttT.updateDisplay();
-//          }
-//        }
-//      }
-    },
-
-    updateDisplayMode: function() {
-      sFieldName = 'M' + curMode;
-
-      console.log('updateDisplay to ' + sFieldName);
-      
-      //Lanes Renderers
+            
+      //Riders Absolute Renderers
       var aBrk_Riders_Absolute = new Array(
-        {minValue:        1, maxValue:      249, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.50), label:   "Less than 250"},
-        {minValue:      250, maxValue:      499, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.25), label:      "250 to 500"},
-        {minValue:      500, maxValue:      999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 2.00), label:    "500 to 1,000"},
-        {minValue:     1000, maxValue:     1999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 2.75), label:  "1,000 to 2,000"},
-        {minValue:     2000, maxValue:     2999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 3.50), label:  "2,000 to 3,000"},
-        {minValue:     3000, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[5]), 4.25), label:  "3,000 to 5,000"},
-        {minValue:     5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 5.00), label: "5,000 to 10,000"},
-        {minValue:    10000, maxValue:    14999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 5.75), label:"10,000 to 15,000"},
-        {minValue:    15000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 6.50), label:"More than 15,000"}
+        {minValue:        1, maxValue:      249, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.50), label:   "Less than 250 Riders"},
+        {minValue:      250, maxValue:      499, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.25), label:      "250 to 500 Riders"},
+        {minValue:      500, maxValue:      999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 2.00), label:    "500 to 1,000 Riders"},
+        {minValue:     1000, maxValue:     1999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 2.75), label:  "1,000 to 2,000 Riders"},
+        {minValue:     2000, maxValue:     2999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 3.50), label:  "2,000 to 3,000 Riders"},
+        {minValue:     3000, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[5]), 4.25), label:  "3,000 to 5,000 Riders"},
+        {minValue:     5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 5.00), label: "5,000 to 10,000 Riders"},
+        {minValue:    10000, maxValue:    14999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 5.75), label:"10,000 to 15,000 Riders"},
+        {minValue:    15000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 6.50), label:"More than 15,000 Riders"}
       );
       renderer_Riders = new ClassBreaksRenderer(null, 'Riders');
       for (var j=0;j<aBrk_Riders_Absolute.length;j++) {
         renderer_Riders.addBreak(aBrk_Riders_Absolute[j]);
       }
 
-//      vcClassRenderer_Riders = new ClassBreaksRenderer({
-//        type: "unique-value",  // autocasts as new ClassBreaksRenderer()
-//        valueExpression: "var r = $feature.Riders;" +
-//                          "if      (r==0    ) { return 'class_0'; }" +
-//                          "else if (r<   250) { return 'class_1'; }" +
-//                          "else if (r<   500) { return 'class_2'; }" +
-//                          "else if (r<  1000) { return 'class_3'; }" +
-//                          "else if (r<  2000) { return 'class_4'; }" +
-//                          "else if (r<  3000) { return 'class_5'; }" +
-//                          "else if (r<  5000) { return 'class_6'; }" +
-//                          "else if (r< 10000) { return 'class_7'; }" +
-//                          "else if (r< 15000) { return 'class_8'; }" +
-//                          "else if (r>=15000) { return 'class_9'; }",
-//        uniqueValueInfos: [//{value:"class_0", label:      "No Transit", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(sCBertGrad0     ), 0.1)},
-//                           {value:"class_1", label:   "Less than 250", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.7)},
-//                           {value:"class_2", label:      "250 to 500", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.7)},
-//                           {value:"class_3", label:    "500 to 1,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 2.7)},
-//                           {value:"class_4", label:  "1,000 to 2,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 3.7)},
-//                           {value:"class_5", label:  "2,000 to 3,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 4.7)},
-//                           {value:"class_6", label:  "3,000 to 5,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[5]), 5.7)},
-//                           {value:"class_7", label: "5,000 to 10,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 6.7)},
-//                           {value:"class_8", label:"10,000 to 15,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 7.7)},
-//                           {value:"class_9", label:"More than 15,000", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 8.7)}]
-//      });
+      //Riders Change Renderers
+      var aBrk_Riders_Change = new Array(
+        {minValue: -10000000, maxValue:   -10001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -10,000 Riders"},
+        {minValue:    -10000, maxValue:    -2501, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 3.7500), label: "-10,000 to -2,500 Riders"},
+        {minValue:     -2500, maxValue:    -1001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 2.5000), label:  "-2,500 to -1,000 Riders"},
+        {minValue:     -1000, maxValue:     -100, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 1.2500), label:    "-1,000 to -100 Riders"},
+        {minValue:      -100, maxValue:      100, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.6250), label:      "-100 to +100 Riders"},
+        {minValue:       100, maxValue:     1000, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 1.2500), label:      "100 to 1,000 Riders"},
+        {minValue:      2500, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 2.5000), label:    "2,500 to 5,000 Riders"},
+        {minValue:      5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 3.7500), label:   "5,000 to 10,000 Riders"},
+        {minValue:     10000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[8]), 5.0000), label:  "More than 10,000 Riders"}
+      );
+      renderer_Riders_Change = new ClassBreaksRenderer(null, 'Riders');
+      for (var j=0;j<aBrk_Riders_Change.length;j++) {
+        renderer_Riders_Change.addBreak(aBrk_Riders_Change[j]);
+      }
+
+
+      tttT.updateDisplayMode();
+
+    },
+
+    updateDisplayMode: function() {
+      sFieldName = 'M' + curMode;
+
+      console.log('updateDisplay to ' + sFieldName);
+
+      if (curScenarioComp=='none') {
+        _renderer = renderer_Riders;
+      } else {
+        _renderer = renderer_Riders_Change;
+      }
 
       // divider seg
       strMiddleSeg1 = '2102_003.0';
@@ -318,8 +287,6 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       query.returnGeometry = false;
       //query.where = "1=1";
       query.where = _filterstring
-
-      _renderer = renderer_Riders;
       
       lyrSegments.queryFeatures(query,function(featureSet) {
         //Update values
@@ -379,41 +346,8 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
     },
 
-    numbetttTithCommas: function(x) {
+    numberWithCommas: function(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
-        
-    setLegendBar: function() {
-      console.log('setLegendBar');
-
-      var _sLegend = 'Number of Daily Riders per Link'
-
-      dom.byId("LegendName").innerHTML = _sLegend;
-
-      if (typeof bertColorData !== 'undefined') {
-        for (var i=0;i<bertColorData.length;i++)
-          dom.byId("divColor" + (i + 1).toString()).style.backgroundColor = bertColorData[i];
-      }
-    },
-
-    showLegend: function(){
-      console.log('showLegend');
-      var pm = PanelManager.getInstance();
-      var bOpen = false;
-      
-      //Close Legend Widget if open
-      for (var p=0; p < pm.panels.length; p++) {
-        if (pm.panels[p].label == "Legend") {
-          if (pm.panels[p].state != "closed") {
-            bOpen=true;
-            pm.closePanel(pm.panels[p]);
-          }
-        }
-      }
-    
-      if (!bOpen) {
-        //pm.showPanel(this.appConfig.widgetOnScreen.widgets[WIDGETPOOLID_LEGEND]);
-      }
     },
 
     checkVolLabel: function() {
@@ -428,6 +362,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
     onOpen: function(){
       console.log('onOpen');
+      tttT.updateDisplayMode();
     },
 
     onClose: function(){
