@@ -3,7 +3,8 @@
 
 var sYear = "50";
 var curScenarioMain = "id_37001244863cadd40e1b8f7.52642706"  //v9 Beta 2019
-var curScenarioComp = "id_112358168963ceca332cc148.76455495" //v9 2019 Observed
+//var curScenarioComp = "id_112358168963ceca332cc148.76455495" //v9 2019 Observed
+var curScenarioComp = "none"
 
 var sCBertGrad9 = "#Af2944"; //rgb(175,41,68)
 var sCBertGrad8 = "#E5272d"; //rgb(229,39,45)
@@ -48,6 +49,8 @@ var dataTransitModeMain;
 var dataTransitModeComp;
 var dataTransitRouteMain;
 var dataTransitRouteComp;
+
+var pm; // panel manager
 
 define(['dojo/_base/declare',
         'jimu/BaseWidget',
@@ -218,6 +221,8 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
             //                  or if the request was unsuccessful altogether. */
             //      }
             //});
+            
+            pm = PanelManager.getInstance();
 
             //Get roadscenariofile
             strRoadMain = (curScenarioMain).replace('id_', 'ss_') + '.json';
