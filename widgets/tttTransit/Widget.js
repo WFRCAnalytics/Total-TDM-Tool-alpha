@@ -135,6 +135,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       //  parent.changeZoom();  
       //});  
       
+      
       cmbMode = new Select({
         id: "selectMode",
         name: "selectModeName",
@@ -147,6 +148,40 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         }, "cmbMode");
       cmbMode.set("value",curMode);
       cmbMode.startup();
+
+      
+      routes = [];
+      currentMode = [];
+      sATRs="IN(";
+      console.log("HERE IT IS");
+      console.log(dataTransitRouteMain);
+      for (var i=0;i<dataTransitRouteMain.data.length;i++){
+          //if (dataTransitRouteMain.data[i].MODE==curMode) {
+              routes.push({"label" : dataTransitRouteMain.data[i].NAME, "value" : dataTransitRouteMain.data[i].NAME});
+              //if (dom.byId("button").innerHTML == "Unselect All") {
+              //  currentMode.push(dataTransitRouteMain.data[i].MODE);
+              //}
+              sATRs += dataTransitRouteMain.data[i].NAME + ","
+          //}
+      }
+      sATRs = sATRs.slice(0,-1) + ")";
+
+      console.log(routes)
+
+      cmbRoute = new CheckedMultiSelect({
+        id: "selectRoute",
+        name: "selectRouteName",
+        options: routes,
+        multiple: true,
+        onChange: function(){
+            curRoute = this.value;
+            tttT.updateDisplayMode();
+        }
+      }, "cmbRoute");
+      cmbRoute.startup();
+      cmbRoute.set("value", curMode);
+
+
 
       // create a text symbol to define the style of labels
       var volumeLabel = new TextSymbol();
@@ -173,8 +208,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       //Check box change events
       dom.byId("chkLabels").onchange = function(isChecked) {
         parent.checkVolLabel();
-      };
-      
+      };  
 
       //setup click functionality
       //this.map.on('click', selectTAZ);
@@ -468,7 +502,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     //Receiving messages from other widgets
     onReceiveData: function(name, widgetId, data, historyData) {
       //filter out messages
-      if(data.message=='transitmode'){
+      if(data.message=='transitroute'){
         tttT.updateDisplayMode();
       }
     },

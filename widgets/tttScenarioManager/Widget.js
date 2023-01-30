@@ -349,6 +349,49 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
             });
         },
 
+        //UpdateCCSs: function(a_strStationGroup) {
+
+        //    //Build Options
+        //    aCCSs = [];
+        //    curSeletectedStations = [];
+        //    sATRs="IN(";
+        //    for (var i=0;i<stationGroupsCCSs.length;i++){
+        //        if (stationGroupsCCSs[i].StationGroup==a_strStationGroup) {
+        //            aCCSs.push({"label" : stationGroupsCCSs[i].StationName, "value" : stationGroupsCCSs[i].StationID});
+        //            if (dom.byId("button").innerHTML == "Unselect All") {
+        //                curSeletectedStations.push(stationGroupsCCSs[i].StationID);
+        //            }
+        //            sATRs += stationGroupsCCSs[i].StationID + ","
+        //        }
+        //    }
+        //
+        //    sATRs = sATRs.slice(0,-1) + ")";
+        //
+        //    //Populate Station Multi Select List
+        //
+        //    parent = this;
+        //
+        //    if (iFirst) {
+        //        cmbCCS = new CheckedMultiSelect({
+        //            id: "selectSG",
+        //            name: "selectSGName",
+        //            options: aCCSs,
+        //            multiple: true,
+        //            onChange: function(){
+        //                curSeletectedStations = this.value;
+        //                parent.UpdateCharts();
+        //            }
+        //        }, "cmbCCSs");
+        //        cmbCCS.startup();
+        //        cmbCCS.set("value", curSeletectedStations);
+        //        iFirst = false;
+        //    } else {
+        //        cmbCCS.set("options", aCCSs).reset();
+        //        cmbCCS.set("value", curSeletectedStations);
+        //        cmbCCS.startup();
+        //    }
+        //},
+
         numberWithCommas: function(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
