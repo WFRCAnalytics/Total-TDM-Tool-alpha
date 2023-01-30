@@ -88,9 +88,7 @@
         "id": "_5",
         "name": "tttScenarioManager",
         "label": "Scenario Manager",
-        "version": "2.20",
-        "closeable": true,
-        "IsController": false,
+        "openAtStart": true,
         "uri": "widgets/tttScenarioManager/Widget"
       },
       {

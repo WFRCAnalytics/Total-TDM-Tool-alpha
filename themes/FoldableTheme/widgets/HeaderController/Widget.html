@@ -5,10 +5,26 @@
       <img class="logo jimu-float-leading jimu-leading-margin1" data-dojo-attach-point="logoNode" data-dojo-attach-event="onload:_onLogoLoad">
     </a>
     <div class="titles jimu-float-leading jimu-leading-margin1" data-dojo-attach-point="titlesNode">
-      <div class="screen-readers-only" data-a11y-label-id="foldable_label">${label}</div>
-      <h1 class="jimu-title jimu-float-leading" data-dojo-attach-point="titleNode" data-a11y-label-id="foldable_title"></h1>
-      <h2 class="jimu-subtitle jimu-float-leading jimu-leading-margin5" data-dojo-attach-point="subtitleNode" data-a11y-label-id="foldable_subtitle"></h2>
+    <div class="screen-readers-only" data-a11y-label-id="foldable_label">${label}</div>
+    <h1 class="jimu-title jimu-float-leading" data-dojo-attach-point="titleNode" data-a11y-label-id="foldable_title"></h1>
     </div>
+    <table>
+      <tr>
+          <td>
+              <h1 class="jimu-title jimu-float-leading" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scenario:</h1>
+          </td>
+          <td width="200px;">
+              <div style="display: inline" id="cmbScenarioMain"></div><div style="display: inline"></div>
+          </td>
+          <td>
+            <h1 class="jimu-title jimu-float-leading" >Compare to Scenario:</h1>
+          </td>
+          <td width="200px;">
+              <div style="display: inline" id="cmbScenarioComp"></div><div style="display: inline"></div>
+          </td>
+      </tr>
+    </table>
+    <h2 class="jimu-subtitle jimu-float-leading jimu-leading-margin5" data-dojo-attach-point="subtitleNode" data-a11y-label-id="foldable_subtitle"></h2>
     <div class="links jimu-leading-margin25" data-dojo-attach-point="linksNode">
       <div class="dynamic-section" data-dojo-attach-point="dynamicLinksNode"></div>
       <div class="signin-section" data-dojo-attach-point="signInSectionNode">
@@ -20,4 +36,5 @@
     </div>
   </div>
   <div class="container-section" data-dojo-attach-point="containerNode"></div>
+
 </div>
