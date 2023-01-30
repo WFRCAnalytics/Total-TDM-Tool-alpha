@@ -229,7 +229,13 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strRoadMain);
                     dataRoadMain = obj;
-                    tttSM.publishData({message: "road"});
+                    //Check if "Roads" widget is open and then send message
+                    for (var p=0; p < pm.panels.length; p++) {
+                      if (pm.panels[p].label == "Roads") {
+                        tttSM.publishData({message: "road"});
+                      }
+                    }
+                    
                 },
                 error: function(err) {
                         /* this will execute if the response couldn't be converted to a JS object,
@@ -247,7 +253,12 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitRouteMain);
                     dataTransitRouteMain = obj;
-                    tttSM.publishData({message: "transitroute"});
+                    //Check if "Transit" widget is open and then send message
+                    for (var p=0; p < pm.panels.length; p++) {
+                      if (pm.panels[p].label == "Transit") {
+                        tttSM.publishData({message: "transitroute"});
+                      }
+                    }
                 },
                 error: function(err) {
                         /* this will execute if the response couldn't be converted to a JS object,
@@ -265,7 +276,12 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitModeMain);
                     dataTransitModeMain = obj;
-                    tttSM.publishData({message: "transitmode"});
+                    //Check if "Transit" widget is open and then send message
+                    for (var p=0; p < pm.panels.length; p++) {
+                      if (pm.panels[p].label == "Transit") {
+                      tttSM.publishData({message: "transitmode"});
+                      }
+                    }
                 },
                 error: function(err) {
                         /* this will execute if the response couldn't be converted to a JS object,
@@ -304,7 +320,12 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strRoadComp);
                     dataRoadComp = obj;
-                    tttSM.publishData({message: "road"});
+                    //Check if "Roads" widget is open and then send message
+                    for (var p=0; p < pm.panels.length; p++) {
+                      if (pm.panels[p].label == "Roads") {
+                        tttSM.publishData({message: "road"});
+                      }
+                    }
                 },
                 error: function(err) {
                       /* this will execute if the response couldn't be converted to a JS object,
@@ -322,7 +343,12 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitRouteComp);
                     dataTransitRouteComp = obj;
-                    tttSM.publishData({message: "transitroute"});
+                    //Check if "Transit" widget is open and then send message
+                    for (var p=0; p < pm.panels.length; p++) {
+                      if (pm.panels[p].label == "Transit") {
+                        tttSM.publishData({message: "transitmode"});
+                      }
+                    }
                 },
                 error: function(err) {
                         /* this will execute if the response couldn't be converted to a JS object,
@@ -340,7 +366,12 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitModeComp);
                     dataTransitModeComp = obj;
-                    tttSM.publishData({message: "transitmode"});
+                    //Check if "Transit" widget is open and then send message
+                    for (var p=0; p < pm.panels.length; p++) {
+                      if (pm.panels[p].label == "Transit") {
+                        tttSM.publishData({message: "transitroute"});
+                      }
+                    }
                 },
                 error: function(err) {
                         /* this will execute if the response couldn't be converted to a JS object,

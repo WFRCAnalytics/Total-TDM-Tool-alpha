@@ -907,6 +907,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
     onOpen: function(){
       console.log('onOpen');
+      tttR.updateRoadDisplay();
     },
 
     onClose: function(){
