@@ -236,8 +236,26 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                                 or if the request was unsuccessful altogether. */
                 }
             });
-
+            
             //Get transit mode file
+            strTransitModeMain = curScenarioMain + '.json';
+            //Raw Model Data
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/transitdetailbymode/" + strTransitModeMain,
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log(strTransitModeMain);
+                    dataTransitModeMain = obj;
+                    tttSM.publishData({message: "transitmode"});
+                },
+                error: function(err) {
+                        /* this will execute if the response couldn't be converted to a JS object,
+                                or if the request was unsuccessful altogether. */
+                }
+            });
+
+            //Get transit route file
             strTransitRouteMain = curScenarioMain + '.json';
             //Raw Model Data
             dojo.xhrGet({
@@ -255,17 +273,15 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 }
             });
 
-            //Get transit mode file
-            strTransitModeMain = curScenarioMain + '.json';
-            //Raw Model Data
+            //Route Longnames
             dojo.xhrGet({
-                url: "widgets/tttScenarioManager/data/transitdetailbymode/" + strTransitModeMain,
+                url: "widgets/tttScenarioManager/data/routesummarynames_revised.json",
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
-                    console.log(strTransitModeMain);
-                    dataTransitModeMain = obj;
-                    tttSM.publishData({message: "transitmode"});
+                    console.log("routesummarynames_revised");
+                    dataTransitRouteNames = obj;
+                    tttSM.publishData({message: "transitroutenames"});
                 },
                 error: function(err) {
                         /* this will execute if the response couldn't be converted to a JS object,
