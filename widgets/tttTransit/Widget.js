@@ -12,6 +12,8 @@ var dModeOptions = [
   { label: "Commuter Rail"    , name: "crt" , value: "8"                 }
 ];
 
+var iFirst=true;
+
 var sCBertGrad9 = "#Af2944"; //rgb(175,41,68)
 var sCBertGrad8 = "#E5272d"; //rgb(229,39,45)
 var sCBertGrad7 = "#Eb672d"; //rgb(235,103,45)
@@ -135,7 +137,6 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       //  parent.changeZoom();  
       //});  
       
-      
       cmbMode = new Select({
         id: "selectMode",
         name: "selectModeName",
@@ -144,44 +145,11 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           curMode = this.value;
           console.log('Select Mode: ' + curMode)
           tttT.updateDisplayMode();
+          tttT.updateRoutesList(curMode);
         }
-        }, "cmbMode");
-      cmbMode.set("value",curMode);
+      }, "cmbMode");
       cmbMode.startup();
-
-      
-      routes = [];
-      currentMode = [];
-      sATRs="IN(";
-      console.log("HERE IT IS");
-      console.log(dataTransitRouteMain);
-      for (var i=0;i<dataTransitRouteMain.data.length;i++){
-          //if (dataTransitRouteMain.data[i].MODE==curMode) {
-              routes.push({"label" : dataTransitRouteMain.data[i].NAME, "value" : dataTransitRouteMain.data[i].NAME});
-              //if (dom.byId("button").innerHTML == "Unselect All") {
-              //  currentMode.push(dataTransitRouteMain.data[i].MODE);
-              //}
-              sATRs += dataTransitRouteMain.data[i].NAME + ","
-          //}
-      }
-      sATRs = sATRs.slice(0,-1) + ")";
-
-      console.log(routes)
-
-      cmbRoute = new CheckedMultiSelect({
-        id: "selectRoute",
-        name: "selectRouteName",
-        options: routes,
-        multiple: true,
-        onChange: function(){
-            curRoute = this.value;
-            tttT.updateDisplayMode();
-        }
-      }, "cmbRoute");
-      cmbRoute.startup();
-      cmbRoute.set("value", curMode);
-
-
+      cmbMode.set("value",curMode);
 
       // create a text symbol to define the style of labels
       var volumeLabel = new TextSymbol();
@@ -281,6 +249,51 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 //          }
 //        }
 //      }
+    },
+
+    updateRoutesList: function(curMode) {
+      routes = [];
+      //currentMode = [];
+      //sATRs="IN(";
+      //console.log("CURMODE " + curMode);
+      //console.log(dataTransitRouteMain);
+      for (var i=0;i<dataTransitRouteMain.data.length;i++){
+          if (dataTransitRouteMain.data[i].MODE==curMode) {
+            if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
+              routes.push({"label" : dataTransitRouteMain.data[i].NAME, "value" : dataTransitRouteMain.data[i].NAME});
+              //if (dom.byId("button").innerHTML == "Unselect All") {
+              //  currentMode.push(dataTransitRouteMain.data[i].MODE);
+              //}
+              //sATRs += dataTransitRouteMain.data[i].NAME + ","
+            }
+          } else if (curMode == 'T'){
+            if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
+              routes.push({"label" : dataTransitRouteMain.data[i].NAME, "value" : dataTransitRouteMain.data[i].NAME});
+            }
+          } 
+      }
+      //sATRs = sATRs.slice(0,-1) + ")";
+      if (iFirst) {
+        cmbRoute = new CheckedMultiSelect({
+          id: "selectRoute",
+          name: "selectRouteName",
+          options: routes,
+          multiple: true,
+          onChange: function(){
+            console.log("routesds" + routes);
+              curRoute = this.value;
+              tttT.updateDisplayMode();
+          }
+        }, "cmbRoute");
+        cmbRoute.startup();
+        cmbRoute.set("value", curMode);
+        iFirst = false;
+      } else {
+        cmbRoute.set("options", routes).reset();
+        cmbRoute.set("value", curMode);
+        cmbRoute.startup();
+      }
+
     },
 
     updateDisplayMode: function() {
