@@ -11,6 +11,10 @@ var lyrSegments;
 //var curMasterNetworkLinks = "master20211115";
 var curSegments = "Road and Transit Segments";
 
+// divider seg
+strMiddleSeg1 = '2102_003.0';
+strMiddleSeg2 = 'MAG_6018';
+
 var minScaleForLabels = 87804;
 var labelClassOn;
 var labelClassOff;
@@ -209,7 +213,7 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                         options: scenarios,
                         onChange: function() {
                             curScenarioMain = this.value;
-                            tttSM.readInScenarioMainJSON();
+                            tttSM._readInScenarioMain();
                         }
                     }, "cmbScenarioMain");
                     cmbScenarioMain.startup();
@@ -219,7 +223,7 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                         options: scenarios,
                         onChange: function() {
                             curScenarioComp = this.value;
-                            tttSM.readInScenarioCompJSON();
+                            tttSM._readInScenarioComp();
                         }
                     }, "cmbScenarioComp");
                     cmbScenarioComp.startup();
@@ -232,17 +236,21 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                                 or if the request was unsuccessful altogether. */
                 }
             });
+            tttSM._readInScenarioMain();
         },
 
         _updateDisplay: function() {
           tttSM.publishData({message: lastOpenedWidget});
         },
 
-        readInScenarioMainJSON: function() {
-            console.log('readInScenarioMainJSON');
+        _readInScenarioMain: function() {
+            console.log('_readInScenarioMain');
 
             if (curScenarioMain=='none') {
                 console.log('no scenario selected');
+                dataRoadMain = [];
+                dataTransitRouteMain = [];
+                dataTransitModeMain = [];
                 return;
             }
 
@@ -264,15 +272,15 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 }
             });
 
-            //Get transit mode file
-            strTransitRouteMain = curScenarioMain + '.json';
-            //Raw Model Data
+            //Get transit files
+            strTransitMain = curScenarioMain + '.json';
+
             dojo.xhrGet({
-                url: "widgets/tttScenarioManager/data/transitdetailbyroute/" + strTransitRouteMain,
+                url: "widgets/tttScenarioManager/data/transitdetailbyroute/" + strTransitMain,
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
-                    console.log(strTransitRouteMain);
+                    console.log(strTransitMain + ' route');
                     dataTransitRouteMain = obj;
                     tttSM._updateDisplay();
                 },
@@ -282,15 +290,12 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 }
             });
 
-            //Get transit mode file
-            strTransitModeMain = curScenarioMain + '.json';
-            //Raw Model Data
             dojo.xhrGet({
-                url: "widgets/tttScenarioManager/data/transitdetailbymode/" + strTransitModeMain,
+                url: "widgets/tttScenarioManager/data/transitdetailbymode/" + strTransitMain,
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
-                    console.log(strTransitModeMain);
+                    console.log(strTransitMain + ' mode');
                     dataTransitModeMain = obj;
                     tttSM._updateDisplay();
                 },
@@ -301,11 +306,14 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
             });
         },
 
-        readInScenarioCompJSON: function() {
-            console.log('readInScenarioCompJSON');
+        _readInScenarioComp: function() {
+            console.log('_readInScenarioComp');
 
-            if (curScenarioMain=='none') {
+            if (curScenarioComp=='none') {
                 console.log('no compare scenario selected');
+                dataRoadComp = [];
+                dataTransitRouteComp = [];
+                dataTransitModeComp = [];
                 return;
             }
 
@@ -328,14 +336,14 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
             });
 
             //Get transit mode file
-            strTransitRouteComp = curScenarioComp + '.json';
+            strTransitComp = curScenarioComp + '.json';
             //Raw Model Data
             dojo.xhrGet({
-                url: "widgets/tttScenarioManager/data/transitdetailbyroute/" + strTransitRouteComp,
+                url: "widgets/tttScenarioManager/data/transitdetailbyroute/" + strTransitComp,
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
-                    console.log(strTransitRouteComp);
+                    console.log(strTransitComp + ' route');
                     dataTransitRouteComp = obj;
                     tttSM._updateDisplay();
                 },
@@ -345,15 +353,12 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 }
             });
 
-            //Get transit mode file
-            strTransitModeComp = curScenarioComp + '.json';
-            //Raw Model Data
             dojo.xhrGet({
-                url: "widgets/tttScenarioManager/data/transitdetailbymode/" + strTransitModeComp,
+                url: "widgets/tttScenarioManager/data/transitdetailbymode/" + strTransitComp,
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
-                    console.log(strTransitModeComp);
+                    console.log(strTransitComp + ' mode');
                     dataTransitModeComp = obj;
                     tttSM._updateDisplay();
                 },

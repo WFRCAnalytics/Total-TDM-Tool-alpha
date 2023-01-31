@@ -152,7 +152,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       
       //Check box change events
       dom.byId("chkLabels").onchange = function(isChecked) {
-        parent.checkVolLabel();
+        //parent.checkVolLabel();
       };
       
 
@@ -234,23 +234,16 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     },
 
     updateDisplayMode: function() {
-      sFieldName = 'M' + curMode;
+      console.log('updateDisplay to Mode ' + curMode);
 
-      console.log('updateDisplay to ' + sFieldName);
+      // clear all graphics
+      tttT.map.graphics.clear();
 
       if (curScenarioComp=='none') {
         _renderer_transit = renderer_Riders;
       } else {
         _renderer_transit = renderer_Riders_Change;
       }
-
-      // divider seg
-      strMiddleSeg1 = '2102_003.0';
-      strMiddleSeg2 = 'MAG_6018';
-
-      // clear all graphics
-      tttT.map.graphics.clear();
-      tttT.map.graphics.refresh();
 
       // run multiple times to avoid 2000 limit on returned features
       tttT._queryFeatures("SEGID <= '" + strMiddleSeg1 + "'");
@@ -279,8 +272,6 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           _mainValue_Riders = 0;
           _compValue_Riders = 0;
           _dispValue_Riders = 0;
-
-          var test = dataTransitModeMain.data.find(o => o.SEGID === 'UTA_7170')['MT']
 
           try {
             _mainValue_Riders = dataTransitModeMain.data.find(o => o.SEGID === _segid)['M' + curMode];
