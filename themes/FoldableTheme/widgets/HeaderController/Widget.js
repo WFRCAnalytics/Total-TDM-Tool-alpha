@@ -98,10 +98,11 @@ define([
           html.addClass(this.logoNode, 'hide-logo');
         }
 
+        // BH MANUALLY SET TITLES
         this.switchableElements.title.innerHTML =
-          utils.sanitizeHTML(this.appConfig.title ? this.appConfig.title : '');
-        this.switchableElements.subtitle.innerHTML =
-          utils.sanitizeHTML(this.appConfig.subtitle ? this.appConfig.subtitle : '');
+          "<small>" + utils.sanitizeHTML('PRE-ALPHA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' ? 'PRE-ALPHA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : '') + "</small>";
+        //this.switchableElements.subtitle.innerHTML =
+        //  utils.sanitizeHTML(this.appConfig.subtitle ? this.appConfig.subtitle : '');
 
         this._createDynamicLinks(this.appConfig.links);
 
