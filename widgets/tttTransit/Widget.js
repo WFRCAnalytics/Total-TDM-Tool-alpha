@@ -221,7 +221,8 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         {minValue:       100, maxValue:     1000, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 1.2500), label:      "100 to 1,000 Riders"},
         {minValue:      2500, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 2.5000), label:    "2,500 to 5,000 Riders"},
         {minValue:      5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 3.7500), label:   "5,000 to 10,000 Riders"},
-        {minValue:     10000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[8]), 5.0000), label:  "More than 10,000 Riders"}
+        {minValue:     10000, maxValue:    24999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[8]), 5.0000), label:  "10,000 to 25,000 Riders"},
+        {minValue:     25000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 7.0000), label:  "More than 25,000 Riders"}
       );
       renderer_Riders_Change = new ClassBreaksRenderer(null, 'Riders');
       for (var j=0;j<aBrk_Riders_Change.length;j++) {
