@@ -137,7 +137,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
       //Daily Volume Renderers
       var aBrk_Vol = new Array(
-        {minValue:      0, maxValue:     5999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.50), label:   "Less than 6,000"},
+        {minValue:   0.01, maxValue:     5999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.50), label:   "Less than 6,000"},
         {minValue:   6000, maxValue:    17999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.10), label:   "6,000 to 18,000"},
         {minValue:  18000, maxValue:    35999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 1.70), label:  "18,000 to 36,000"},
         {minValue:  36000, maxValue:    71999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 2.30), label:  "36,000 to 72,000"},
@@ -152,17 +152,17 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         renderer_Vol.addBreak(aBrk_Vol[j]);
       }
       var aBrk_Vol_Change = new Array(
-        {minValue: -9999999, maxValue:   -25001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -25,000"},
-        {minValue:   -25000, maxValue:   -10001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-25,000 to -10,000"},
-        {minValue:   -10000, maxValue:    -5001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-10,000 to -5,000"},
-        {minValue:    -5000, maxValue:    -1001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-5,000 to -1,000"},
-        {minValue:    -1000, maxValue:      999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-1,000 to +1,000"},
-        {minValue:     1000, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "+1,000 to +5,000"},
-        {minValue:     5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "+5,000 to +10,000"},
-        {minValue:    10000, maxValue:    49999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "+10,000 to +50,000"},
-        {minValue:    50000, maxValue:    79999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000), label: "+50,000 to +75,000"},
-        {minValue:    80000, maxValue:   119999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 5.0000), label: "+80,000 to +120,000"},
-        {minValue:   120000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"), 9.0000), label: "More than +120,000"}
+        {minValue: -9999999, maxValue:   -25001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -25,000"  },
+        {minValue:   -25000, maxValue:   -10001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-25,000 to -10,000" },
+        {minValue:   -10000, maxValue:    -5001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-10,000 to -5,000"  },
+        {minValue:    -5000, maxValue:    -1001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-5,000 to -1,000"   },
+        {minValue:    -1000, maxValue:      999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-1,000 to +1,000"   },
+        {minValue:     1000, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "+1,000 to +5,000"   },
+        {minValue:     5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "+5,000 to +10,000"  },
+        {minValue:    10000, maxValue:    49999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "+10,000 to +50,000" },
+        {minValue:    50000, maxValue:    79999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 4.5000), label: "+50,000 to +75,000" },
+        {minValue:    80000, maxValue:   119999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"     ), 5.0000), label: "+80,000 to +120,000"},
+        {minValue:   120000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"     ), 9.0000), label: "More than +120,000" }
       );
       renderer_Vol_Change = new ClassBreaksRenderer(null, 'DisplayValue');
       for (var j=0;j<aBrk_Vol_Change.length;j++) {
@@ -218,7 +218,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       for (var j=0;j<aBrk_Percent.length;j++) {
         renderer_Percent.addBreak(aBrk_Percent[j]);
       }
-      renderer_Percent_Change = tttR.getPercentChangeRenderer('DisplayValue');
+      renderer_Percent_Change = tttR.getPercentChangeRenderer_Reverse('DisplayValue');
 
       var aBrk_Percent_Truck = new Array(
         {minValue: 0.000000, maxValue:      7.5, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.50), label:"Less than 7.5%"},
@@ -590,6 +590,58 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       return renderer_PC_Change;
     },
 
+    getPercentChangeRenderer_Reverse: function(featureName) {
+      renderer_PC_Change = new UniqueValueRenderer({
+        type: "unique-value",  // autocasts as new UniqueValueRenderer()
+        valueExpression: "var p = $feature." + featureName + ";" +
+                         "var ft = $feature.FT;" +
+                         "if      ( p< -200              && ft>=20) { return 'class_f1' ; }" +
+                         "else if ((p<  -40 && p>= -200) && ft>=20) { return 'class_f2' ; }" +
+                         "else if ((p<  -20 && p>=  -40) && ft>=20) { return 'class_f3' ; }" +
+                         "else if ((p<   -5 && p>=  -20) && ft>=20) { return 'class_f4' ; }" +
+                         "else if ((p<    5 && p>=   -5) && ft>=20) { return 'class_f5' ; }" +
+                         "else if ((p<   20 && p>=    5) && ft>=20) { return 'class_f6' ; }" +
+                         "else if ((p<   40 && p>=   20) && ft>=20) { return 'class_f7' ; }" +
+                         "else if ((p<  100 && p>=   40) && ft>=20) { return 'class_f8' ; }" +
+                         "else if ((p<  200 && p>=  100) && ft>=20) { return 'class_f9' ; }" +
+                         "else if ((p<  400 && p>=  200) && ft>=20) { return 'class_f10'; }" +
+                         "else if ( p>  400              && ft>=20) { return 'class_f11'; }" +
+                         "else if ( p< -200              && ft <20) { return 'class_r1' ; }" +
+                         "else if ((p<  -40 && p>= -200) && ft< 20) { return 'class_r2' ; }" +
+                         "else if ((p<  -20 && p>=  -40) && ft< 20) { return 'class_r3' ; }" +
+                         "else if ((p<   -5 && p>=  -20) && ft< 20) { return 'class_r4' ; }" +
+                         "else if ((p<    5 && p>=   -5) && ft< 20) { return 'class_r5' ; }" +
+                         "else if ((p<   20 && p>=    5) && ft< 20) { return 'class_r6' ; }" +
+                         "else if ((p<   40 && p>=   20) && ft< 20) { return 'class_r7' ; }" +
+                         "else if ((p<  100 && p>=   40) && ft< 20) { return 'class_r8' ; }" +
+                         "else if ((p<  200 && p>=  100) && ft< 20) { return 'class_r9' ; }" +
+                         "else if ((p<  400 && p>=  200) && ft< 20) { return 'class_r10'; }" +
+                         "else if ( p>  400              && ft< 20) { return 'class_r11'; }",
+        uniqueValueInfos: [{value:"class_f1",  label:"Freeway Less than -200%" , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"     ), 6.0000)},
+                           {value:"class_f2",  label:"Freeway -200% to -40%"   , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"     ), 5.5000)},
+                           {value:"class_f3",  label:"Freeway -40% to -20%"    , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[8]), 4.2500)},
+                           {value:"class_f4",  label:"Freeway -20% to -5%"     , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 3.6250)},
+                           {value:"class_f5",  label:"Freeway -5% to +5%"      , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 2.3125)},
+                           {value:"class_f6",  label:"Freeway +5% to +20%"     , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 2.6250)},
+                           {value:"class_f7",  label:"Freeway +20% to +40%"    , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 3.2500)},
+                           {value:"class_f8",  label:"Freeway +40% to +100%"   , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 4.5000)},
+                           {value:"class_f9",  label:"Freeway +100% to +200%"  , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 5.5000)},
+                           {value:"class_f10", label:"Freeway +200% to +400%"  , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 6.0000)},
+                           {value:"class_f11", label:"Freeway More than +400%" , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 7.0000)},
+                           {value:"class_r1",  label:"Arterial Less than -200%", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"     ), 2.2500)},
+                           {value:"class_r2",  label:"Arterial -200% to -40%"  , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"     ), 1.5000)},
+                           {value:"class_r3",  label:"Arterial -40% to -20%"   , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[8]), 1.2500)},
+                           {value:"class_r4",  label:"Arterial -20% to -5%"    , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 0.6250)},
+                           {value:"class_r5",  label:"Arterial -5% to +5%"     , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 0.3125)},
+                           {value:"class_r6",  label:"Arterial +5% to +20%"    , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250)},
+                           {value:"class_r7",  label:"Arterial +20% to +40%"   , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 1.2500)},
+                           {value:"class_r8",  label:"Arterial +40% to +100%"  , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 1.5000)},
+                           {value:"class_r9",  label:"Arterial +100% to +200%" , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 2.2500)},
+                           {value:"class_r10", label:"Arterial +200% to +400%" , symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000)},
+                           {value:"class_r11", label:"Arterial More than +400%", symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 3.0000)}]
+      });
+      return renderer_PC_Change;
+    },
     numberWithCommas: function(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
