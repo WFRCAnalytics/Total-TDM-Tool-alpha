@@ -246,20 +246,16 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         _renderer_transit = renderer_Riders_Change;
       }
 
-      // run multiple times to avoid 2000 limit on returned features
-      tttT._queryFeatures("SEGID <= '" + strMiddleSeg1 + "'");
-      tttT._queryFeatures("SEGID  > '" + strMiddleSeg1 + "' AND SEGID <= '" + strMiddleSeg2 + "'");
-      tttT._queryFeatures("SEGID  > '" + strMiddleSeg2 + "'");
+      tttT._queryFeatures();
     },
 
     _queryFeatures: function(_filterstring){ 
 
       var query, updateFeature;
       query = new Query();
-      query.outFields = ["*"];
-      query.returnGeometry = false;
-      //query.where = "1=1";
-      query.where = _filterstring
+      query.outFields = ["SEGID"];
+      query.returnGeometry = true;
+      query.where = "1=1"; // query all segments
       
       lyrSegments.queryFeatures(query,function(featureSet) {
         //Update values
