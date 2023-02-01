@@ -40,7 +40,7 @@ define(['dojo/_base/declare',
         tttO = this;
 
         try {
-          dom.byId(tttOtttO.id + "_panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
+          dom.byId(tttO.id + "_panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
         } catch (err) {
           console.log(err.message);
         }
