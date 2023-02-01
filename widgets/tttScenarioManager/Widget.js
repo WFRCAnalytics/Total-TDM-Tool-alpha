@@ -160,13 +160,14 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
         postCreate: function() {
             this.inherited(arguments);
             console.log('postCreate');
+            
+            tttSM = this;
+            
         },
 
         startup: function() {
             console.log('startup');
 
-            tttSM = this;
-            
             pm = PanelManager.getInstance();
 
             this.inherited(arguments);

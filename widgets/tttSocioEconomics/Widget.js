@@ -36,6 +36,9 @@ define(['dojo/_base/declare',
       postCreate: function() {
         this.inherited(arguments);
         console.log('postCreate');
+        
+        tttS = this;
+        
         try {
           dom.byId(tttS.id + "_panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
         } catch (err) {
@@ -48,7 +51,6 @@ define(['dojo/_base/declare',
        this.mapIdNode.innerHTML = 'map id:' + this.map.id;
        console.log('startup');
 
-       tttS = this;
       },
 
       // onOpen: function(){

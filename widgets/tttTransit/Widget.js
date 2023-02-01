@@ -97,6 +97,9 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     postCreate: function() {
       this.inherited(arguments);
       console.log('postCreate');
+      
+      tttT = this;
+      
       try {
         dom.byId(tttT.id + "_panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
       } catch (err) {
@@ -107,7 +110,6 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     startup: function() {
       console.log('startup');
 
-      tttT = this;
       
       this.inherited(arguments);
       this.map.setInfoWindowOnClick(false); // turn off info window (popup) when clicking a feature
