@@ -13,6 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 ///////////////////////////////////////////////////////////////////////////
+
+var tttS;
+
 define(['dojo/_base/declare',
         'jimu/BaseWidget',
         'dojo/dom',
@@ -34,17 +37,19 @@ define(['dojo/_base/declare',
         this.inherited(arguments);
         console.log('postCreate');
         try {
-          dom.byId("_9__panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
+          dom.byId(tttS.id + "_panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
         } catch (err) {
           console.log(err.message);
         }
-      }//,
+      },
 
-      // startup: function() {
-      //  this.inherited(arguments);
-      //  this.mapIdNode.innerHTML = 'map id:' + this.map.id;
-      //  console.log('startup');
-      // },
+      startup: function() {
+       this.inherited(arguments);
+       this.mapIdNode.innerHTML = 'map id:' + this.map.id;
+       console.log('startup');
+
+       tttS = this;
+      },
 
       // onOpen: function(){
       //   console.log('onOpen');

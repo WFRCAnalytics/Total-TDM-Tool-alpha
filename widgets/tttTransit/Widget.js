@@ -98,7 +98,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       this.inherited(arguments);
       console.log('postCreate');
       try {
-        dom.byId("_8_panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
+        dom.byId(tttT.id + "_panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
       } catch (err) {
         console.log(err.message);
       }
