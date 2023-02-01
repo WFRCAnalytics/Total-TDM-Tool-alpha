@@ -6,22 +6,14 @@
 //'obj' is place holder for record object
 //agg is how to combine both directions
 var dRoadOptions = [
-  {value:"Lanes"    ,label:"Lanes"                      , rndr: 'Lanes'        , agg:"sum" , numerator  : "obj['Dx_LANES']"
-                                                                                           , denominator: "1"},
-  {value:"Vol"      ,label:"Daily Volume (2-Way)"       , rndr: 'Vol'          , agg:"none", numerator  : "obj['DY_VOL']"
-                                                                                           , denominator: "1"},
-  {value:"AMSpd"    ,label:"AM Period Speeds % FreeFlow", rndr: 'Percent'      , agg:"min" , numerator  : "obj['Dx_AM_SPD'] * 100"
-                                                                                           , denominator: "obj['FF_SPD']"},
-  {value:"PMSpd"    ,label:"PM Period Speeds % FreeFlow", rndr: 'Percent'      , agg:"min" , numerator:   "obj['Dx_AM_SPD'] * 100"
-                                                                                           , denominator: "obj['FF_SPD']"},
-//{value:"AMVC"     ,label:"AM Period V/C Ratio"        , rndr: 'VC'           , agg:"max" , numerator  : "obj['Dx_AM_VOL'] + (0.5 * obj['Dx_AM_MD']) + obj['Dx_AM_HV']"
-//                                                                                         , denominator: "3 * obj['Dx_CAP1HL'] * obj['Dx_LANES']" }, //PCE in numerator MD * 1.5 and HV * 2
-//{value:"PMVC"     ,label:"PM Period V/C Ratio"        , rndr: 'VC'           , agg:"max" , numerator:   "obj['Dx_PM_VOL'] + (0.5 * obj['Dx_PM_MD']) + obj['Dx_PM_HV']"
-//                                                                                         , denominator: "3 * obj['Dx_CAP1HL'] * obj['Dx_LANES']" }, //PCE in numerator MD * 1.5 and HV * 2
-  {value:"VolTrk"   ,label:"Daily MD & HV Trucks"       , rndr: 'VolTrk'       , agg:"none", numerator  : "(obj['DY_MD'] + obj['DY_HV'])"
-                                                                                           , denominator: "1"},
-  {value:"VolTrkPer",label:"Daily % MD & HV Trucks"     , rndr: 'Percent_Truck', agg:"none", numerator  : "(obj['DY_MD'] + obj['DY_HV']) * 100"
-                                                                                           , denominator: "obj['DY_VOL']"}
+  {value:"Lanes"    ,label:"Lanes"                      , rndr: 'Lanes'        , agg:"sum" , numerator  : "obj['Dx_LANES']", denominator: "1"},
+  {value:"Vol"      ,label:"Daily Volume (2-Way)"       , rndr: 'Vol'          , agg:"none", numerator  : "obj['DY_VOL']", denominator: "1"},
+  {value:"AMSpd"    ,label:"AM Period Speeds % FreeFlow", rndr: 'Percent'      , agg:"min" , numerator  : "obj['Dx_AM_SPD'] * 100", denominator: "obj['FF_SPD']"},
+  {value:"PMSpd"    ,label:"PM Period Speeds % FreeFlow", rndr: 'Percent'      , agg:"min" , numerator:   "obj['Dx_AM_SPD'] * 100", denominator: "obj['FF_SPD']"},
+//{value:"AMVC"     ,label:"AM Period V/C Ratio"        , rndr: 'VC'           , agg:"max" , numerator  : "obj['Dx_AM_VOL'] + (0.5 * obj['Dx_AM_MD']) + obj['Dx_AM_HV']", denominator: "3 * obj['Dx_CAP1HL'] * obj['Dx_LANES']" }, //PCE in numerator MD * 1.5 and HV * 2
+//{value:"PMVC"     ,label:"PM Period V/C Ratio"        , rndr: 'VC'           , agg:"max" , numerator:   "obj['Dx_PM_VOL'] + (0.5 * obj['Dx_PM_MD']) + obj['Dx_PM_HV']", denominator: "3 * obj['Dx_CAP1HL'] * obj['Dx_LANES']" }, //PCE in numerator MD * 1.5 and HV * 2
+  {value:"VolTrk"   ,label:"Daily MD & HV Trucks"       , rndr: 'VolTrk'       , agg:"none", numerator  : "(obj['DY_MD'] + obj['DY_HV'])", denominator: "1"},
+  {value:"VolTrkPer",label:"Daily % MD & HV Trucks"     , rndr: 'Percent_Truck', agg:"none", numerator  : "(obj['DY_MD'] + obj['DY_HV']) * 100", denominator: "obj['DY_VOL']"}
 ];
 
 var dRoadPCOptions = [
@@ -124,7 +116,12 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     postCreate: function() {
       this.inherited(arguments);
       console.log('postCreate');
-      dom.byId("_7_panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
+      try {
+        dom.byId("_7_panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
+      } catch (err) {
+        console.log(err.message);
+      }
+      
     },
 
     startup: function() {

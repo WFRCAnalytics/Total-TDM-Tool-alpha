@@ -33,7 +33,11 @@ define(['dojo/_base/declare',
       postCreate: function() {
         this.inherited(arguments);
         console.log('postCreate');
-        dom.byId("_9__panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
+        try {
+          dom.byId("_9__panel").style.left = '55px'; // NEED TO FIND BETTER PLACE WHERE WIDGET IS CREATED RATHER THAN HERE
+        } catch (err) {
+          console.log(err.message);
+        }
       }//,
 
       // startup: function() {

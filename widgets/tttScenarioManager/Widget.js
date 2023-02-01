@@ -1,5 +1,4 @@
-//javascript for controlling Transit Ridership App
-//written by Bill Hereth February 2022
+//javascript for controlling Scenario Manager Widget
 
 var curScenarioMain = "id_37001244863cadd40e1b8f7.52642706";  //v9 Beta 2019
 //var curScenarioComp = "id_112358168963ceca332cc148.76455495" //v9 2019 Observed
