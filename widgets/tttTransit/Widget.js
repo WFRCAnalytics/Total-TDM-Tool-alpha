@@ -30,6 +30,7 @@ bertColorData = [sCBertGrad1,sCBertGrad2,sCBertGrad3,sCBertGrad4,sCBertGrad5,sCB
 
 //Tranist Variables
 var curMode = "T"; //T is total
+var curRoute = [];
 var lyrLinks;
 var sLinks = "LinksWithRiders_v2";
 
@@ -254,6 +255,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
     updateRoutesList: function(curMode) {
       routes = [];
+      curRoutes = [];
       //currentMode = [];
       //sATRs="IN(";
       //console.log("CURMODE " + curMode);
@@ -273,6 +275,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
             routeName = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
             routes.push({"label" : routeName, "value" : dataTransitRouteMain.data[i].NAME});
+            //curRoutes.push(dataTransitRouteMain.data[i].NAME);
           }
         } 
       }
@@ -285,18 +288,20 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           multiple: true,
           onChange: function(){
             curRoute = this.value;
+            console.log('curRoute is ' + curRoute);
+            //console.log('curRoutes is ' + curRoutes[4]);
             tttT.updateDisplayMode();
           }
         }, "cmbRoute");
         cmbRoute.startup();
-        cmbRoute.set("value", curMode);
+        cmbRoute.set("value", curRoute);
         iFirst = false;
       } else {
         cmbRoute.set("options", routes).reset();
-        cmbRoute.set("value", curMode);
+        cmbRoute.set("value", curRoute);
         cmbRoute.startup();
       }
-
+      
     },
 
     updateDisplayMode: function() {
@@ -355,9 +360,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       tttT.map.graphics.refresh();
 
       // run multiple times to avoid 2000 limit on returned features
-      tttT._queryFeatures("SEGID <= '" + strMiddleSeg1 + "'");
-      tttT._queryFeatures("SEGID  > '" + strMiddleSeg1 + "' AND SEGID <= '" + strMiddleSeg2 + "'");
-      tttT._queryFeatures("SEGID  > '" + strMiddleSeg2 + "'");
+      tttT._queryFeatures("1=1")
     },
 
     _queryFeatures: function(_filterstring){ 
@@ -377,6 +380,8 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         for (var i = 0; i < resultCount; i++) {
           updateFeature = featureSet.features[i];
           _segid = updateFeature.attributes['SEGID']
+          //_mode = updateFeature.attributes['MODE']
+          //_route = updateFeature.attributes['NAME']
           //A: SEGID
           //I: DY_VOL_2WY
 
@@ -384,37 +389,79 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           _compValue_Riders = 0;
           _dispValue_Riders = 0;
 
-          var test = dataTransitModeMain.data.find(o => o.SEGID === 'UTA_7170')['MT']
-
-          try {
-            _mainValue_Riders = dataTransitModeMain.data.find(o => o.SEGID === _segid)['M' + curMode];
-
-            if (curScenarioComp!='none') {
-              try {
-                _compValue_Riders = dataTransitModeComp.data.find(o => o.SEGID === _segid)['M' + curMode];
-                
-                if (curRoadPCOption=='Abs') {
-                  _dispValue_Riders = _mainValue_Riders - _compValue_Riders;
-
-                } else{
-                  if (_compValue_Riders >0) _dispValue_Riders = ((_compValue_Riders - _compValue_Riders) / _compValue_Riders) * 100;
+          if (curRoute != "" && curMode != "T"){
+            try { 
+              if (curRoute.length > 1){
+                  var _mainValue_Riders1 = dataTransitRouteMain.data.filter(o => o.SEGID === _segid && o.MODE === Number(curMode) && curRoute.includes(o.NAME));
+                  if (_mainValue_Riders1.length > 0){
+                    var riders = 0;
+                    var routeRiders = 0;
+                    for (var j = 0; j < _mainValue_Riders1.length; j++){
+                      routeRiders = _mainValue_Riders1.find(o => o.SEGID == _segid)['SEGVOL'];
+                      //console.log(_mainValue_Riders1);
+                      riders += routeRiders;
+                    }
+                    //console.log(_segid);
+                    _mainValue_Riders = riders;
+                  }
+                  console.log(_mainValue_Riders);
+              } else {
+                _mainValue_Riders = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.MODE === Number(curMode) && o.NAME === String(curRoute))['SEGVOL'];
+                console.log(_mainValue_Riders);
+              }
+              
+              if (curScenarioComp!='none') {
+                try {
+                  _compValue_Riders = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.MODE === Number(curMode) && o.NAME === String(curRoute))['SEGVOL'];
+                  
+                  if (curRoadPCOption=='Abs') {
+                    _dispValue_Riders = _mainValue_Riders - _compValue_Riders;
+                  } else {
+                    if (_compValue_Riders >0) _dispValue_Riders = ((_compValue_Riders - _compValue_Riders) / _compValue_Riders) * 100;
+                  }
+                } catch(err){
+                  _dispValue_Riders = _mainValue_Riders;
                 }
-
-              } catch(err) {
+              } else {
                 _dispValue_Riders = _mainValue_Riders;
               }
-            } else {
-              _dispValue_Riders = _mainValue_Riders;
+              updateFeature.attributes['Riders'] = _dispValue_Riders; 
+              tttT.map.graphics.add(updateFeature);
             }
-            
-            updateFeature.attributes['Riders'] = _dispValue_Riders;
-            
-            tttT.map.graphics.add(updateFeature);
-
+            catch(err) { 
+              updateFeature.attributes['Riders'] = null;
+            }
           }
-          catch(err) {
-            updateFeature.attributes['Riders'] = null;
-          }
+          
+          //try {
+          //  _mainValue_Riders = dataTransitModeMain.data.find(o => o.SEGID === _segid)['M' + curMode];
+//
+          //  if (curScenarioComp!='none') {
+          //    try {
+          //      _compValue_Riders = dataTransitModeComp.data.find(o => o.SEGID === _segid)['M' + curMode];
+          //      
+          //      if (curRoadPCOption=='Abs') {
+          //        _dispValue_Riders = _mainValue_Riders - _compValue_Riders;
+//
+          //      } else{
+          //        if (_compValue_Riders >0) _dispValue_Riders = ((_compValue_Riders - _compValue_Riders) / _compValue_Riders) * 100;
+          //      }
+//
+          //    } catch(err) {
+          //      _dispValue_Riders = _mainValue_Riders;
+          //    }
+          //  } else {
+          //    _dispValue_Riders = _mainValue_Riders;
+          //  }
+          //  
+          //  updateFeature.attributes['Riders'] = _dispValue_Riders;
+          //  
+          //  tttT.map.graphics.add(updateFeature);
+//
+          //}
+          //catch(err) {
+          //  updateFeature.attributes['Riders'] = null;
+          //}
         }
 
         lyrSegments.setRenderer(_renderer);
