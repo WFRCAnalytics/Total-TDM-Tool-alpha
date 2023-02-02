@@ -17,11 +17,11 @@ var dTimeOfDayOptions = [
 var curTimeOfDay = "DY";
 
 var dAccessModeOptions = [
-  { label: "Walk & Drive" , value: "T"},
+  { label: "Walk & Drive" , value: "WD"},
   { label: "Walk Only"    , value: "W"},
   { label: "Drive Only"   , value: "D"}
 ];
-var curAccessMode = "T";
+var curAccessMode = "WD";
 
 var dTripOrientationOptions = [
   {value: "OD", label:"Origin-Destination"   },
@@ -332,7 +332,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         _renderer_transit = renderer_Riders_Change;
       }
 
-      if (curDisplay=='RDR' && curTripOrientation=='OD') {
+      if (curDisplay=='RDR' && curTripOrientation=='OD' && curAccessMode=='WD') {
         tttT._queryFeaturesRidersOD();
       } else {
 
@@ -453,7 +453,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     onReceiveData: function(name, widgetId, data, historyData) {
       //filter out messages
       if(data.message=='transit'){
-        tttT.updateDisplayTransit();
+        tttT._updateDisplayTransit();
       }
     },
 
