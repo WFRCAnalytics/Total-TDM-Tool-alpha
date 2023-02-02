@@ -1,21 +1,46 @@
-//javascript for controlling Transit Ridership App
-//written by Bill Hereth February 2022
-
 var dModeOptions = [
-  { label: "All Transit"      , name: "all" , value: "T", selected: true },
-  { label: "Local Bus"        , name: "lcl" , value: "4"                 },
-  { label: "Core Route"       , name: "brt5", value: "5"                 },
-  { label: "Express Bus"      , name: "exp" , value: "6"                 },
-  { label: "Bus Rapid Transit", name: "brt9", value: "9"                 },
-  { label: "Light Rail"       , name: "lrt" , value: "7"                 },
-  { label: "Commuter Rail"    , name: "crt" , value: "8"                 }
+  { label: "All Transit"      , name: "all" , value: "T", hierarchyoptions:[4,5,6,7,8,9]},
+  { label: "Local Bus"        , name: "lcl" , value: "4", hierarchyoptions:[4,5,6,7,8,9]},
+  { label: "Core Route"       , name: "brt5", value: "5", hierarchyoptions:[  5,6,7,8,9]},
+  { label: "Express Bus"      , name: "exp" , value: "6", hierarchyoptions:[4,5,6,7,8,9]},
+  { label: "Bus Rapid Transit", name: "brt9", value: "9", hierarchyoptions:[4,5,6,7,8,9]},
+  { label: "Light Rail"       , name: "lrt" , value: "7", hierarchyoptions:[      7,8,9]},
+  { label: "Commuter Rail"    , name: "crt" , value: "8", hierarchyoptions:[        8  ]}
+];
+var curMode = "T"; //T is total
+
+var dTimeOfDayOptions = [
+  { label: "Daily"   , value: "DY"},
+  { label: "Peak"    , value: "Pk"},
+  { label: "Off-Peak", value: "Ok"}
+];
+var curTimeOfDay = "DY";
+
+var dAccessModeOptions = [
+  { label: "Walk & Drive" , value: "T"},
+  { label: "Walk Only"    , value: "W"},
+  { label: "Drive Only"   , value: "D"}
+];
+var curAccessMode = "T";
+
+var dTripOrientationOptions = [
+  {value: "OD", label:"Origin-Destination"   },
+  {value: "PA", label:"Production-Attraction"}
+];
+var curTripOrientation = "OD";
+
+var dDisplayOptions = [
+  {value: "RDR", label:"Riders"      },
+  {value: "BRD", label:"Boardings"   }
+];
+var curDisplay = "RDR";
+
+
+var dRadioButtonGroups = [
+  { title: "Trip Orientation" , htmldivname: "divTripOrientationOptions"  , contents: dTripOrientationOptions , curVarName: "curTripOrientation"},
+  { title: "Display"          , htmldivname: "divDisplayOptions"          , contents: dDisplayOptions         , curVarName: "curDisplay"        }
 ];
 
-
-//Tranist Variables
-var curMode = "T"; //T is total
-var lyrLinks;
-var sLinks = "LinksWithRiders_v2";
 
 var minScaleForLabels = 87804;
 var labelClassOn;
@@ -128,39 +153,94 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         onChange: function(){
           curMode = this.value;
           console.log('Select Mode: ' + curMode)
-          tttT.updateDisplayMode();
+          tttT._updateDisplayTransit();
         }
-        }, "cmbMode");
+      }, "cmbMode");
       cmbMode.set("value",curMode);
       cmbMode.startup();
 
-      // create a text symbol to define the style of labels
-      var volumeLabel = new TextSymbol();
-      volumeLabel.font.setSize("8pt");
-      volumeLabel.font.setFamily("arial");
-      volumeLabel.font.setWeight(Font.WEIGHT_BOLD);
-      volumeLabel.setHaloColor(sCWhite);
-      volumeLabel.setHaloSize(dHaloSize);
+      cmbTimeOfDay = new Select({
+        id: "selectTimeOfDay",
+        name: "selectTimeOfDayName",
+        options: dTimeOfDayOptions,
+        onChange: function(){
+          curTimeOfDay = this.value;
+          console.log('Select TimeOfDay: ' + curTimeOfDay)
+          tttT._updateDisplayTransit();
+        }
+      }, "cmbTimeOfDay");
+      cmbTimeOfDay.set("value",curTimeOfDay);
+      cmbTimeOfDay.startup();
 
-      //Setup empty volume label class for when toggle is off
-      labelClassOff = ({
-        minScale: minScaleForLabels,
-        labelExpressionInfo: {expression: ""}
-      })
-      labelClassOff.symbol = volumeLabel;
-    
-      //Create a JSON object which contains the labeling properties. At the very least, specify which field to label using the labelExpressionInfo property. Other properties can also be specified such as whether to work with coded value domains, fieldinfos (if working with dates or number formatted fields, and even symbology if not specified as above)
-      labelClassOn = {
-        minScale: minScaleForLabels,
-        labelExpressionInfo: {expression: "$feature.LABEL"}
-      };
-      labelClassOn.symbol = volumeLabel;
+      cmbAccessMode = new Select({
+        id: "selectAccessMode",
+        name: "selectAccessModeName",
+        options: dAccessModeOptions,
+        onChange: function(){
+          curAccessMode = this.value;
+          console.log('Select Mode: ' + curAccessMode)
+          tttT._updateDisplayTransit();
+        }
+      }, "cmbAccessMode");
+      cmbAccessMode.set("value",curAccessMode);
+      cmbAccessMode.startup();
       
-      //Check box change events
-      dom.byId("chkLabels").onchange = function(isChecked) {
-        //parent.checkVolLabel();
-      };
+
+
+      // setup radio button groups
+      for (rbg in dRadioButtonGroups) {
+
+        var sDivName = dRadioButtonGroups[rbg].htmldivname;
+
+        var _divRBDiv = dom.byId(sDivName);
+        var _divRBDiv_title = dom.byId(sDivName + '_title');
+        
+        dojo.place('<div class="cmbtitle">' + dRadioButtonGroups[rbg].title + ':</div>', _divRBDiv_title);
+
+        for (d in dRadioButtonGroups[rbg].contents) {
+
+          var sValue = dRadioButtonGroups[rbg].contents[d].value;
+          var sLabel = dRadioButtonGroups[rbg].contents[d].label;
       
+          // define if this is the radio button that should be selected
+          const _curVarName  = dRadioButtonGroups.find(x => x.htmldivname === sDivName).curVarName;
+          if (dRadioButtonGroups[rbg].contents[d].value == window[_curVarName]) {
+            var bChecked = true;
+          } else {
+            var bChecked = false;
+          }
+          
+          // radio button id
+          _rbID = "rb_" + sDivName + "_" + sValue; // value for future lookup will be after 3rd item in '_' list
+  
+          // radio button object
+          var _rbRB = new RadioButton({ name:sDivName, label:sLabel, id:_rbID, value: sValue, checked: bChecked});
+          _rbRB.startup();
+          _rbRB.placeAt(_divRBDiv);
+  
+          // radio button label
+          var _lblRB = dojo.create('label', {
+            innerHTML: sLabel,
+            for: _rbID,
+            id: _rbID + '_label'
+          }, _divRBDiv);
+          
+          // place radio button
+          dojo.place("<br/>", _divRBDiv);
+      
+          // Radio Buttons Change Event
+          dom.byId(_rbID).onchange = function(isChecked) {
+            console.log(sDivName + "radio button onchange");
+            if(isChecked) {
+              console.log(this.name)
+              var _divname = this.name
+              const _varName  = dRadioButtonGroups.find(x => x.htmldivname === _divname).curVarName;
+              window[_varName] = this.value;
+              tttT._updateDisplayTransit();
+            }
+          }
+        }
+      }
 
       //setup click functionality
       //this.map.on('click', selectTAZ);
@@ -236,11 +316,11 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       }
 
 
-      tttT.updateDisplayMode();
+      tttT._updateDisplayTransit();
 
     },
 
-    updateDisplayMode: function() {
+    _updateDisplayTransit: function() {
       console.log('updateDisplay to Mode ' + curMode);
 
       // clear all graphics
@@ -252,10 +332,15 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         _renderer_transit = renderer_Riders_Change;
       }
 
-      tttT._queryFeatures();
+      if (curDisplay=='RDR' && curTripOrientation=='OD') {
+        tttT._queryFeaturesRidersOD();
+      } else {
+
+      }
+      
     },
 
-    _queryFeatures: function(_filterstring){ 
+    _queryFeaturesRidersOD: function(){ 
 
       var query, updateFeature;
       query = new Query();
@@ -323,19 +408,9 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
 
-    checkVolLabel: function() {
-      console.log('checkVolLabel');
-      if (dom.byId("chkLabels").checked == true) {
-        lyrLinks[this.getCurDispLayerLoc()].setLabelingInfo([ labelClassOn  ] );
-      } else {
-        lyrLinks[this.getCurDispLayerLoc()].setLabelingInfo([ labelClassOff ]);
-      }
-      
-    },
-
     onOpen: function(){
       console.log('onOpen');
-      tttT.updateDisplayMode();
+      tttT._updateDisplayTransit();
       lastOpenedWidget = 'transit';
     },
 
@@ -378,7 +453,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     onReceiveData: function(name, widgetId, data, historyData) {
       //filter out messages
       if(data.message=='transit'){
-        tttT.updateDisplayMode();
+        tttT.updateDisplayTransit();
       }
     },
 
