@@ -397,14 +397,14 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
                     var riders = 0;
                     var routeRiders = 0;
                     for (var j = 0; j < _mainValue_Riders1.length; j++){
-                      routeRiders = _mainValue_Riders1.find(o => o.SEGID == _segid)['SEGVOL'];
-                      //console.log(_mainValue_Riders1);
+                      var routeRiders1 = _mainValue_Riders1[j]
+                      routeRiders = routeRiders1['SEGVOL'];
                       riders += routeRiders;
                     }
-                    //console.log(_segid);
                     _mainValue_Riders = riders;
+                  } else{
+                    _mainValue_Riders = 0;
                   }
-                  console.log(_mainValue_Riders);
               } else {
                 _mainValue_Riders = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.MODE === Number(curMode) && o.NAME === String(curRoute))['SEGVOL'];
                 console.log(_mainValue_Riders);
