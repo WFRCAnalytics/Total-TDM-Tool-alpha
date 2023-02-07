@@ -290,7 +290,7 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
-                    console.log(strTransitMain + ' route');
+                    console.log(strTransitMain + ' transit detail by route main');
                     dataTransitRouteMain = obj;
                     tttSM._updateDisplay();
                 },
@@ -305,12 +305,42 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
-                    console.log(strTransitMain + ' mode');
+                    console.log(strTransitMain + ' transit detail by mode main');
                     dataTransitModeMain = obj;
                     tttSM._updateDisplay();
                 },
                 error: function(err) {
                     dataTransitModeMain = [];
+                    tttSM._updateDisplay();
+                }
+            });
+
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/transitpalink/" + strTransitMain,
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log(strTransitMain + ' transit pa link main');
+                    dataTransitPALinkMain = obj;
+                    tttSM._updateDisplay();
+                },
+                error: function(err) {
+                    dataTransitPALinkMain = [];
+                    tttSM._updateDisplay();
+                }
+            });
+
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/transitpanode/" + strTransitMain,
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log(strTransitMain + ' transit pa node main');
+                    dataTransitPANodeMain = obj;
+                    tttSM._updateDisplay();
+                },
+                error: function(err) {
+                    dataTransitPANodeMain = [];
                     tttSM._updateDisplay();
                 }
             });
@@ -353,7 +383,7 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
-                    console.log(strTransitComp + ' route');
+                    console.log(strTransitComp + ' transit detail by route');
                     dataTransitRouteComp = obj;
                     tttSM._updateDisplay();
                 },
@@ -368,12 +398,42 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
-                    console.log(strTransitComp + ' mode');
+                    console.log(strTransitComp + ' transit detail by mode');
                     dataTransitModeComp = obj;
                     tttSM._updateDisplay();
                 },
                 error: function(err) {
                     dataTransitModeComp = [];
+                    tttSM._updateDisplay();
+                }
+            });
+
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/transitpalink/" + strTransitComp,
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log(strTransitComp + ' transit pa link comp');
+                    dataTransitPALinkComp = obj;
+                    tttSM._updateDisplay();
+                },
+                error: function(err) {
+                    dataTransitPALinkComp = [];
+                    tttSM._updateDisplay();
+                }
+            });
+
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/transitpanode/" + strTransitComp,
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log(strTransitComp + ' transit pa mode comp');
+                    dataTransitPANodeComp = obj;
+                    tttSM._updateDisplay();
+                },
+                error: function(err) {
+                    dataTransitPANodeComp = [];
                     tttSM._updateDisplay();
                 }
             });
