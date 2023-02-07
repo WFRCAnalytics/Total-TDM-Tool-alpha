@@ -261,6 +261,8 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 dataRoadMain = [];
                 dataTransitRouteMain = [];
                 dataTransitModeMain = [];
+                dataTransitPALinkMain = [];
+                dataTransitPANodeMain = [];
                 return;
             }
 
@@ -354,6 +356,8 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 dataRoadComp = [];
                 dataTransitRouteComp = [];
                 dataTransitModeComp = [];
+                dataTransitPALinkComp = [];
+                dataTransitPANodeComp = [];
                 return;
             }
 
