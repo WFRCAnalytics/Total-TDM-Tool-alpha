@@ -7,8 +7,12 @@ var curScenarioComp = "none";
 var lastOpenedWidget = "none";
 
 var lyrSegments;
+var lyrTransitLink;
+var lyrTransitNode;
 //var curMasterNetworkLinks = "master20211115";
 var curSegments = "Road and Transit Segments";
+var sTransitLink = "transitlink";
+var sTransitNode = "transitnode";
 
 // divider seg
 strMiddleSeg1 = '2102_003.0';
@@ -197,7 +201,13 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 if (currentLayerInfo.title == curSegments) { //must mach layer title
                     console.log('Segment Layer Found')
                     lyrSegments = layerInfosObject._layerInfos[j].layerObject;
-                } 
+                } else if (currentLayerInfo.title == sTransitLink) { //must mach layer title
+                    console.log('Segment Layer Found')
+                    lyrTransitLink = layerInfosObject._layerInfos[j].layerObject;
+                } else if (currentLayerInfo.title == sTransitNode) { //must mach layer title
+                    console.log('Segment Layer Found')
+                    lyrTransitNode = layerInfosObject._layerInfos[j].layerObject;
+                }  
             }
 
 
