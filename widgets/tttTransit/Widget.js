@@ -31,7 +31,9 @@ var curTripOrientation = "OD";
 
 var dDisplayOptions = [
   {value: "RDR", label:"Riders"      },
-  {value: "BRD", label:"Boardings"   }
+  {value: "BRD", label:"Boardings"   },
+  {value: "SPD", label:"Speed"       },
+  {value: "HDW", label:"Headway"     }
 ];
 var curDisplay = "RDR";
 
