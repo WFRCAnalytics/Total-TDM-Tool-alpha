@@ -17,6 +17,7 @@ var dTimeOfDayOptions = [
 ];
 var curTimeOfDay = ['PK','OK'];
 
+var iFirst=true;
 var dAccessModeOptions = [
   { label: "Walk Boardings"    , value: "wb"},
   { label: "Drive Boardings"   , value: "db"},
@@ -36,6 +37,7 @@ var dInboundOutboundOptions = [
 ];
 var curInboundOutbound = ['IB','OB'];
 
+var curRoute = [];
 var dDisplayOptions = [
   {value: "RTE", label:"Routes"      },
   {value: "RDR", label:"Riders"      },
@@ -156,6 +158,14 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       //panel.setPosition(pos);
       //panel.panelManager.normalizePanel(panel);
       
+      var parent = this;
+
+      //when zoom finishes run changeZoom to update label display
+      //this.map.on("zoom-end", function (){  
+      //  parent.changeZoom();  
+      //});  
+      tttT.updateRoutesList(curMode);
+
       cmbMode = new Select({
         id: "selectMode",
         options: dModeOptions,
@@ -163,10 +173,10 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           curMode = this.value;
           console.log('Selected Mode: ' + curMode)
           tttT._updateDisplayTransit();
+          tttT.updateRoutesList(curMode);
         }
       }, "cmbMode");
       cmbMode.set("value",curMode);
-      cmbMode.startup();
 
       cmbTimeOfDay = new CheckedMultiSelect({
         id: "selectTimeOfDay",
@@ -312,8 +322,54 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           }
         }
       }
-            
-      //Riders Absolute Renderers
+    updateRoutesList: function(curMode) {
+      routes = [];
+      for (var i=0;i<dataTransitRouteMain.data.length;i++){
+          if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
+        if (dataTransitRouteMain.data[i].MODE==curMode) {
+            //loop through and get the corresponding LONGNAME  
+            routeName = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
+            if (dom.byId("button").innerHTML == "Unselect All") {
+            routes.push({"label" : routeName, "value" : dataTransitRouteMain.data[i].NAME});
+              curRoute = routes;
+              cmbRoute.set("options", routes).reset();
+            }
+          }
+          if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
+        } else if (curMode == 'T'){
+            routeName = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
+            if (dom.byId("button").innerHTML == "Unselect All") {
+            routes.push({"label" : routeName, "value" : dataTransitRouteMain.data[i].NAME});
+              curRoute = routes;
+            }
+              cmbRoute.set("options", routes).reset();
+          }
+        } 
+      }
+      if (iFirst) {
+      //sATRs = sATRs.slice(0,-1) + ")";
+        cmbRoute = new CheckedMultiSelect({
+          id: "selectRoute",
+          options: routes,
+          name: "selectRouteName",
+          multiple: true,
+          onChange: function(){
+            curRoute = this.value;
+            console.log('curRoute is ' + curRoute);
+            tttT.updateDisplayMode();
+          }
+        }, "cmbRoute");
+        cmbRoute.startup();
+        cmbRoute.set("value", curRoute);
+        iFirst = false;
+        cmbRoute.set("options", routes).reset();
+      } else {
+        cmbRoute.set("value", curRoute);
+      }
+        cmbRoute.startup();
+      
+
+    },
       var aBrk_Riders_Absolute = new Array(
         {minValue:        1, maxValue:      249, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.50), label:   "Less than 250 Riders"},
         {minValue:      250, maxValue:      499, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.25), label:      "250 to 500 Riders"},
@@ -437,24 +493,10 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       // clear all graphics
       tttT.map.graphics.clear();
 
-      if (curScenarioComp=='none') {
-        _renderer_transit = renderer_Riders;
-        if (curDisplay=="BRD") {
-          _renderer_transit = renderer_BoardAlight;
-        }
-      } else {
-        _renderer_transit = renderer_Riders_Change;
-        if (curDisplay=="BRD") {
-          _renderer_transit = renderer_BoardAlight_Change;
-        }
-      }
-
-      if (curDisplay=='RDR' && curTripOrientation=='OD' && (curAccessMode==['W','D'] || curAccessMode==['D','W'])) {
-        tttT._queryFeaturesRidersOD();
-      } else if (curDisplay=='BRD' && curTripOrientation=='PA') {
-        tttT._queryFeatures(lyrTransitNode,"n",dataTransitPANodeMain,dataTransitPANodeComp,"nid",curAccessMode,_renderer_transit);
-      }
-      
+      // run multiple times to avoid 2000 limit on returned features
+      tttT._queryFeatures("SEGID <= '" + strMiddleSeg1 + "'");
+      tttT._queryFeatures("SEGID  > '" + strMiddleSeg1 + "' AND SEGID <= '" + strMiddleSeg2 + "'");
+      tttT._queryFeatures("SEGID  > '" + strMiddleSeg2 + "'");
     },
 
     _queryFeatures: function(_lyrDisplay,_layeridfield,_dataMain,_dataComp,_dataidfield,_dispFields,_renderer){ 
@@ -543,6 +585,38 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
       //lyrSegments.show();
 
+    },
+    
+    ShowAll: function(){
+      var btnShowHideAll = dom.byId("button");
+      console.log(btnShowHideAll.innerHTML);
+  
+      if (btnShowHideAll.innerHTML == "Select All") {
+        curRoute = [];
+        routes2 = [];
+          for (var i=0;i<dataTransitRouteMain.data.length;i++){
+            if (dataTransitRouteMain.data[i].MODE==curMode) {
+              if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
+                //loop through and get the corresponding LONGNAME  
+                routeName2 = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
+                routes2.push({"label" : routeName2, "value" : dataTransitRouteMain.data[i].NAME});
+              }
+            } else if (curMode == 'T'){
+              if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
+                routeName2 = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
+                routes2.push({"label" : routeName2, "value" : dataTransitRouteMain.data[i].NAME});
+              }
+            } 
+          }
+          curRoute = routes2;        
+          btnShowHideAll.innerHTML = "Unselect All";
+      } else if (btnShowHideAll.innerHTML == "Unselect All") {
+          console.log("Select Button Hit");
+          curRoute = [];
+          btnShowHideAll.innerHTML = "Select All";
+      }
+      cmbRoute.set("value", curRoute);
+      cmbRoute.startup();
     },
 
     _queryFeaturesRidersOD: function() { 

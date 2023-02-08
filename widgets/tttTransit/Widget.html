@@ -1,6 +1,19 @@
 <div>
     <br/>
-    <table>
+    <br/>
+    <div class="thicker" style="display: inline; line-height: 200%;" >Transit Mode: </div><br/><div style="display: inline" id="cmbMode" data-dojo-type="dojox.form.Select"></div><div class="thicker" style="display: inline"></div>
+    <br/>
+    <br/>
+    <div class="thicker" style="display: inline; line-height: 200%;" >Transit Route:</div><br/><div style="display: inline" id="cmbRoute" data-dojo-type="dojox.form.CheckedMultiSelect"></div><div class="thicker" style="display: inline"></div>
+    <br/>
+    <br/>
+    <td width="105">
+      <div id="CCSSelectionAreaButton" style="display: block;">
+        <button id="button" data-dojo-attach-event="onClick: ShowAll" style="width: 90px; height:20px;">Select All</button>
+      </div>
+    </td>
+    <br/>
+    <table width="200px;" align="center">
       <tr>
         <td>
           <div class="thicker" style="display: inline; line-height: 200%;" id="divDisplayOptions_title"></div>

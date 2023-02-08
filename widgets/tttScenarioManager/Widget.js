@@ -283,6 +283,24 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     tttSM._updateDisplay();
                 }
             });
+            
+            //Get transit mode file
+            strTransitModeMain = curScenarioMain + '.json';
+            //Raw Model Data
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/transitdetailbymode/" + strTransitModeMain,
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log(strTransitModeMain);
+                    dataTransitModeMain = obj;
+                    tttSM.publishData({message: "transitmode"});
+                },
+                error: function(err) {
+                        /* this will execute if the response couldn't be converted to a JS object,
+                                or if the request was unsuccessful altogether. */
+                }
+            });
 
             //Get transit files
             strTransitMain = curScenarioMain + '.json';
@@ -302,14 +320,15 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 }
             });
 
+            //Route Longnames
             dojo.xhrGet({
-                url: "widgets/tttScenarioManager/data/transitdetailbymode/" + strTransitMain,
+                url: "widgets/tttScenarioManager/data/routesummarynames_revised.json",
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
-                    console.log(strTransitMain + ' transit detail by mode main');
-                    dataTransitModeMain = obj;
-                    tttSM._updateDisplay();
+                    console.log("routesummarynames_revised");
+                    dataTransitRouteNames = obj;
+                    tttSM.publishData({message: "transitroutenames"});
                 },
                 error: function(err) {
                     dataTransitModeMain = [];
@@ -442,6 +461,49 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 }
             });
         },
+
+        //UpdateCCSs: function(a_strStationGroup) {
+
+        //    //Build Options
+        //    aCCSs = [];
+        //    curSeletectedStations = [];
+        //    sATRs="IN(";
+        //    for (var i=0;i<stationGroupsCCSs.length;i++){
+        //        if (stationGroupsCCSs[i].StationGroup==a_strStationGroup) {
+        //            aCCSs.push({"label" : stationGroupsCCSs[i].StationName, "value" : stationGroupsCCSs[i].StationID});
+        //            if (dom.byId("button").innerHTML == "Unselect All") {
+        //                curSeletectedStations.push(stationGroupsCCSs[i].StationID);
+        //            }
+        //            sATRs += stationGroupsCCSs[i].StationID + ","
+        //        }
+        //    }
+        //
+        //    sATRs = sATRs.slice(0,-1) + ")";
+        //
+        //    //Populate Station Multi Select List
+        //
+        //    parent = this;
+        //
+        //    if (iFirst) {
+        //        cmbCCS = new CheckedMultiSelect({
+        //            id: "selectSG",
+        //            name: "selectSGName",
+        //            options: aCCSs,
+        //            multiple: true,
+        //            onChange: function(){
+        //                curSeletectedStations = this.value;
+        //                parent.UpdateCharts();
+        //            }
+        //        }, "cmbCCSs");
+        //        cmbCCS.startup();
+        //        cmbCCS.set("value", curSeletectedStations);
+        //        iFirst = false;
+        //    } else {
+        //        cmbCCS.set("options", aCCSs).reset();
+        //        cmbCCS.set("value", curSeletectedStations);
+        //        cmbCCS.startup();
+        //    }
+        //},
 
         numberWithCommas: function(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
