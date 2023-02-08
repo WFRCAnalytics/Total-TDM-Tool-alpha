@@ -1,5 +1,5 @@
 var dModeOptions = [
-  { label: "All Transit"      , name: "all" , value: "T", hierarchyoptions:[4,5,6,7,8,9]},
+  { label: "All Modes"        , name: "all" , value: "T", hierarchyoptions:[4,5,6,7,8,9]},
   { label: "Local Bus"        , name: "lcl" , value: "4", hierarchyoptions:[4,5,6,7,8,9]},
   { label: "Core Route"       , name: "brt5", value: "5", hierarchyoptions:[  5,6,7,8,9]},
   { label: "Express Bus"      , name: "exp" , value: "6", hierarchyoptions:[4,5,6,7,8,9]},
@@ -8,20 +8,21 @@ var dModeOptions = [
   { label: "Commuter Rail"    , name: "crt" , value: "8", hierarchyoptions:[        8  ]}
 ];
 var curMode = "T"; //T is total
+var curHModes = [4,5,6,7,8,9];
+
 
 var dTimeOfDayOptions = [
-  { label: "Daily"   , value: "DY"},
-  { label: "Peak"    , value: "Pk"},
-  { label: "Off-Peak", value: "Ok"}
+  { label: "Peak"    , value: "PK"},
+  { label: "Off-Peak", value: "OK"}
 ];
-var curTimeOfDay = "DY";
+var curTimeOfDay = ['PK','OK'];
 
 var dAccessModeOptions = [
-  { label: "Walk & Drive" , value: "WD"},
-  { label: "Walk Only"    , value: "W"},
-  { label: "Drive Only"   , value: "D"}
+  { label: "Walk Boardings"    , value: "wb"},
+  { label: "Drive Boardings"   , value: "db"},
+  { label: "Alightings"        , value: "x"}
 ];
-var curAccessMode = "WD";
+var curAccessMode = ['wb','db'];
 
 var dTripOrientationOptions = [
   {value: "OD", label:"Origin-Destination"   },
@@ -29,7 +30,14 @@ var dTripOrientationOptions = [
 ];
 var curTripOrientation = "OD";
 
+var dInboundOutboundOptions = [
+  {value: "IB", label:"Inbound" },
+  {value: "OB", label:"Outbound"}
+];
+var curInboundOutbound = ['IB','OB'];
+
 var dDisplayOptions = [
+  {value: "RTE", label:"Routes"      },
   {value: "RDR", label:"Riders"      },
   {value: "BRD", label:"Boardings"   },
   {value: "SPD", label:"Speed"       },
@@ -150,44 +158,67 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       
       cmbMode = new Select({
         id: "selectMode",
-        name: "selectModeName",
         options: dModeOptions,
         onChange: function(){
           curMode = this.value;
-          console.log('Select Mode: ' + curMode)
+          console.log('Selected Mode: ' + curMode)
           tttT._updateDisplayTransit();
         }
       }, "cmbMode");
       cmbMode.set("value",curMode);
       cmbMode.startup();
 
-      cmbTimeOfDay = new Select({
+      cmbTimeOfDay = new CheckedMultiSelect({
         id: "selectTimeOfDay",
-        name: "selectTimeOfDayName",
         options: dTimeOfDayOptions,
+        multiple: true,
         onChange: function(){
           curTimeOfDay = this.value;
-          console.log('Select TimeOfDay: ' + curTimeOfDay)
+          console.log('Selected TimeOfDay: ' + curTimeOfDay)
           tttT._updateDisplayTransit();
         }
       }, "cmbTimeOfDay");
       cmbTimeOfDay.set("value",curTimeOfDay);
       cmbTimeOfDay.startup();
 
-      cmbAccessMode = new Select({
+      mltTimeOfDay = new CheckedMultiSelect({
+        id: "selectInboundOutboud",
+        options: dInboundOutboundOptions,
+        multiple: true,
+        onChange: function(){
+          curInboundOutbound = this.value;
+          console.log('Selected Inbound/Outbound: ' + curInboundOutbound)
+          tttT._updateDisplayTransit();
+        }
+      }, "divInboundOutBoundOptions");
+      mltTimeOfDay.set("value",curInboundOutbound);
+      mltTimeOfDay.startup();
+
+      cmbAccessMode = new CheckedMultiSelect({
         id: "selectAccessMode",
-        name: "selectAccessModeName",
         options: dAccessModeOptions,
+        multiple: true,
         onChange: function(){
           curAccessMode = this.value;
-          console.log('Select Mode: ' + curAccessMode)
+          console.log('Selected Access Mode: ' + curAccessMode)
           tttT._updateDisplayTransit();
         }
       }, "cmbAccessMode");
       cmbAccessMode.set("value",curAccessMode);
       cmbAccessMode.startup();
-      
 
+      mltHeirarchicalMode = new CheckedMultiSelect({
+        id: "selectHeirarchicalMode",
+        options: dModeOptions,//.find(x => x.value !== 'T'),
+        multiple: true,
+        onChange: function(){
+          curHModes = this.value;
+          console.log('Selected Heirarchical Modes: ' + curHModes)
+          tttT._updateDisplayTransit();
+        }
+      }, "divHeirarchicalModeOptions");
+      mltHeirarchicalMode.set("value",curHModes);
+      mltHeirarchicalMode.startup();
 
       // setup radio button groups
       for (rbg in dRadioButtonGroups) {
@@ -317,32 +348,204 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         renderer_Riders_Change.addBreak(aBrk_Riders_Change[j]);
       }
 
+            
+      //Riders Absolute Renderers
+      var aBrk_BoardAlight_Absolute = new Array(
+        {minValue:        1, maxValue:       24, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  6.75, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), bertColorData[0]), label:  "Less than 25 Boardings/Alightings"},
+        {minValue:       25, maxValue:       49, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  7.25, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), bertColorData[1]), label:      "25 to 50 Boardings/Alightings"},
+        {minValue:       50, maxValue:       99, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  8.00, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), bertColorData[2]), label:    "50 to 1,00 Boardings/Alightings"},
+        {minValue:      100, maxValue:      199, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  8.75, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), bertColorData[3]), label:    "100 to 200 Boardings/Alightings"},
+        {minValue:      200, maxValue:      299, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  9.50, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), bertColorData[4]), label:    "200 to 300 Boardings/Alightings"},
+        {minValue:      300, maxValue:      499, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 10.25, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), bertColorData[5]), label:    "300 to 500 Boardings/Alightings"},
+        {minValue:      500, maxValue:      999, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 11.00, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), bertColorData[6]), label:   "500 to 1000 Boardings/Alightings"},
+        {minValue:     1000, maxValue:     1499, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 12.75, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), bertColorData[7]), label:  "1000 to 1500 Boardings/Alightings"},
+        {minValue:     1500, maxValue: Infinity, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 13.50, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), bertColorData[8]), label:"More than 1500 Boardings/Alightings"}
+      );
+      renderer_BoardAlight = new ClassBreaksRenderer(null, 'DispValue');
+      for (var j=0;j<aBrk_BoardAlight_Absolute.length;j++) {
+        renderer_BoardAlight.addBreak(aBrk_BoardAlight_Absolute[j]);
+      }
+
+      //Riders Change Renderers
+      var aBrk_BoardAlight_Change = new Array(
+        {minValue: -1000000, maxValue:   -1000, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 10.0000, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), aCR_Change9[0]), label:  "Less than 25 Boardings/Alightings"},
+        {minValue:    -1000, maxValue:    -250, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  8.7500, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), aCR_Change9[1]), label:      "25 to 50 Boardings/Alightings"},
+        {minValue:     -250, maxValue:    -100, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  7.5000, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), aCR_Change9[2]), label:    "50 to 1,00 Boardings/Alightings"},
+        {minValue:     -100, maxValue:     -10, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  6.2500, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), aCR_Change9[3]), label:    "100 to 200 Boardings/Alightings"},
+        {minValue:      -10, maxValue:      10, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  5.6250, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), aCR_Change9[4]), label:    "200 to 300 Boardings/Alightings"},
+        {minValue:       10, maxValue:     100, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  6.2500, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), aCR_Change9[5]), label:    "300 to 500 Boardings/Alightings"},
+        {minValue:      250, maxValue:     500, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  7.5000, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), aCR_Change9[6]), label:   "500 to 1000 Boardings/Alightings"},
+        {minValue:      500, maxValue:    1000, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE,  8.7500, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), aCR_Change9[7]), label:  "1000 to 1500 Boardings/Alightings"},
+        {minValue:     1000, maxValue:Infinity, symbol: new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 10.0000, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 0.5), aCR_Change9[8]), label:"More than 1500 Boardings/Alightings"}
+      );
+      renderer_BoardAlight_Change = new ClassBreaksRenderer(null, 'DispValue');
+      for (var j=0;j<aBrk_BoardAlight_Change.length;j++) {
+        renderer_BoardAlight_Change.addBreak(aBrk_BoardAlight_Change[j]);
+      }
 
       tttT._updateDisplayTransit();
 
     },
 
+    // UDPATE FOR THIS APP:
+    _updateHModes: function() {
+
+      ////Build Options
+      //aCCSs = [];
+      //curSeletectedStations = [];
+      //sHModes="IN(" + [4,5,6,7,8,9]
+      //for (var i=0;i<stationGroupsCCSs.length;i++){
+      //    if (stationGroupsCCSs[i].StationGroup==a_strStationGroup) {
+      //        aCCSs.push({"label" : stationGroupsCCSs[i].StationName, "value" : stationGroupsCCSs[i].StationID});
+      //        if (dom.byId("button").innerHTML == "Unselect All") {
+      //            curSeletectedStations.push(stationGroupsCCSs[i].StationID);
+      //        }
+      //        sATRs += stationGroupsCCSs[i].StationID + ","
+      //    }
+      //}
+      //
+      //sATRs = sATRs.slice(0,-1) + ")";
+      //
+      ////Populate Station Multi Select List
+      //
+      //parent = this;
+      //
+      //if (iFirst) {
+      //    cmbCCS = new CheckedMultiSelect({
+      //        id: "selectSG",
+      //        name: "selectSGName",
+      //        options: aCCSs,
+      //        multiple: true,
+      //        onChange: function(){
+      //            curSeletectedStations = this.value;
+      //            parent.UpdateCharts();
+      //        }
+      //    }, "cmbCCSs");
+      //    cmbCCS.startup();
+      //    cmbCCS.set("value", curSeletectedStations);
+      //    iFirst = false;
+      //} else {
+      //    cmbCCS.set("options", aCCSs).reset();
+      //    cmbCCS.set("value", curSeletectedStations);
+      //    cmbCCS.startup();
+      //}
+    },
+
     _updateDisplayTransit: function() {
-      console.log('updateDisplay to Mode ' + curMode);
+      console.log('updateDisplay Transit Display');
 
       // clear all graphics
       tttT.map.graphics.clear();
 
       if (curScenarioComp=='none') {
         _renderer_transit = renderer_Riders;
+        if (curDisplay=="BRD") {
+          _renderer_transit = renderer_BoardAlight;
+        }
       } else {
         _renderer_transit = renderer_Riders_Change;
+        if (curDisplay=="BRD") {
+          _renderer_transit = renderer_BoardAlight_Change;
+        }
       }
 
-      if (curDisplay=='RDR' && curTripOrientation=='OD' && curAccessMode=='WD') {
+      if (curDisplay=='RDR' && curTripOrientation=='OD' && (curAccessMode==['W','D'] || curAccessMode==['D','W'])) {
         tttT._queryFeaturesRidersOD();
-      } else {
-
+      } else if (curDisplay=='BRD' && curTripOrientation=='PA') {
+        tttT._queryFeatures(lyrTransitNode,"n",dataTransitPANodeMain,dataTransitPANodeComp,"nid",curAccessMode,_renderer_transit);
       }
       
     },
 
-    _queryFeaturesRidersOD: function(){ 
+    _queryFeatures: function(_lyrDisplay,_layeridfield,_dataMain,_dataComp,_dataidfield,_dispFields,_renderer){ 
+
+      var query, updateFeature;
+      query = new Query();
+      query.outFields = [_layeridfield];
+      query.returnGeometry = true;
+      query.where = "1=1"; // query all segments
+      
+      _lyrDisplay.queryFeatures(query,function(featureSet) {
+        //Update values
+        var resultCount = featureSet.features.length;
+
+        if (curMode=='T') {
+          _filterModes = [4,5,6,7,8,9]
+        } else {
+          _filterModes = int(curMode)
+        }
+        _filterHModes = curHModes.map(Number);
+
+        for (var i = 0; i < resultCount; i++) {
+          updateFeature = featureSet.features[i];
+          _id = updateFeature.attributes[_layeridfield]
+
+          _mainValue = 0;
+          _compValue = 0;
+          _dispValue = 0;
+
+          try {
+            _data = _dataMain.data.filter(o => o[_dataidfield] === _id &&
+                                               curTimeOfDay      .includes(o['tod'       ]) &&
+                                               _filterModes      .includes(o['md'        ]) &&
+                                               curInboundOutbound.includes(o['io'        ]) &&
+                                               _filterHModes     .includes(o['hmd'       ]));
+            for (_d in _data) {
+              for (_df in _dispFields) {
+                _mainValue += _data[_d][_dispFields[_df]]
+              }
+            }
+
+            if (curScenarioComp!='none') {
+              try {
+                _data = _dataCm.data.filter(o => o[_dataidfield] === _id &&
+                                                   curTimeOfDay      .includes(o['tod'       ]) &&
+                                                   _filterModes      .includes(o['md'        ]) &&
+                                                   curInboundOutbound.includes(o['io'        ]) &&
+                                                   _filterHModes     .includes(o['hmd'       ]));
+                for (_d in _data) {
+                  for (_df in _dispFields) {
+                    _compValue += _data[_d][_dispFields[_df]]
+                  }
+                }
+
+                if (curRoadPCOption=='Abs') {
+                  _dispValue = _mainValue - _compValue;
+
+                } else{
+                  if (_compValue >0) _dispValue = ((_compValue - _compValue) / _compValue) * 100;
+                }
+
+              } catch(err) {
+                _dispValue = _mainValue;
+              }
+            } else {
+              _dispValue = _mainValue;
+            }
+            
+            updateFeature.attributes['DispValue'] = _dispValue;
+            
+            tttT.map.graphics.add(updateFeature);
+
+          }
+          catch(err) {
+            updateFeature.attributes['DispValue'] = null;
+          }
+        }
+
+        _lyrDisplay.setRenderer(_renderer);
+
+        tttT.map.graphics.setRenderer(_renderer);
+        tttT.map.graphics.refresh();
+
+        
+      });
+
+      //lyrSegments.show();
+
+    },
+
+    _queryFeaturesRidersOD: function() { 
 
       var query, updateFeature;
       query = new Query();
@@ -359,32 +562,32 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           //A: SEGID
           //I: DY_VOL_2WY
 
-          _mainValue_Riders = 0;
-          _compValue_Riders = 0;
-          _dispValue_Riders = 0;
+          _mainValue = 0;
+          _compValue = 0;
+          _dispValue = 0;
 
           try {
-            _mainValue_Riders = dataTransitModeMain.data.find(o => o.SEGID === _segid)['M' + curMode];
+            _mainValue = dataTransitModeMain.data.find(o => o.SEGID === _segid)['M' + curMode];
 
             if (curScenarioComp!='none') {
               try {
-                _compValue_Riders = dataTransitModeComp.data.find(o => o.SEGID === _segid)['M' + curMode];
+                _compValue = dataTransitModeComp.data.find(o => o.SEGID === _segid)['M' + curMode];
                 
                 if (curRoadPCOption=='Abs') {
-                  _dispValue_Riders = _mainValue_Riders - _compValue_Riders;
+                  _dispValue = _mainValue - _compValue;
 
                 } else{
-                  if (_compValue_Riders >0) _dispValue_Riders = ((_compValue_Riders - _compValue_Riders) / _compValue_Riders) * 100;
+                  if (_compValue >0) _dispValue = ((_compValue - _compValue) / _compValue) * 100;
                 }
 
               } catch(err) {
-                _dispValue_Riders = _mainValue_Riders;
+                _dispValue = _mainValue;
               }
             } else {
-              _dispValue_Riders = _mainValue_Riders;
+              _dispValue = _mainValue;
             }
             
-            updateFeature.attributes['Riders'] = _dispValue_Riders;
+            updateFeature.attributes['Riders'] = _dispValue;
             
             tttT.map.graphics.add(updateFeature);
 
