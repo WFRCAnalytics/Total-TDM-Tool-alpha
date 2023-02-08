@@ -495,7 +495,24 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       // clear all graphics
       tttT.map.graphics.clear();
 
+      if (curScenarioComp=='none') {
+        _renderer_transit = renderer_Riders;
+        if (curDisplay=="BRD") {
+          _renderer_transit = renderer_BoardAlight;
+        }
+      } else {
+        _renderer_transit = renderer_Riders_Change;
+        if (curDisplay=="BRD") {
+          _renderer_transit = renderer_BoardAlight_Change;
+        }
+      }
 
+      if (curDisplay=='RDR' && curTripOrientation=='OD' && (curAccessMode==['W','D'] || curAccessMode==['D','W'])) {
+        tttT._queryFeaturesRidersOD();
+      } else if (curDisplay=='BRD' && curTripOrientation=='PA') {
+        tttT._queryFeatures(lyrTransitNode,"n",dataTransitPANodeMain,dataTransitPANodeComp,"nid",curAccessMode,_renderer_transit);
+      }
+      
     },
 
     _queryFeatures: function(_lyrDisplay,_layeridfield,_dataMain,_dataComp,_dataidfield,_dispFields,_renderer){ 
@@ -619,12 +636,14 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     },
 
     _queryFeaturesRidersOD: function() { 
-
       var query, updateFeature;
       query = new Query();
-      query.outFields = ["SEGID"];
-      query.returnGeometry = true;
-      query.where = "1=1"; // query all segments
+      query.outFields = ["*"];
+      query.returnGeometry = false;
+      //query.where = "1=1";
+      query.where = _filterstring
+
+      _renderer = renderer_Riders;
       
       lyrSegments.queryFeatures(query,function(featureSet) {
         //Update values
@@ -632,53 +651,72 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         for (var i = 0; i < resultCount; i++) {
           updateFeature = featureSet.features[i];
           _segid = updateFeature.attributes['SEGID']
+          //_mode = updateFeature.attributes['MODE']
+          //_route = updateFeature.attributes['NAME']
           //A: SEGID
           //I: DY_VOL_2WY
 
-          _mainValue = 0;
-          _compValue = 0;
-          _dispValue = 0;
+          _mainValue_Riders = 0;
+          _compValue_Riders = 0;
+          _dispValue_Riders = 0;
 
-          try {
-            _mainValue = dataTransitModeMain.data.find(o => o.SEGID === _segid)['M' + curMode];
-
-            if (curScenarioComp!='none') {
-              try {
-                _compValue = dataTransitModeComp.data.find(o => o.SEGID === _segid)['M' + curMode];
-                
-                if (curRoadPCOption=='Abs') {
-                  _dispValue = _mainValue - _compValue;
-
-                } else{
-                  if (_compValue >0) _dispValue = ((_compValue - _compValue) / _compValue) * 100;
-                }
-
-              } catch(err) {
-                _dispValue = _mainValue;
+          if (curRoute != ""){
+            try { 
+              if (curRoute.length > 1){
+                if(curMode == "T"){var _mainValue_Riders1 = dataTransitRouteMain.data.filter(o => o.SEGID === _segid && curRoute.includes(o.NAME));} 
+                else{var _mainValue_Riders1 = dataTransitRouteMain.data.filter(o => o.SEGID === _segid && o.MODE === Number(curMode) && curRoute.includes(o.NAME));}                   
+                  if (_mainValue_Riders1.length > 0){
+                    var riders = 0;
+                    var routeRiders = 0;
+                    for (var j = 0; j < _mainValue_Riders1.length; j++){
+                      var routeRiders = _mainValue_Riders1[j].SEGVOL;
+                      riders += routeRiders;
+                    }
+                    _mainValue_Riders = riders;
+                  } else{
+                    _mainValue_Riders = 0;
+                  }
+              } else {
+                if(curMode == "T"){_mainValue_Riders = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.NAME === String(curRoute))['SEGVOL'];}
+                else{_mainValue_Riders = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.MODE === Number(curMode) && o.NAME === String(curRoute))['SEGVOL'];}
+                console.log(_mainValue_Riders);
               }
-            } else {
-              _dispValue = _mainValue;
+              
+              if (curScenarioComp!='none') {
+                try {
+                  if(curMode == "T"){_compValue_Riders = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.NAME === String(curRoute))['SEGVOL'];}
+                  else{_compValue_Riders = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.MODE === Number(curMode) && o.NAME === String(curRoute))['SEGVOL'];}
+                  
+                  if (curRoadPCOption=='Abs') {
+                    _dispValue_Riders = _mainValue_Riders - _compValue_Riders;
+                  } else {
+                    if (_compValue_Riders >0) _dispValue_Riders = ((_compValue_Riders - _compValue_Riders) / _compValue_Riders) * 100;
+                  }
+                } catch(err){
+                  _dispValue_Riders = _mainValue_Riders;
+                }
+              } else {
+                _dispValue_Riders = _mainValue_Riders;
+              }
+              updateFeature.attributes['Riders'] = _dispValue_Riders; 
+              tttT.map.graphics.add(updateFeature);
             }
-            
-            updateFeature.attributes['Riders'] = _dispValue;
-            
-            tttT.map.graphics.add(updateFeature);
-
-          }
-          catch(err) {
-            updateFeature.attributes['Riders'] = null;
+            catch(err) { 
+              updateFeature.attributes['Riders'] = null;
+            }
           }
         }
 
-        lyrSegments.setRenderer(_renderer_transit);
+        lyrSegments.setRenderer(_renderer);
 
-        tttT.map.graphics.setRenderer(_renderer_transit);
+        tttT.map.graphics.setRenderer(_renderer);
         tttT.map.graphics.refresh();
 
         
       });
 
       //lyrSegments.show();
+
 
     },
 
