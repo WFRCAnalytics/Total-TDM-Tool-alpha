@@ -322,54 +322,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           }
         }
       }
-    updateRoutesList: function(curMode) {
-      routes = [];
-      for (var i=0;i<dataTransitRouteMain.data.length;i++){
-          if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
-        if (dataTransitRouteMain.data[i].MODE==curMode) {
-            //loop through and get the corresponding LONGNAME  
-            routeName = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
-            if (dom.byId("button").innerHTML == "Unselect All") {
-            routes.push({"label" : routeName, "value" : dataTransitRouteMain.data[i].NAME});
-              curRoute = routes;
-              cmbRoute.set("options", routes).reset();
-            }
-          }
-          if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
-        } else if (curMode == 'T'){
-            routeName = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
-            if (dom.byId("button").innerHTML == "Unselect All") {
-            routes.push({"label" : routeName, "value" : dataTransitRouteMain.data[i].NAME});
-              curRoute = routes;
-            }
-              cmbRoute.set("options", routes).reset();
-          }
-        } 
-      }
-      if (iFirst) {
-      //sATRs = sATRs.slice(0,-1) + ")";
-        cmbRoute = new CheckedMultiSelect({
-          id: "selectRoute",
-          options: routes,
-          name: "selectRouteName",
-          multiple: true,
-          onChange: function(){
-            curRoute = this.value;
-            console.log('curRoute is ' + curRoute);
-            tttT.updateDisplayMode();
-          }
-        }, "cmbRoute");
-        cmbRoute.startup();
-        cmbRoute.set("value", curRoute);
-        iFirst = false;
-        cmbRoute.set("options", routes).reset();
-      } else {
-        cmbRoute.set("value", curRoute);
-      }
-        cmbRoute.startup();
       
-
-    },
       var aBrk_Riders_Absolute = new Array(
         {minValue:        1, maxValue:      249, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.50), label:   "Less than 250 Riders"},
         {minValue:      250, maxValue:      499, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.25), label:      "250 to 500 Riders"},
@@ -442,6 +395,55 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       tttT._updateDisplayTransit();
 
     },
+    
+    updateRoutesList: function(curMode) {
+      routes = [];
+      for (var i=0;i<dataTransitRouteMain.data.length;i++){
+          if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
+        if (dataTransitRouteMain.data[i].MODE==curMode) {
+            //loop through and get the corresponding LONGNAME  
+            routeName = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
+            if (dom.byId("button").innerHTML == "Unselect All") {
+            routes.push({"label" : routeName, "value" : dataTransitRouteMain.data[i].NAME});
+              curRoute = routes;
+              cmbRoute.set("options", routes).reset();
+            }
+          }
+          if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
+        } else if (curMode == 'T'){
+            routeName = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
+            if (dom.byId("button").innerHTML == "Unselect All") {
+            routes.push({"label" : routeName, "value" : dataTransitRouteMain.data[i].NAME});
+              curRoute = routes;
+            }
+              cmbRoute.set("options", routes).reset();
+          }
+        } 
+      }
+      if (iFirst) {
+      //sATRs = sATRs.slice(0,-1) + ")";
+        cmbRoute = new CheckedMultiSelect({
+          id: "selectRoute",
+          options: routes,
+          name: "selectRouteName",
+          multiple: true,
+          onChange: function(){
+            curRoute = this.value;
+            console.log('curRoute is ' + curRoute);
+            tttT.updateDisplayMode();
+          }
+        }, "cmbRoute");
+        cmbRoute.startup();
+        cmbRoute.set("value", curRoute);
+        iFirst = false;
+        cmbRoute.set("options", routes).reset();
+      } else {
+        cmbRoute.set("value", curRoute);
+      }
+        cmbRoute.startup();
+      
+
+    },
 
     // UDPATE FOR THIS APP:
     _updateHModes: function() {
@@ -493,10 +495,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       // clear all graphics
       tttT.map.graphics.clear();
 
-      // run multiple times to avoid 2000 limit on returned features
-      tttT._queryFeatures("SEGID <= '" + strMiddleSeg1 + "'");
-      tttT._queryFeatures("SEGID  > '" + strMiddleSeg1 + "' AND SEGID <= '" + strMiddleSeg2 + "'");
-      tttT._queryFeatures("SEGID  > '" + strMiddleSeg2 + "'");
+
     },
 
     _queryFeatures: function(_lyrDisplay,_layeridfield,_dataMain,_dataComp,_dataidfield,_dispFields,_renderer){ 
