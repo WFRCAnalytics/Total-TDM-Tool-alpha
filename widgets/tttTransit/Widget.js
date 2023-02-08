@@ -406,6 +406,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             //loop through and get the corresponding LONGNAME  
             routeName = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
             routes.push({"label" : routeName, "value" : dataTransitRouteMain.data[i].NAME});
+            routes.sort((a, b) => a.label.localeCompare(b.label));
             if (dom.byId("button").innerHTML == "Unselect All") {
               curRoute = routes;
               cmbRoute.set("options", routes).reset();
@@ -415,6 +416,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           if (i == 0 || (dataTransitRouteMain.data[i].NAME != dataTransitRouteMain.data[i-1].NAME)){
             routeName = dataTransitRouteNames.data.find(o => o.NAME === dataTransitRouteMain.data[i].NAME)['LONGNAME'];
             routes.push({"label" : routeName, "value" : dataTransitRouteMain.data[i].NAME});
+            routes.sort((a, b) => a.label.localeCompare(b.label));
             if (dom.byId("button").innerHTML == "Unselect All") {
               curRoute = routes;
               cmbRoute.set("options", routes).reset();
@@ -422,13 +424,14 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           }
         } 
       }
-      //sATRs = sATRs.slice(0,-1) + ")";
+
       if (iFirst) {
         cmbRoute = new CheckedMultiSelect({
           id: "selectRoute",
           name: "selectRouteName",
           options: routes,
           multiple: true,
+          sortByLabel: false, // Need this to override sort
           onChange: function(){
             curRoute = this.value;
             console.log('curRoute is ' + curRoute);
@@ -626,7 +629,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
               }
             } 
           }
-          curRoute = routes2;        
+          curRoute = routes2.sort((a, b) => a.label.localeCompare(b.label));      
           btnShowHideAll.innerHTML = "Unselect All";
       } else if (btnShowHideAll.innerHTML == "Unselect All") {
           console.log("Select Button Hit");
