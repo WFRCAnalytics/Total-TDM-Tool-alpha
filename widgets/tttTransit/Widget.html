@@ -1,24 +1,10 @@
 <div>
-    <br/>
-    <br/>
-    <div class="thicker" style="display: inline; line-height: 200%;" >Transit Mode: </div><br/><div style="display: inline" id="cmbMode" data-dojo-type="dojox.form.Select"></div><div class="thicker" style="display: inline"></div>
-    <br/>
-    <br/>
-    <div class="thicker" style="display: inline; line-height: 200%;" >Transit Route:</div><br/><div style="display: inline" id="cmbRoute" data-dojo-type="dojox.form.CheckedMultiSelect"></div><div class="thicker" style="display: inline"></div>
-    <br/>
-    <br/>
-    <td width="105">
-      <div id="CCSSelectionAreaButton" style="display: block;">
-        <button id="button" data-dojo-attach-event="onClick: ShowAll" style="width: 90px; height:20px;">Select All</button>
-      </div>
-    </td>
-    <br/>
     <table width="200px;" align="center">
       <tr>
         <td>
           <div class="thicker" style="display: inline; line-height: 200%;" id="divDisplayOptions_title"></div>
         </td>
-        <td>
+        <td width="150px>
           <div style="display: inline" id="divDisplayOptions"></div>
         </td>
         </td>
@@ -33,6 +19,17 @@
       </tr>
       <tr>
         <td>
+          <div class="thicker" style="display: inline; line-height: 200%;" >Transit Route:</div>
+        </td>
+        <td>
+          <div style="display: inline" id="cmbRoute" data-dojo-type="dojox.form.CheckedMultiSelect"></div><div class="thicker" style="display: inline"></div>
+          <div id="CCSSelectionAreaButton" style="display: block;">
+            <button id="button" data-dojo-attach-event="onClick: ShowAll" style="width: 90px; height:20px;">Select All</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
           <div class="thicker" style="display: inline; line-height: 200%;" >Time of Day: </div>
         </td>
         <td>
@@ -41,7 +38,7 @@
       </tr>
       <tr>
         <td>
-          <div class="thicker" style="display: inline; line-height: 200%;" >Boardings/Alightings: </div>
+          <div class="thicker" style="display: inline; line-height: 200%;" >Boardings/<br/>Alightings: </div>
         </td>
         <td>
           <div style="display: inline" id="cmbAccessMode" data-dojo-type="dojox.form.Select"></div>
@@ -58,7 +55,7 @@
       </tr>
       <tr>
         <td>
-          <div class="thicker" style="display: inline; line-height: 200%;" >Heirarchical Mode <q></q>: </div>
+          <div class="thicker" style="display: inline; line-height: 200%;" >Heirarchical<br/>Mode: </div>
         </td>
         <td>
           <div style="display: inline" id="divHeirarchicalModeOptions"></div>
@@ -66,7 +63,7 @@
       </tr>
       <tr>
         <td>
-          <div class="thicker" style="display: inline; line-height: 200%;" >Inbound/Outbound <q></q>: </div>
+          <div class="thicker" style="display: inline; line-height: 200%;" >Inbound/<br/>Outbound: </div>
         </td>
         <td>
           <div style="display: inline" id="divInboundOutBoundOptions"></div>
