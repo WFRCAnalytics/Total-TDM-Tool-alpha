@@ -772,6 +772,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       //filter out messages
       if(data.message=='transit'){
         tttT._updateDisplayTransit();
+        tttT.updateRoutesList();
       }
     },
 
