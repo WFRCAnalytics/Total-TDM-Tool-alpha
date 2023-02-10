@@ -186,12 +186,12 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
 
             //when zoom finishes run changeZoomExtents to display
             this.map.on("zoom-end", function () {
-                tttSM._updateDisplay();
+                tttSM._zoom();
             });
             
             //when pan finishes run changeZoomExtents to display
             this.map.on("pan-end", function () {
-                tttSM._updateDisplay();
+                tttSM._zoom();
             });
 
             //Initialize Selection Layer, FromLayer, and ToLayer and define selection colors
@@ -251,6 +251,10 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
 
         _updateDisplay: function() {
           tttSM.publishData({message: lastOpenedWidget});
+        },
+
+        _zoom: function() {
+          tttSM.publishData({message: lastOpenedWidget + '_zoom'});
         },
 
         _readInScenarioMain: function() {
@@ -322,7 +326,7 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
 
             //Route Longnames
             dojo.xhrGet({
-                url: "widgets/tttScenarioManager/data/routesummarynames_revised.json",
+                url: "widgets/tttScenarioManager/data/transitroutenamemode/" + strTransitMain,
                 handleAs: "json",
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
@@ -331,7 +335,7 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     tttSM.publishData({message: "transitroutenames"});
                 },
                 error: function(err) {
-                    dataTransitModeMain = [];
+                    dataTransitRouteNames = [];
                     tttSM._updateDisplay();
                 }
             });

@@ -742,6 +742,8 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       //filter out messages
       if(data.message=='road'){
         tttR.updateRoadDisplay();
+      } else if(data.message=='road_zoom'){
+        tttR.updateRoadDisplay();
       }
     },
   });
