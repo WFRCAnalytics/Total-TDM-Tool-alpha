@@ -22,9 +22,9 @@
           <div class="thicker" style="display: inline; line-height: 200%;" >Transit Route:</div>
         </td>
         <td>
-          <div style="display: inline" id="cmbRoute" data-dojo-type="dojox.form.CheckedMultiSelect"></div><div class="thicker" style="display: inline"></div>
+          <div style="display: inline" id="divRouteSelection" data-dojo-type="dojox.form.CheckedMultiSelect"></div>
           <div id="CCSSelectionAreaButton" style="display: block;">
-            <button id="button" data-dojo-attach-event="onClick: ShowAll" style="width: 90px; height:20px;">Unselect All</button>
+            <button id="buttonSelectAll" data-dojo-attach-event="onClick: _selectAllRoutes" style="width: 90px; height:20px;">Unselect All</button>
           </div>
         </td>
       </tr>

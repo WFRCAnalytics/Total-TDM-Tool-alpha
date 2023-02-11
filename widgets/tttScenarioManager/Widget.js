@@ -331,8 +331,8 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log("routesummarynames_revised");
-                    dataTransitRouteNames = obj;
-                    tttSM.publishData({message: "transitroutenames"});
+                    dataTransitRouteNames = obj.data;
+                    tttSM._updateDisplay();
                 },
                 error: function(err) {
                     dataTransitRouteNames = [];
