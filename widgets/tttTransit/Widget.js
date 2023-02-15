@@ -1,5 +1,4 @@
 var dModeOptions = [
-  { label: "All Modes"        , name: "all" , value: "T", hierarchyoptions:[4,5,6,7,8,9]},
   { label: "Local Bus"        , name: "lcl" , value: "4", hierarchyoptions:[4,5,6,7,8,9]},
   { label: "Core Route"       , name: "brt5", value: "5", hierarchyoptions:[  5,6,7,8,9]},
   { label: "Express Bus"      , name: "exp" , value: "6", hierarchyoptions:[4,5,6,7,8,9]},
@@ -7,7 +6,7 @@ var dModeOptions = [
   { label: "Light Rail"       , name: "lrt" , value: "7", hierarchyoptions:[      7,8,9]},
   { label: "Commuter Rail"    , name: "crt" , value: "8", hierarchyoptions:[        8  ]}
 ];
-var curMode = "T"; //T is total
+var curMode   = [4,5,6,7,8,9]; //T is total
 var curHModes = [4,5,6,7,8,9];
 
 
@@ -80,8 +79,8 @@ define(['dojo/_base/declare',
     'dojo/dom-style',
     'dijit/dijit',
     'dojox/charting/Chart',
-    'dojox/charting/themes/Claro',
     'dojox/charting/themes/Julie',
+    'dojox/charting/themes/Claro',
     'dojox/charting/SimpleTheme',
     'dojox/charting/plot2d/Scatter',
     'dojox/charting/plot2d/Markers',
@@ -123,7 +122,7 @@ define(['dojo/_base/declare',
     'dojo/store/Observable',
     'dojox/charting/axis2d/Default',
     'dojo/domReady!'],
-function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart, Claro, Julie, SimpleTheme, Scatter, Markers, Columns, Legend, Tooltip, TableContainer, ScrollPane, ContentPane, PanelManager, TextBox, ToggleButton, LayerInfos, Query, QueryTask, FeatureLayer, FeatureTable, SimpleFillSymbol, SimpleLineSymbol, SimpleMarkerSymbol, TextSymbol, Font, LabelClass, InfoTemplate, Color, Map, ClassBreaksRenderer, Extent, Memory, StoreSeries, Dialog, Button, RadioButton, MutliSelect, CheckedMultiSelect, Select, ComboBox, CheckBox, Observable) {
+function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart, Julie, Claro, SimpleTheme, Scatter, Markers, Columns, Legend, Tooltip, TableContainer, ScrollPane, ContentPane, PanelManager, TextBox, ToggleButton, LayerInfos, Query, QueryTask, FeatureLayer, FeatureTable, SimpleFillSymbol, SimpleLineSymbol, SimpleMarkerSymbol, TextSymbol, Font, LabelClass, InfoTemplate, Color, Map, ClassBreaksRenderer, Extent, Memory, StoreSeries, Dialog, Button, RadioButton, MutliSelect, CheckedMultiSelect, Select, ComboBox, CheckBox, Observable) {
   //To create a widget, you need to derive from BaseWidget.
   
   return declare([BaseWidget], {
@@ -169,9 +168,11 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       //});  
       tttT._updateRoutesList(curMode);
 
-      cmbMode = new Select({
+      cmbMode = new CheckedMultiSelect({
         id: "selectMode",
         options: dModeOptions,
+        style: { width: '20px' },
+        multiple: true,
         onChange: function(){
           curMode = this.value;
           console.log('Selected Mode: ' + curMode)
@@ -180,6 +181,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         }
       }, "cmbMode");
       cmbMode.set("value",curMode);
+      cmbMode.startup();
 
       cmbTimeOfDay = new CheckedMultiSelect({
         id: "selectTimeOfDay",
@@ -211,6 +213,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         id: "selectAccessMode",
         options: dAccessModeOptions,
         multiple: true,
+        style: {height: '32px;'},
         onChange: function(){
           curAccessMode = this.value;
           console.log('Selected Access Mode: ' + curAccessMode)
@@ -408,7 +411,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       if (typeof dataTransitRouteNames !== "undefined") {
         
         // get data objects that match mode, sort alphabetically
-        _routes = dataTransitRouteNames.filter(o =>tttT._getCurModeAsArray().includes(o.mode)).sort((a, b) => a.label.localeCompare(b.label))
+        _routes = dataTransitRouteNames.filter(o =>curMode.map(Number).includes(o.mode)).sort((a, b) => a.label.localeCompare(b.label))
         
         // set all routes on by default
         curRoute = _routes.map(o => o.value);
@@ -420,6 +423,9 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             options: _routes,
             multiple: true,
             sortByLabel: false, // Need this to override sort
+            style: {width: '150px'},
+            overflow: 'hidden',
+            class: "claro",
             onChange: function(){
               curRoute = this.value;
               console.log('curRoute is ' + curRoute);
@@ -434,6 +440,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         }
         mltRoute.set('value',curRoute);
       }
+
     },
 
     // UDPATE FOR THIS APP:
@@ -441,15 +448,15 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
     },
 
-    _getCurModeAsArray() {
-      if (curMode=='T') {
-        _filterModes = [4,5,6,7,8,9]
-      } else {
-        _filterModes = [];
-        _filterModes.push(Number(curMode));
-      }
-      return _filterModes;
-    },
+    //_getCurModeAsArray() {
+    //  if (curMode=='T') {
+    //    _filterModes = [4,5,6,7,8,9]
+    //  } else {
+    //    _filterModes = [];
+    //    _filterModes.push(Number(curMode));
+    //  }
+    //  return _filterModes;
+    //},
 
     _updateDisplayTransit: function() {
       console.log('updateDisplay Transit Display');
@@ -458,26 +465,36 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       tttT.map.graphics.clear();
 
       if (curScenarioComp=='none') {
-        _renderer_transit = renderer_Riders;
-        if (curDisplay=="BRD") {
-          _renderer_transit = renderer_BoardAlight;
+        switch (curDisplay) {
+          case ('RDR'):
+            _renderer_transit = renderer_Riders;
+            break;
+          case ('BRD'):
+            _renderer_transit = renderer_BoardAlight;
+            break;
         }
       } else {
-        _renderer_transit = renderer_Riders_Change;
-        if (curDisplay=="BRD") {
-          _renderer_transit = renderer_BoardAlight_Change;
+        switch (curDisplay) {
+          case ('RDR'):
+            _renderer_transit = renderer_Riders_Change;
+            break;
+          case ('BRD'):
+            _renderer_transit = renderer_BoardAlight_Change;
+            break;
         }
       }
 
       if (curDisplay=='RDR' && curTripOrientation=='OD') {
         tttT._queryFeaturesRidersOD();
+      } else if (curDisplay=='RDR' && curTripOrientation=='PA') {
+        tttT._queryFeatures(lyrTransitLink, "linkid", dataTransitPALinkMain, dataTransitPALinkComp,  'lid' ,'r'       );
       } else if (curDisplay=='BRD' && curTripOrientation=='PA') {
-        tttT._queryFeatures(lyrTransitNode,"n",dataTransitPANodeMain,dataTransitPANodeComp,"nid",curAccessMode,_renderer_transit);
+        tttT._queryFeatures(lyrTransitNode, "n"     , dataTransitPANodeMain, dataTransitPANodeComp,"nid",curAccessMode);
       }
       
     },
 
-    _queryFeatures: function(_lyrDisplay,_layeridfield,_dataMain,_dataComp,_dataidfield,_dispFields,_renderer){ 
+    _queryFeatures: function(_lyrDisplay,_layeridfield,_dataMain,_dataComp,_dataidfield,_dispFields){ 
 
       var query, updateFeature;
       query = new Query();
@@ -574,10 +591,10 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           }
         }
 
-        _lyrDisplay.setRenderer(_renderer);
+        _lyrDisplay.setRenderer(_renderer_transit);
         _lyrDisplay.show();
 
-        tttT.map.graphics.setRenderer(_renderer);
+        tttT.map.graphics.setRenderer(_renderer_transit);
         tttT.map.graphics.refresh();
 
         
@@ -622,37 +639,40 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           //A: SEGID
           //I: DY_VOL_2WY
 
-          _mainValue = 0;
-          _compValue = 0;
-          _dispValue = 0;
+          var _mainValue = 0;
+          var _compValue = 0;
+          var _dispValue = 0;
 
           if (curRoute != ""){
             try { 
-              if (curRoute.length > 1){
-                if(curMode == "T"){var _mainValue1 = dataTransitRouteMain.data.filter(o => o.SEGID === _segid && curRoute.includes(o.NAME));} 
-                else{var _mainValue1 = dataTransitRouteMain.data.filter(o => o.SEGID === _segid && o.MODE === Number(curMode) && curRoute.includes(o.NAME));}                   
-                  if (_mainValue1.length > 0){
-                    var riders = 0;
-                    var routeRiders = 0;
-                    for (var j = 0; j < _mainValue1.length; j++){
-                      var routeRiders = _mainValue1[j].SEGVOL;
-                      riders += routeRiders;
-                    }
-                    _mainValue = riders;
-                  } else{
-                    _mainValue = 0;
+              if (curRoute.length > 1) {
+                _mainValue1 = dataTransitRouteMain.data.filter(o => o.SEGID === _segid && curMode.map(Number).includes(o.MODE) && curRoute.includes(o.NAME));
+                if (_mainValue1.length > 0) {
+                  var riders = 0;
+                  var routeRiders = 0;
+                  for (var j = 0; j < _mainValue1.length; j++){
+                    var routeRiders = _mainValue1[j].SEGVOL;
+                    riders += routeRiders;
                   }
-              } else {
-                if(curMode == "T"){_mainValue = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.NAME === String(curRoute))['SEGVOL'];}
-                else{_mainValue = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.MODE === Number(curMode) && o.NAME === String(curRoute))['SEGVOL'];}
-                //console.log(_mainValue);
+                  _mainValue = riders;
+                } else {
+                  _mainValue = 0;
+                }
               }
-              
               if (curScenarioComp!='none') {
                 try {
-                  if(curMode == "T"){_compValue = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.NAME === String(curRoute))['SEGVOL'];}
-                  else{_compValue = dataTransitRouteMain.data.find(o => o.SEGID === _segid && o.MODE === Number(curMode) && o.NAME === String(curRoute))['SEGVOL'];}
-                  
+                  _compValue1 = dataTransitRouteMain.data.find(o => o.SEGID === _segid && curMode.map(Number).includes(o.MODE) && o.NAME === String(curRoute))['SEGVOL'];
+                  if (_compValue1.length > 0) {
+                    var riders = 0;
+                    var routeRiders = 0;
+                    for (var j = 0; j < _compValue1.length; j++){
+                      var routeRiders = _compValue1[j].SEGVOL;
+                      riders += routeRiders;
+                    }
+                    _compValue = riders;
+                  } else {
+                    _compValue = 0;
+                  }
                   if (curRoadPCOption=='Abs') {
                     _dispValue = _mainValue - _compValue;
                   } else {
