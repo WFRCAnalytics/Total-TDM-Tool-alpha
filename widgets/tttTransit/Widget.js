@@ -511,21 +511,13 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           return;
         }
 
-        _filterHModes = curHModes.map(Number);
-
-        //_test1 = _dataMain.data.filter(o => ['701_Blue','703_Red'].includes(o['nm']))
-        //_test2 = _dataMain.data.filter(o => [7].includes(o['md']))
-        //_test3 = _dataMain.data.filter(o => [7].includes(o['md']))
-        //_test4 = _dataMain.data.filter(o => curRoute.includes(o['nm']))
-        //_test5 = _dataMain.data.filter(o => ['701_Blue','703_Red'].includes(o['nm']))
-
         // main query
         try {
-          _dataMainFiltered = _dataMain.data.filter(o => curRoute.includes(o['nm' ]) &&
-                                                         curTimeOfDay.includes(o['tod']) &&
-                                                         tttT._getCurModeAsArray().includes(o['md' ]) &&
-//                                                       curInboundOutbound.includes(o['io' ]) &&
-                                                         _filterHModes.includes(o['hmd']));
+          _dataMainFiltered = _dataMain.data.filter(o => curRoute             .includes(o['nm' ]) &&
+                                                         curTimeOfDay         .includes(o['tod']) &&
+                                                         curMode.map(Number)  .includes(o['md' ]) &&
+//                                                       curInboundOutbound   .includes(o['io' ]) &&
+                                                         curHModes.map(Number).includes(o['hmd']));
         } catch(err) {
           _dataMainFiltered =[];
           console.log('Error in Scenario Data Filter');
@@ -533,11 +525,11 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
         if (curScenarioComp!='none') {
           try {
-            _dataCompFiltered = _dataComp.data.filter(o => curRoute.includes(o['nm' ]) &&
-                                                           curTimeOfDay.includes(o['tod']) &&
-                                                           tttT._getCurModeAsArray().includes(o['md' ]) &&
-//                                                         curInboundOutbound.includes(o['io' ]) &&
-                                                           _filterHModes.includes(o['hmd']));
+            _dataCompFiltered = _dataComp.data.filter(o => curRoute             .includes(o['nm' ]) &&
+                                                           curTimeOfDay         .includes(o['tod']) &&
+                                                           curMode.map(Number)  .includes(o['md' ]) &&
+//                                                         curInboundOutbound   .includes(o['io' ]) &&
+                                                           curHModes.map(Number).includes(o['hmd']));
           } catch(err) {
             _dataCompFiltered =[];
             console.log('Error in Compare Scenario Data Filter');
