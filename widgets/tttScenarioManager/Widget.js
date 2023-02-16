@@ -297,7 +297,7 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitModeMain);
-                    dataTransitModeMain = obj;
+                    dataTransitModeMain = obj.data;
                     tttSM.publishData({message: "transitmode"});
                 },
                 error: function(err) {
@@ -315,7 +315,7 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitMain + ' transit detail by route main');
-                    dataTransitRouteMain = obj;
+                    dataTransitRouteMain = obj.data;
                     tttSM._updateDisplay();
                 },
                 error: function(err) {
@@ -411,7 +411,7 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                 load: function(obj) {
                     /* here, obj will already be a JS object deserialized from the JSON response */
                     console.log(strTransitComp + ' transit detail by route');
-                    dataTransitRouteComp = obj;
+                    dataTransitRouteComp = obj.data;
                     tttSM._updateDisplay();
                 },
                 error: function(err) {

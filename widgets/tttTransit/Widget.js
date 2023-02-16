@@ -174,7 +174,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         style: { width: '20px' },
         multiple: true,
         onChange: function(){
-          curMode = this.value;
+          curMode = this.value.map(Number); // change value string array into number array
           console.log('Selected Mode: ' + curMode)
           tttT._updateRoutesList();
           tttT._updateDisplayTransit();
@@ -228,7 +228,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         options: dModeOptions,//.find(x => x.value !== 'T'),
         multiple: true,
         onChange: function(){
-          curHModes = this.value;
+          curHModes = this.value.map(Number); // change value string array into number array
           console.log('Selected Heirarchical Modes: ' + curHModes)
           tttT._updateDisplayTransit();
         }
@@ -411,7 +411,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       if (typeof dataTransitRouteNames !== "undefined") {
         
         // get data objects that match mode, sort alphabetically
-        _routes = dataTransitRouteNames.filter(o =>curMode.map(Number).includes(o.mode)).sort((a, b) => a.label.localeCompare(b.label))
+        _routes = dataTransitRouteNames.filter(o =>curMode.includes(o.mode)).sort((a, b) => a.label.localeCompare(b.label))
         
         // set all routes on by default
         curRoute = _routes.map(o => o.value);
@@ -513,11 +513,11 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
         // main query
         try {
-          _dataMainFiltered = _dataMain.data.filter(o => curRoute             .includes(o['nm' ]) &&
-                                                         curTimeOfDay         .includes(o['tod']) &&
-                                                         curMode.map(Number)  .includes(o['md' ]) &&
+          _dataMainFiltered = _dataMain.data.filter(o => curRoute    .includes(o['nm' ]) &&
+                                                         curTimeOfDay.includes(o['tod']) &&
+                                                         curMode     .includes(o['md' ]) &&
 //                                                       curInboundOutbound   .includes(o['io' ]) &&
-                                                         curHModes.map(Number).includes(o['hmd']));
+                                                         curHModes   .includes(o['hmd']));
         } catch(err) {
           _dataMainFiltered =[];
           console.log('Error in Scenario Data Filter');
@@ -525,11 +525,11 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
         if (curScenarioComp!='none') {
           try {
-            _dataCompFiltered = _dataComp.data.filter(o => curRoute             .includes(o['nm' ]) &&
-                                                           curTimeOfDay         .includes(o['tod']) &&
-                                                           curMode.map(Number)  .includes(o['md' ]) &&
+            _dataCompFiltered = _dataComp.data.filter(o => curRoute    .includes(o['nm' ]) &&
+                                                           curTimeOfDay.includes(o['tod']) &&
+                                                           curMode     .includes(o['md' ]) &&
 //                                                         curInboundOutbound   .includes(o['io' ]) &&
-                                                           curHModes.map(Number).includes(o['hmd']));
+                                                           curHModes   .includes(o['hmd']));
           } catch(err) {
             _dataCompFiltered =[];
             console.log('Error in Compare Scenario Data Filter');
@@ -638,7 +638,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           if (curRoute != ""){
             try { 
               if (curRoute.length > 1) {
-                _mainValue1 = dataTransitRouteMain.data.filter(o => o.SEGID === _segid && curMode.map(Number).includes(o.MODE) && curRoute.includes(o.NAME));
+                _mainValue1 = dataTransitRouteMain.filter(o => o.SEGID === _segid && curMode.includes(o.MODE) && curRoute.includes(o.NAME));
                 if (_mainValue1.length > 0) {
                   var riders = 0;
                   var routeRiders = 0;
@@ -653,7 +653,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
               }
               if (curScenarioComp!='none') {
                 try {
-                  _compValue1 = dataTransitRouteMain.data.find(o => o.SEGID === _segid && curMode.map(Number).includes(o.MODE) && o.NAME === String(curRoute))['SEGVOL'];
+                  _compValue1 = dataTransitRouteComp.filter(o => o.SEGID === _segid && curMode.includes(o.MODE) && curRoute.includes(o.NAME));
                   if (_compValue1.length > 0) {
                     var riders = 0;
                     var routeRiders = 0;
