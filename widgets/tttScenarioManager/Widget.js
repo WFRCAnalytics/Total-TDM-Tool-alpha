@@ -4,6 +4,12 @@ var curScenarioMain = "id_37001244863cadd40e1b8f7.52642706";  //v9 Beta 2019
 //var curScenarioComp = "id_112358168963ceca332cc148.76455495" //v9 2019 Observed
 var curScenarioComp = "none";
 
+var dPCOptions = [
+    {value: "Abs" , label:"Absolute Change"},
+    {value: "PC"  , label:"Percent Change"}
+  ];
+  var curPCOption     = "Abs";  
+
 var lastOpenedWidget = "none";
 
 var lyrSegments;
@@ -246,6 +252,41 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                                 or if the request was unsuccessful altogether. */
                 }
             });
+
+            
+            // create radio button option between absolute and percentage change
+            var divPCOptions = dom.byId("divPCOptions");
+
+            for (d in dPCOptions) {
+
+                if (dPCOptions[d].value == curPCOption) {
+                b2Checked = true;
+                } else {
+                b2Checked = false;
+                }
+                
+                var rbPCOption = new RadioButton({ name:"PCOption", label:dPCOptions[d].label, id:"rb_" + dPCOptions[d].value, value: dPCOptions[d].value, checked: b2Checked});
+                rbPCOption.startup();
+                rbPCOption.placeAt(divPCOptions);
+                
+                dojo.create('label', {
+                innerHTML: dPCOptions[d].label,
+                for: rbPCOption.id
+                }, divPCOptions);
+                
+                dojo.place("<br/>", divPCOptions);
+
+                //Radio Buttons Change Event
+                dom.byId("rb_" + dPCOptions[d].value).onchange = function(isChecked) {
+                if(isChecked) {
+                    curPCOption = this.value;
+                    console.log('Radio button select: ' + curPCOption);
+                    tttSM._updateDisplay();
+                }
+                }
+            }
+
+
             tttSM._readInScenarioMain();
         },
 

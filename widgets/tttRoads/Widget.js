@@ -15,14 +15,7 @@ var dRoadOptions = [
   {value:"VolTrk"   ,label:"Daily MD & HV Trucks"       , rndr: 'VolTrk'       , agg:"none", numerator  : "(obj['DY_MD'] + obj['DY_HV'])", denominator: "1"},
   {value:"VolTrkPer",label:"Daily % MD & HV Trucks"     , rndr: 'Percent_Truck', agg:"none", numerator  : "(obj['DY_MD'] + obj['DY_HV']) * 100", denominator: "obj['DY_VOL']"}
 ];
-
-var dRoadPCOptions = [
-  {value: "Abs" , label:"Absolute Change"},
-  {value: "PC"  , label:"Percent Change"}
-];
-
 var curRoadOption       = "Vol";
-var curRoadPCOption     = "Abs";
 
 var minScaleForLabels = 87804;
 var labelClassOn;
@@ -285,38 +278,6 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         }
       });
 
-      // create radio button option between absolute and percentage change
-      var divRoadPCOptions = dom.byId("divRoadPCOptions");
-
-      for (d in dRoadPCOptions) {
-
-        if (dRoadPCOptions[d].value == curRoadPCOption) {
-          b2Checked = true;
-        } else {
-          b2Checked = false;
-        }
-        
-        var rbRoadPCOption = new RadioButton({ name:"RoadPCOption", label:dRoadPCOptions[d].label, id:"rb_" + dRoadPCOptions[d].value, value: dRoadPCOptions[d].value, checked: b2Checked});
-        rbRoadPCOption.startup();
-        rbRoadPCOption.placeAt(divRoadPCOptions);
-        
-        dojo.create('label', {
-          innerHTML: dRoadPCOptions[d].label,
-          for: rbRoadPCOption.id
-        }, divRoadPCOptions);
-        
-        dojo.place("<br/>", divRoadPCOptions);
-
-        //Radio Buttons Change Event
-        dom.byId("rb_" + dRoadPCOptions[d].value).onchange = function(isChecked) {
-          if(isChecked) {
-            curRoadPCOption = this.value;
-            console.log('Radio button select: ' + curRoadPCOption);
-            tttR.updateRoadDisplay();
-          }
-        }
-      }
-
       // create radio button option between which attributes to show
       var divRoadOptions = dom.byId("divRoadOptions");
       
@@ -395,13 +356,13 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
       // select renderer
       if (curScenarioComp=='none') {
-        if (curRoadPCOption=='Abs') {
+        if (curPCOption=='Abs') {
           rendererRoad = eval('renderer_' + measureParams['rndr']);
         } else {
           rendererRoad = tttR.getPercentChangeRenderer('DisplayValue');
         }
       } else {
-          if (curRoadPCOption=='Abs') {
+          if (curPCOption=='Abs') {
             rendererRoad = eval('renderer_' + measureParams['rndr'] + '_Change');
           } else {
             rendererRoad = tttR.getPercentChangeRenderer('DisplayValue');
@@ -508,7 +469,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
           
           // calculate final display value based on selection (absolute or change)
           try {
-            if (curRoadPCOption=='Abs') { // absolute change
+            if (curPCOption=='Abs') { // absolute change
             _dispValue = _mainValue - _compValue;
             } else { // percent change
               if (_compValue >0) _dispValue = ((_mainValue - _compValue) / _compValue) * 100;

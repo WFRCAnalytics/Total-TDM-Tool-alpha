@@ -560,7 +560,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
                   }
                 }
 
-                if (curRoadPCOption=='Abs') {
+                if (curPCOption=='Abs') {
                   _dispValue = _mainValue - _compValue;
 
                 } else{
@@ -665,7 +665,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
                   } else {
                     _compValue = 0;
                   }
-                  if (curRoadPCOption=='Abs') {
+                  if (curPCOption=='Abs') {
                     _dispValue = _mainValue - _compValue;
                   } else {
                     if (_compValue >0) _dispValue = ((_compValue - _compValue) / _compValue) * 100;

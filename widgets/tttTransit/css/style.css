@@ -3,7 +3,7 @@
 }
 
 .claro .dijitSelectLabel {
-    width: 120px;
+    width: 200px;
     overflow: hidden;
 }
 
@@ -12,6 +12,6 @@
 }
 
 .claro .dijitMultiSelectLabel {
-    width: 120px;
+    width: 200px;
     overflow: hidden;
 }
