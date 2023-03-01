@@ -576,7 +576,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             
             if (_mainValue>0 || _compValue>0) {
               updateFeature.attributes['DispValue'] = _dispValue;
-              tttT.map.graphics.add(updateFeature);
+              
             } else {
               updateFeature.attributes['DispValue'] = null;
             }
@@ -585,6 +585,8 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             updateFeature.attributes['DispValue'] = null;
           }
         }
+
+        tttT.map.graphics.add(updateFeature);
 
         _lyrDisplay.setRenderer(_renderer_transit);
         _lyrDisplay.show();
