@@ -495,7 +495,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     },
 
     _queryFeatures: function(_lyrDisplay,_layeridfield,_dataMain,_dataComp,_dataidfield,_dispFields){ 
-
+      
       var query, updateFeature;
       query = new Query();
       query.outFields = [_layeridfield];
@@ -574,9 +574,12 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
               _dispValue = _mainValue;
             }
             
-            updateFeature.attributes['DispValue'] = _dispValue;
-            
-            tttT.map.graphics.add(updateFeature);
+            if (_mainValue>0 || _compValue>0) {
+              updateFeature.attributes['DispValue'] = _dispValue;
+              tttT.map.graphics.add(updateFeature);
+            } else {
+              updateFeature.attributes['DispValue'] = null;
+            }
 
           } catch(err) {
             updateFeature.attributes['DispValue'] = null;
