@@ -501,7 +501,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
     },
 
     _queryFeatures: function(_lyrDisplay,_layeridfield,_dataMain,_dataComp,_dataidfield,_dispFields){ 
-
+      
       var query, updateFeature;
       query = new Query();
       query.outFields = [_layeridfield];
@@ -581,9 +581,12 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
               _dispValue = _mainValue;
             }
             
-            updateFeature.attributes['DispValue'] = _dispValue;
-            
-            tttT.map.graphics.add(updateFeature);
+            if (_mainValue>0 || _compValue>0) {
+              updateFeature.attributes['DispValue'] = _dispValue;
+              
+            } else {
+              updateFeature.attributes['DispValue'] = null;
+            }
             
             // check if labels is checked and if it is, place label values at label locations
             if (dom.byId("chkLabels").checked == true) {
@@ -612,6 +615,8 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             updateFeature.attributes['DispValue'] = null;
           }
         }
+
+        tttT.map.graphics.add(updateFeature);
 
         _lyrDisplay.setRenderer(_renderer_transit);
         _lyrDisplay.show();
