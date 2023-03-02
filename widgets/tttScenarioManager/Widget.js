@@ -410,6 +410,53 @@ function(declare, BaseWidget, registry, dom, domStyle, dijit, Chart, Claro, Juli
                     tttSM._updateDisplay();
                 }
             });
+
+            // Get Label Points
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/labellocation/seg_label_locations.json",
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log('seg_label_locations.json');
+                    seg_labelpoints = obj;
+                    tttSM._updateDisplay();
+                },
+                error: function(err) {
+                    /* this will execute if the response couldn't be converted to a JS object,
+                        or if the request was unsuccessful altogether. */
+                }
+            });
+
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/labellocation/link_label_locations.json",
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log('link_label_locations.json');
+                    link_labelpoints = obj;
+                    tttSM._updateDisplay();
+                },
+                error: function(err) {
+                    /* this will execute if the response couldn't be converted to a JS object,
+                        or if the request was unsuccessful altogether. */
+                }
+            });
+
+            dojo.xhrGet({
+                url: "widgets/tttScenarioManager/data/labellocation/node_label_locations.json",
+                handleAs: "json",
+                load: function(obj) {
+                    /* here, obj will already be a JS object deserialized from the JSON response */
+                    console.log('node_label_locations.json');
+                    node_labelpoints = obj;
+                    tttSM._updateDisplay();
+                },
+                error: function(err) {
+                    /* this will execute if the response couldn't be converted to a JS object,
+                        or if the request was unsuccessful altogether. */
+                }
+            });
+
         },
 
         _readInScenarioComp: function() {

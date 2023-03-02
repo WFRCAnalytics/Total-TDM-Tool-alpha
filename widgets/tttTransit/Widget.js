@@ -108,7 +108,9 @@ define(['dojo/_base/declare',
     'esri/Color',
     'esri/map',
     'esri/renderers/ClassBreaksRenderer',
+    'esri/geometry/Point',
     'esri/geometry/Extent',
+    'esri/graphic',
     'dojo/store/Memory',
     'dojox/charting/StoreSeries',
     'dijit/Dialog',
@@ -122,7 +124,7 @@ define(['dojo/_base/declare',
     'dojo/store/Observable',
     'dojox/charting/axis2d/Default',
     'dojo/domReady!'],
-function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart, Julie, Claro, SimpleTheme, Scatter, Markers, Columns, Legend, Tooltip, TableContainer, ScrollPane, ContentPane, PanelManager, TextBox, ToggleButton, LayerInfos, Query, QueryTask, FeatureLayer, FeatureTable, SimpleFillSymbol, SimpleLineSymbol, SimpleMarkerSymbol, TextSymbol, Font, LabelClass, InfoTemplate, Color, Map, ClassBreaksRenderer, Extent, Memory, StoreSeries, Dialog, Button, RadioButton, MutliSelect, CheckedMultiSelect, Select, ComboBox, CheckBox, Observable) {
+function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart, Julie, Claro, SimpleTheme, Scatter, Markers, Columns, Legend, Tooltip, TableContainer, ScrollPane, ContentPane, PanelManager, TextBox, ToggleButton, LayerInfos, Query, QueryTask, FeatureLayer, FeatureTable, SimpleFillSymbol, SimpleLineSymbol, SimpleMarkerSymbol, TextSymbol, Font, LabelClass, InfoTemplate, Color, Map, ClassBreaksRenderer, Point, Extent, Graphic, Memory, StoreSeries, Dialog, Button, RadioButton, MutliSelect, CheckedMultiSelect, Select, ComboBox, CheckBox, Observable) {
   //To create a widget, you need to derive from BaseWidget.
   
   return declare([BaseWidget], {
@@ -253,7 +255,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       
           // define if this is the radio button that should be selected
           const _curVarName  = dRadioButtonGroups.find(x => x.htmldivname === sDivName).curVarName;
-          if (dRadioButtonGroups[rbg].contents[d].value == window[_curVarName]) {
+                    if (dRadioButtonGroups[rbg].contents[d].value == window[_curVarName]) {
             var bChecked = true;
           } else {
             var bChecked = false;
@@ -279,7 +281,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
       
           // Radio Buttons Change Event
           dom.byId(_rbID).onchange = function(isChecked) {
-            console.log(sDivName + "radio button onchange");
+            console.log(sDivName + " radio button onchange");
             if(isChecked) {
               console.log(this.name)
               var _divname = this.name
@@ -289,6 +291,11 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             }
           }
         }
+        
+        // Check box change events
+        dom.byId("chkLabels").onchange = function(isChecked) {
+          tttT._updateDisplayTransit();
+        };
       }
 
       //setup click functionality
@@ -490,8 +497,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         tttT._queryFeatures(lyrTransitLink, "linkid", dataTransitPALinkMain, dataTransitPALinkComp,  'lid' ,'r'       );
       } else if (curDisplay=='BRD' && curTripOrientation=='PA') {
         tttT._queryFeatures(lyrTransitNode, "n"     , dataTransitPANodeMain, dataTransitPANodeComp,"nid",curAccessMode);
-      }
-      
+      }     
     },
 
     _queryFeatures: function(_lyrDisplay,_layeridfield,_dataMain,_dataComp,_dataidfield,_dispFields){ 
@@ -539,6 +545,7 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         for (var i = 0; i < resultCount; i++) {
           updateFeature = featureSet.features[i];
           _id = updateFeature.attributes[_layeridfield]
+          _segid = updateFeature.attributes['SEGID']
 
           _mainValue = 0;
           _compValue = 0;
@@ -577,6 +584,29 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             updateFeature.attributes['DispValue'] = _dispValue;
             
             tttT.map.graphics.add(updateFeature);
+            
+            // check if labels is checked and if it is, place label values at label locations
+            if (dom.byId("chkLabels").checked == true) {
+              // get coordinates from json file
+              var _x = (curDisplay == 'RDR') ? link_labelpoints.find(o => o.lid === _id).Lon : node_labelpoints.find(o => o.nid === _id).Lon;
+              var _y = (curDisplay == 'RDR') ? link_labelpoints.find(o => o.lid === _id).Lat : node_labelpoints.find(o => o.nid === _id).Lat;
+              
+              _pnt = new Point(new esri.geometry.Point(_x, _y, map.spatialReference));
+              var _font  = new Font();
+              _font.setSize       ("6pt");
+              _font.setWeight     (Font.WEIGHT_BOLDER);
+              
+              var _txtSym = new TextSymbol(Math.round(_dispValue));
+
+              _txtSym.font.setSize("7pt");
+              _txtSym.font.setFamily("arial");
+              _txtSym.font.setWeight(Font.WEIGHT_BOLDER);
+              _txtSym.setHaloColor( new dojo.Color([255,255,255]) );
+              _txtSym.setHaloSize(2);
+              //txtSym.setAlign    (esri.symbol.txtSym.ALIGN_START);
+              var _lblGra = new Graphic(_pnt, _txtSym);
+              tttT.map.graphics.add(_lblGra);
+            }
 
           } catch(err) {
             updateFeature.attributes['DispValue'] = null;
@@ -678,6 +708,32 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
               }
               updateFeature.attributes['DispValue'] = _dispValue; 
               tttT.map.graphics.add(updateFeature);
+
+              // check if labels is checked and if it is, place label values at label locations
+              if (dom.byId("chkLabels").checked == true) {
+                segRDR = ['RDR']
+                if (segRDR.includes(curDisplay)){
+                  // get coordinates from json file
+                  var _x = seg_labelpoints.find(o => o.SEGID === _segid).Lon;
+                  var _y = seg_labelpoints.find(o => o.SEGID === _segid).Lat;
+                  
+                  _pnt = new Point(new esri.geometry.Point(_x, _y, map.spatialReference))
+                  var _font  = new Font();
+                  _font.setSize       ("6pt");
+                  _font.setWeight     (Font.WEIGHT_BOLDER);
+                  
+                  var _txtSym = new TextSymbol(_dispValue);
+
+                  _txtSym.font.setSize("7pt");
+                  _txtSym.font.setFamily("arial");
+                  _txtSym.font.setWeight(Font.WEIGHT_BOLDER);
+                  _txtSym.setHaloColor( new dojo.Color([255,255,255]) );
+                  _txtSym.setHaloSize(2);
+                  //txtSym.setAlign    (esri.symbol.txtSym.ALIGN_START);
+                  var _lblGra = new Graphic(_pnt, _txtSym);
+                  tttT.map.graphics.add(_lblGra);
+                }
+              }
             }
             catch(err) { 
               updateFeature.attributes['DispValue'] = null;
