@@ -1000,6 +1000,12 @@
    "SEGVOL":101
   },
   {
+   "SEGID":"2250_006.4",
+   "MODE":4,
+   "NAME":"SL004",
+   "SEGVOL":101
+  },
+  {
    "SEGID":"2250_006.6",
    "MODE":4,
    "NAME":"SL004",
@@ -1309,7 +1315,13 @@
    "SEGID":"2168_002.6",
    "MODE":4,
    "NAME":"SL031",
-   "SEGVOL":70
+   "SEGVOL":74
+  },
+  {
+   "SEGID":"2168_003.1",
+   "MODE":4,
+   "NAME":"SL031",
+   "SEGVOL":63
   },
   {
    "SEGID":"2232_000.0",
@@ -3532,6 +3544,12 @@
    "SEGVOL":367
   },
   {
+   "SEGID":"2250_006.4",
+   "MODE":4,
+   "NAME":"SL509",
+   "SEGVOL":367
+  },
+  {
    "SEGID":"2258_001.8",
    "MODE":4,
    "NAME":"SL509",
@@ -3689,6 +3707,12 @@
   },
   {
    "SEGID":"2250_006.3",
+   "MODE":4,
+   "NAME":"SL513",
+   "SEGVOL":293
+  },
+  {
+   "SEGID":"2250_006.4",
    "MODE":4,
    "NAME":"SL513",
    "SEGVOL":293
@@ -5347,7 +5371,7 @@
    "SEGID":"",
    "MODE":4,
    "NAME":"UT831",
-   "SEGVOL":151
+   "SEGVOL":163
   },
   {
    "SEGID":"0089_333.5",
@@ -5528,6 +5552,18 @@
    "MODE":4,
    "NAME":"UT831",
    "SEGVOL":147
+  },
+  {
+   "SEGID":"UTA_7608",
+   "MODE":4,
+   "NAME":"UT831",
+   "SEGVOL":127
+  },
+  {
+   "SEGID":"UTA_7612",
+   "MODE":4,
+   "NAME":"UT831",
+   "SEGVOL":163
   },
   {
    "SEGID":"",
@@ -12004,6 +12040,12 @@
    "SEGVOL":1813
   },
   {
+   "SEGID":"2250_006.4",
+   "MODE":5,
+   "NAME":"WFRC_030",
+   "SEGVOL":1813
+  },
+  {
    "SEGID":"2250_006.6",
    "MODE":5,
    "NAME":"WFRC_030",
@@ -12019,7 +12061,7 @@
    "SEGID":"",
    "MODE":5,
    "NAME":"WFRC_033",
-   "SEGVOL":1919
+   "SEGVOL":1085
   },
   {
    "SEGID":"0068_070.5",
@@ -12266,6 +12308,12 @@
    "MODE":5,
    "NAME":"WFRC_033",
    "SEGVOL":2844
+  },
+  {
+   "SEGID":"2322_004.5",
+   "MODE":5,
+   "NAME":"WFRC_033",
+   "SEGVOL":3101
   },
   {
    "SEGID":"2326_002.1",
@@ -14227,7 +14275,7 @@
    "SEGID":"UTA_7120",
    "MODE":7,
    "NAME":"701_Blue",
-   "SEGVOL":1111
+   "SEGVOL":10297
   },
   {
    "SEGID":"UTA_7122",
@@ -14330,6 +14378,12 @@
    "MODE":7,
    "NAME":"701_Blue",
    "SEGVOL":995
+  },
+  {
+   "SEGID":"WFRC_8224",
+   "MODE":7,
+   "NAME":"701_Blue",
+   "SEGVOL":1111
   },
   {
    "SEGID":"0089_378.6",
@@ -14530,16 +14584,16 @@
    "SEGVOL":4313
   },
   {
-   "SEGID":"UTA_7332",
-   "MODE":7,
-   "NAME":"703_Red",
-   "SEGVOL":3897
-  },
-  {
    "SEGID":"UTA_7336",
    "MODE":7,
    "NAME":"703_Red",
-   "SEGVOL":2505
+   "SEGVOL":2407
+  },
+  {
+   "SEGID":"WFRC_8127",
+   "MODE":7,
+   "NAME":"703_Red",
+   "SEGVOL":3707
   },
   {
    "SEGID":"WFRC_8228",
@@ -14558,6 +14612,12 @@
    "MODE":7,
    "NAME":"703_Red",
    "SEGVOL":15434
+  },
+  {
+   "SEGID":"2040_015.1",
+   "MODE":7,
+   "NAME":"704_Green",
+   "SEGVOL":1858
   },
   {
    "SEGID":"2148_005.8",
@@ -14600,6 +14660,18 @@
    "MODE":7,
    "NAME":"704_Green",
    "SEGVOL":6164
+  },
+  {
+   "SEGID":"2168_002.6",
+   "MODE":7,
+   "NAME":"704_Green",
+   "SEGVOL":2775
+  },
+  {
+   "SEGID":"2246_003.5",
+   "MODE":7,
+   "NAME":"704_Green",
+   "SEGVOL":1858
   },
   {
    "SEGID":"2328_000.0",
@@ -14668,6 +14740,12 @@
    "SEGVOL":4783
   },
   {
+   "SEGID":"UTA_7120",
+   "MODE":7,
+   "NAME":"704_Green",
+   "SEGVOL":7431
+  },
+  {
    "SEGID":"UTA_7122",
    "MODE":7,
    "NAME":"704_Green",
@@ -14708,12 +14786,6 @@
    "MODE":7,
    "NAME":"704_Green",
    "SEGVOL":2775
-  },
-  {
-   "SEGID":"UTA_7472",
-   "MODE":7,
-   "NAME":"704_Green",
-   "SEGVOL":1858
   },
   {
    "SEGID":"UTA_7132",
@@ -14761,7 +14833,175 @@
    "SEGID":"",
    "MODE":7,
    "NAME":"MAG_009",
-   "SEGVOL":4856
+   "SEGVOL":2726
+  },
+  {
+   "SEGID":"0189_000.6",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":738
+  },
+  {
+   "SEGID":"0189_001.1",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":1479
+  },
+  {
+   "SEGID":"0189_001.6",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":2678
+  },
+  {
+   "SEGID":"0189_001.9",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":3210
+  },
+  {
+   "SEGID":"0189_002.6",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":5485
+  },
+  {
+   "SEGID":"0265_001.7",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":7779
+  },
+  {
+   "SEGID":"0265_002.3",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":7044
+  },
+  {
+   "SEGID":"0265_002.7",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":7044
+  },
+  {
+   "SEGID":"0265_004.1",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":6362
+  },
+  {
+   "SEGID":"2983_000.0",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":6163
+  },
+  {
+   "SEGID":"3033_000.0",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":131
+  },
+  {
+   "SEGID":"3040_000.0",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":5485
+  },
+  {
+   "SEGID":"UTA_7516",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":216
+  },
+  {
+   "SEGID":"UTA_7520",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":1246
+  },
+  {
+   "SEGID":"UTA_7524",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":1914
+  },
+  {
+   "SEGID":"UTA_7528",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":2008
+  },
+  {
+   "SEGID":"UTA_7532",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":2726
+  },
+  {
+   "SEGID":"UTA_7536",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":2999
+  },
+  {
+   "SEGID":"UTA_7540",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":4143
+  },
+  {
+   "SEGID":"UTA_7544",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":4483
+  },
+  {
+   "SEGID":"UTA_7548",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":5249
+  },
+  {
+   "SEGID":"UTA_7552",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":5947
+  },
+  {
+   "SEGID":"UTA_7556",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":6259
+  },
+  {
+   "SEGID":"UTA_7560",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":6398
+  },
+  {
+   "SEGID":"UTA_7564",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":8352
+  },
+  {
+   "SEGID":"UTA_7568",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":9096
+  },
+  {
+   "SEGID":"UTA_7572",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":9404
+  },
+  {
+   "SEGID":"UTA_7576",
+   "MODE":7,
+   "NAME":"MAG_009",
+   "SEGVOL":7744
   },
   {
    "SEGID":"0089_378.6",
@@ -14842,12 +15082,6 @@
    "SEGVOL":4013
   },
   {
-   "SEGID":"2250_006.3",
-   "MODE":7,
-   "NAME":"WFRC_055",
-   "SEGVOL":9297
-  },
-  {
    "SEGID":"2250_006.6",
    "MODE":7,
    "NAME":"WFRC_055",
@@ -14908,18 +15142,6 @@
    "SEGVOL":4534
   },
   {
-   "SEGID":"UTA_7120",
-   "MODE":7,
-   "NAME":"WFRC_055",
-   "SEGVOL":4187
-  },
-  {
-   "SEGID":"UTA_7121",
-   "MODE":7,
-   "NAME":"WFRC_055",
-   "SEGVOL":9433
-  },
-  {
    "SEGID":"UTA_7300",
    "MODE":7,
    "NAME":"WFRC_055",
@@ -14930,6 +15152,18 @@
    "MODE":7,
    "NAME":"WFRC_055",
    "SEGVOL":2268
+  },
+  {
+   "SEGID":"WFRC_8224",
+   "MODE":7,
+   "NAME":"WFRC_055",
+   "SEGVOL":4187
+  },
+  {
+   "SEGID":"WFRC_8266",
+   "MODE":7,
+   "NAME":"WFRC_055",
+   "SEGVOL":9433
   },
   {
    "SEGID":"",
@@ -15325,7 +15559,7 @@
    "SEGID":"",
    "MODE":9,
    "NAME":"UT830X",
-   "SEGVOL":2191
+   "SEGVOL":1551
   },
   {
    "SEGID":"0189_001.1",
@@ -15482,6 +15716,24 @@
    "MODE":9,
    "NAME":"UT830X",
    "SEGVOL":4683
+  },
+  {
+   "SEGID":"UTA_7604",
+   "MODE":9,
+   "NAME":"UT830X",
+   "SEGVOL":4683
+  },
+  {
+   "SEGID":"UTA_7608",
+   "MODE":9,
+   "NAME":"UT830X",
+   "SEGVOL":2406
+  },
+  {
+   "SEGID":"UTA_7612",
+   "MODE":9,
+   "NAME":"UT830X",
+   "SEGVOL":2295
   },
   {
    "SEGID":"",
@@ -15643,7 +15895,7 @@
    "SEGID":"",
    "MODE":9,
    "NAME":"WFRC_003",
-   "SEGVOL":13269
+   "SEGVOL":10903
   },
   {
    "SEGID":"0282_001.8",
@@ -15736,6 +15988,12 @@
    "SEGVOL":14175
   },
   {
+   "SEGID":"2322_004.5",
+   "MODE":9,
+   "NAME":"WFRC_003",
+   "SEGVOL":13624
+  },
+  {
    "SEGID":"2326_002.1",
    "MODE":9,
    "NAME":"WFRC_003",
@@ -15757,7 +16015,7 @@
    "SEGID":"",
    "MODE":9,
    "NAME":"WFRC_038",
-   "SEGVOL":756
+   "SEGVOL":831
   },
   {
    "SEGID":"0089_334.1",
@@ -15980,6 +16238,42 @@
    "MODE":9,
    "NAME":"WFRC_038",
    "SEGVOL":948
+  },
+  {
+   "SEGID":"UTA_7516",
+   "MODE":9,
+   "NAME":"WFRC_038",
+   "SEGVOL":756
+  },
+  {
+   "SEGID":"UTA_7520",
+   "MODE":9,
+   "NAME":"WFRC_038",
+   "SEGVOL":735
+  },
+  {
+   "SEGID":"UTA_7524",
+   "MODE":9,
+   "NAME":"WFRC_038",
+   "SEGVOL":708
+  },
+  {
+   "SEGID":"UTA_7528",
+   "MODE":9,
+   "NAME":"WFRC_038",
+   "SEGVOL":677
+  },
+  {
+   "SEGID":"UTA_7532",
+   "MODE":9,
+   "NAME":"WFRC_038",
+   "SEGVOL":659
+  },
+  {
+   "SEGID":"UTA_7536",
+   "MODE":9,
+   "NAME":"WFRC_038",
+   "SEGVOL":634
   },
   {
    "SEGID":"",
