@@ -587,7 +587,9 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             } else {
               updateFeature.attributes['DispValue'] = null;
             }
-            
+
+            tttT.map.graphics.add(updateFeature);
+
             // check if labels is checked and if it is, place label values at label locations
             if (dom.byId("chkLabels").checked == true) {
               // get coordinates from json file
@@ -615,8 +617,6 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
             updateFeature.attributes['DispValue'] = null;
           }
         }
-
-        tttT.map.graphics.add(updateFeature);
 
         _lyrDisplay.setRenderer(_renderer_transit);
         _lyrDisplay.show();
