@@ -88,16 +88,16 @@ vcColorData   = [sCVCGrad1,sCVCGrad2,sCVCGrad3,sCVCGrad4,sCVCGrad5,sCVCGrad6,sCV
 
 //Typical Colors
 var sCLightGrey     = "#EEEEEE";
-var sCDefaultGrey   = "#BBBBBB";
+var sCDefaultGrey   = "#AAAAAA";
 var sCBlue1         = "#BED2FF";
 var sCBlue2         = "#73B2FF";
 var sCBlue3         = "#0070FF";
-var sCBlue4         = "#005CE6";
+var sCBlue4         = "#005CC4";//"#005CE6";
 var sCBlue5         = "#004DA8";
 var sCRed1          = "#FFBEBE";
 var sCRed2          = "#FF7F7F";
 var sCRed3          = "#E60000";
-var sCRed4          = "#730000";
+var sCRed4          = "#510000";//"#730000";
 var sCGreen1        = "#54ff00";
 var sCGreen2        = "#4ce600";
 var sCWhite         = "#ffffff";
