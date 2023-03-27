@@ -289,7 +289,18 @@
       "bottom": 0
     },
     "itemId": "936de3e56dab4a2da17e92bcc7792abb",
-    "mapOptions": {},
+    "mapOptions": {
+      "extent": {
+        "xmin": -12501809.695036538,
+        "ymin": 4854031.587608329,
+        "xmax": -12412836.994112637,
+        "ymax": 5105509.410666439,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      }
+    },
     "id": "map",
     "portalUrl": "https://wfrc.maps.arcgis.com",
     "mapRefreshInterval": {
