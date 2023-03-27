@@ -1,0 +1,19 @@
+{
+  "basemapGallery": {
+    "mode": 2,
+    "basemaps": [
+      {
+        "title": "Light Gray Canvas",
+        "layers": [
+          {
+            "url": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer"
+          }
+        ],
+        "spatialReference": {
+          "wkid": "102100"
+        },
+        "thumbnailUrl": "${appPath}/configs/BasemapGallery/base64Img__6_1679939651442.png"
+      }
+    ]
+  }
+}

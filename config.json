@@ -89,7 +89,9 @@
         "name": "tttScenarioManager",
         "label": "Scenario Manager",
         "openAtStart": true,
-        "uri": "widgets/tttScenarioManager/Widget"
+        "uri": "widgets/tttScenarioManager/Widget",
+        "IsController": false,
+        "version": "2.20"
       },
       {
         "position": {
@@ -163,8 +165,9 @@
         "id": "_6",
         "version": "2.20",
         "closeable": true,
-        "uri": "",
-        "icon": "configs\\tttRawModel\\icon__6.png"
+        "uri": "widgets/BasemapGallery/Widget",
+        "name": "BasemapGallery",
+        "config": "configs/BasemapGallery/config__6.json"
       },
       {
         "position": {
@@ -172,11 +175,13 @@
           "top": 45,
           "relativeTo": "map"
         },
-        "placeholderIndex": 2,
+        "placeholderIndex": 1,
         "id": "_10_",
         "version": "2.20",
         "closeable": true,
-        "uri": ""
+        "uri": "widgets/Legend/Widget",
+        "name": "Legend",
+        "config": "configs/Legend/config__10_.json"
       },
       {
         "uri": "widgets/OverviewMap/Widget",
@@ -304,25 +309,26 @@
     },
     "widgets": [
       {
-        "uri": "widgets/Legend/Widget",
-        "version": "2.20",
-        "id": "widgets_Legend_Widget_18",
-        "name": "Legend",
-        "index": 2
-      },
-      {
         "uri": "widgets/LayerList/Widget",
         "version": "2.20",
         "id": "widgets_LayerList_Widget_19",
         "name": "LayerList",
-        "index": 3
+        "index": 2
       },
       {
         "name": "Repor",
         "label": "Report",
         "uri": "widgets/tttReport/Widget",
-        "index": 5,
+        "index": 3,
         "id": "widgets_tttReport_Widget_20"
+      },
+      {
+        "name": "Print",
+        "version": "2.20",
+        "uri": "widgets/Print/Widget",
+        "config": "configs/Print/config_widgets_Print_Widget_21.json",
+        "index": 5,
+        "id": "widgets_Print_Widget_21"
       }
     ],
     "groups": []

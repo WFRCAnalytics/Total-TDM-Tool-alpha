@@ -1,0 +1,9 @@
+{
+  "serviceURL": "https://print.agrc.utah.gov/6/arcgis/rest/services/GPServer/export",
+  "defaultTitle": "ArcGIS Web Map",
+  "defaultAuthor": "ArcGIS Web AppBuilder",
+  "defaultCopyright": "",
+  "defaultFormat": "PNG32",
+  "defaultLayout": "MAP_ONLY",
+  "copyrightEditable": true
+}
