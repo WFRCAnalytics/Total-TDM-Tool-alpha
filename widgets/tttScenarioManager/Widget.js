@@ -88,7 +88,7 @@ vcColorData   = [sCVCGrad1,sCVCGrad2,sCVCGrad3,sCVCGrad4,sCVCGrad5,sCVCGrad6,sCV
 
 //Typical Colors
 var sCLightGrey     = "#EEEEEE";
-var sCDefaultGrey   = "#CCCCCC";
+var sCDefaultGrey   = "#BBBBBB";
 var sCBlue1         = "#BED2FF";
 var sCBlue2         = "#73B2FF";
 var sCBlue3         = "#0070FF";
