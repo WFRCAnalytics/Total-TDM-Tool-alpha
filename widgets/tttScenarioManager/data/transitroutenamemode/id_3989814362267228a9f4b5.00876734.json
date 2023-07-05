@@ -7,14 +7,15 @@
    },
    {
     "name":"mode",
-    "type":"integer"
+    "type":"integer",
+    "extDtype":"Int64"
    },
    {
     "name":"label",
     "type":"string"
    }
   ],
-  "pandas_version":"0.20.0"
+  "pandas_version":"1.4.0"
  },
  "data":[
   {

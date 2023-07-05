@@ -7,7 +7,8 @@
    },
    {
     "name":"MODE",
-    "type":"integer"
+    "type":"integer",
+    "extDtype":"Int64"
    },
    {
     "name":"NAME",
@@ -18,7 +19,7 @@
     "type":"integer"
    }
   ],
-  "pandas_version":"0.20.0"
+  "pandas_version":"1.4.0"
  },
  "data":[
   {
@@ -7237,13 +7238,7 @@
    "SEGID":"0126_002.3",
    "MODE":4,
    "NAME":"WE600",
-   "SEGVOL":137
-  },
-  {
-   "SEGID":"0126_002.4",
-   "MODE":4,
-   "NAME":"WE600",
-   "SEGVOL":210
+   "SEGVOL":169
   },
   {
    "SEGID":"0126_003.3",
@@ -8665,7 +8660,7 @@
    "SEGID":"3381_000.0",
    "MODE":4,
    "NAME":"WE620F",
-   "SEGVOL":10
+   "SEGVOL":11
   },
   {
    "SEGID":"3418_000.0",

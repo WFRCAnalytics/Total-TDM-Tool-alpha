@@ -7,7 +7,8 @@
    },
    {
     "name":"MODE",
-    "type":"integer"
+    "type":"integer",
+    "extDtype":"Int64"
    },
    {
     "name":"NAME",
@@ -18,7 +19,7 @@
     "type":"integer"
    }
   ],
-  "pandas_version":"0.20.0"
+  "pandas_version":"1.4.0"
  },
  "data":[
   {
@@ -2905,7 +2906,7 @@
    "SEGID":"2172_010.0",
    "MODE":4,
    "NAME":"SL039",
-   "SEGVOL":1190
+   "SEGVOL":1191
   },
   {
    "SEGID":"2172_010.2",
@@ -7459,13 +7460,7 @@
    "SEGID":"0126_002.3",
    "MODE":4,
    "NAME":"SL470",
-   "SEGVOL":129
-  },
-  {
-   "SEGID":"0126_002.4",
-   "MODE":4,
-   "NAME":"SL470",
-   "SEGVOL":124
+   "SEGVOL":127
   },
   {
    "SEGID":"0126_003.3",

@@ -7,7 +7,8 @@
    },
    {
     "name":"MODE",
-    "type":"integer"
+    "type":"integer",
+    "extDtype":"Int64"
    },
    {
     "name":"NAME",
@@ -18,7 +19,7 @@
     "type":"integer"
    }
   ],
-  "pandas_version":"0.20.0"
+  "pandas_version":"1.4.0"
  },
  "data":[
   {
@@ -11377,13 +11378,7 @@
    "SEGID":"0126_002.3",
    "MODE":4,
    "NAME":"WE600",
-   "SEGVOL":139
-  },
-  {
-   "SEGID":"0126_002.4",
-   "MODE":4,
-   "NAME":"WE600",
-   "SEGVOL":178
+   "SEGVOL":157
   },
   {
    "SEGID":"0126_003.3",

@@ -7,7 +7,8 @@
    },
    {
     "name":"MODE",
-    "type":"integer"
+    "type":"integer",
+    "extDtype":"Int64"
    },
    {
     "name":"NAME",
@@ -18,7 +19,7 @@
     "type":"integer"
    }
   ],
-  "pandas_version":"0.20.0"
+  "pandas_version":"1.4.0"
  },
  "data":[
   {
