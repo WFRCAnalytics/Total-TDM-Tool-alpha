@@ -126,30 +126,30 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
       //Daily Volume Renderers
       var aBrk_Vol = new Array(
-        {minValue:   0.01, maxValue:     5999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.50), label:   "Less than 6,000"},
-        {minValue:   6000, maxValue:    17999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.10), label:   "6,000 to 18,000"},
-        {minValue:  18000, maxValue:    35999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 1.70), label:  "18,000 to 36,000"},
-        {minValue:  36000, maxValue:    71999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 2.30), label:  "36,000 to 72,000"},
-        {minValue:  72000, maxValue:   119999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 3.90), label: "72,000 to 120,000"},
-        {minValue: 120000, maxValue:   159999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[5]), 3.50), label:"120,000 to 160,000"},
-        {minValue: 160000, maxValue:   199999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 4.10), label:"160,000 to 200,000"},
-        {minValue: 200000, maxValue:   239999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 4.70), label:"200,000 to 240,000"},
-        {minValue: 240000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 5.30), label: "More than 240,000"}
+        {minValue:   0.01, maxValue:     5999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.5000), label:   "Less than 6,000"},
+        {minValue:   6000, maxValue:    17999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.1000), label:   "6,000 to 18,000"},
+        {minValue:  18000, maxValue:    35999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 1.7000), label:  "18,000 to 36,000"},
+        {minValue:  36000, maxValue:    71999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 2.3000), label:  "36,000 to 72,000"},
+        {minValue:  72000, maxValue:   119999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 3.9000), label: "72,000 to 120,000"},
+        {minValue: 120000, maxValue:   159999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[5]), 3.5000), label:"120,000 to 160,000"},
+        {minValue: 160000, maxValue:   199999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 4.1000), label:"160,000 to 200,000"},
+        {minValue: 200000, maxValue:   239999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 4.7000), label:"200,000 to 240,000"},
+        {minValue: 240000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 5.3000), label: "More than 240,000"}
       );
       renderer_Vol = new ClassBreaksRenderer(null, 'DisplayValue');
       for (var j=0;j<aBrk_Vol.length;j++) {
         renderer_Vol.addBreak(aBrk_Vol[j]);
       }
       var aBrk_Vol_Change = new Array(
-        {minValue: -9999999, maxValue:   -25001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 6.0), label: "Less than -25,000"  },
-        {minValue:   -25000, maxValue:   -10001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 3.0), label: "-25,000 to -10,000" },
-        {minValue:   -10000, maxValue:    -5001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 2.5), label: "-10,000 to -5,000"  },
-        {minValue:    -5000, maxValue:    -1001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 1.5), label: "-5,000 to -1,000"   },
-        {minValue:    -1000, maxValue:      999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.5), label: "-1,000 to +1,000"   },
-        {minValue:     1000, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 1.5), label: "+1,000 to +5,000"   },
-        {minValue:     5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 2.5), label: "+5,000 to +10,000"  },
-        {minValue:    10000, maxValue:    24999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 3.0), label: "+10,000 to +25,000" },
-        {minValue:    25000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[8]), 6.0), label: "More than +25,000" }//,
+        {minValue: -9999999, maxValue:   -25001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "Less than -25,000"  },
+        {minValue:   -25000, maxValue:   -10001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 2.5000), label: "-25,000 to -10,000" },
+        {minValue:   -10000, maxValue:    -5001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 1.2500), label: "-10,000 to -5,000"  },
+        {minValue:    -5000, maxValue:    -1001, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 0.6250), label: "-5,000 to -1,000"   },
+        {minValue:    -1000, maxValue:      999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.3125), label: "-1,000 to +1,000"   },
+        {minValue:     1000, maxValue:     4999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 0.6250), label: "+1,000 to +5,000"   },
+        {minValue:     5000, maxValue:     9999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 1.2500), label: "+5,000 to +10,000"  },
+        {minValue:    10000, maxValue:    24999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 2.5000), label: "+10,000 to +25,000" },
+        {minValue:    25000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[8]), 5.0000), label: "More than +25,000" }//,
 //        {minValue:    80000, maxValue:   119999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"     ), 5.0000), label: "+80,000 to +120,000"},
 //        {minValue:   120000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"     ), 9.0000), label: "More than +120,000" }
       );
@@ -230,15 +230,15 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
       //Truck Volume Renderers
       var aBrk_VolTrk = new Array(
-        {minValue:     0, maxValue:      599, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.50), label: "Less than 600"   },
-        {minValue:   600, maxValue:     1799, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.10), label: "600 to 1,800"    },
-        {minValue:  1800, maxValue:     3599, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 1.70), label: "1,800 to 3,600"  },
-        {minValue:  3600, maxValue:     7199, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 2.30), label: "3,600 to 7,200"  },
-        {minValue:  7200, maxValue:    11999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 3.90), label: "7,200 to 12,000" },
-        {minValue: 12000, maxValue:    15999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[5]), 3.50), label: "12,000 to 16,000"},
-        {minValue: 16000, maxValue:    19999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 4.10), label: "16,000 to 20,000"},
-        {minValue: 20000, maxValue:    23999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 4.70), label: "20,000 to 24,000"},
-        {minValue: 24000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 5.30), label: "More than 24,000"}
+        {minValue:     0, maxValue:      599, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[0]), 0.5000), label: "Less than 600"   },
+        {minValue:   600, maxValue:     1799, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.1000), label: "600 to 1,800"    },
+        {minValue:  1800, maxValue:     3599, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 1.7000), label: "1,800 to 3,600"  },
+        {minValue:  3600, maxValue:     7199, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 2.3000), label: "3,600 to 7,200"  },
+        {minValue:  7200, maxValue:    11999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 3.9000), label: "7,200 to 12,000" },
+        {minValue: 12000, maxValue:    15999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[5]), 3.5000), label: "12,000 to 16,000"},
+        {minValue: 16000, maxValue:    19999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 4.1000), label: "16,000 to 20,000"},
+        {minValue: 20000, maxValue:    23999, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 4.7000), label: "20,000 to 24,000"},
+        {minValue: 24000, maxValue: Infinity, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 5.3000), label: "More than 24,000"}
       );
       renderer_VolTrk = new ClassBreaksRenderer(null, 'DisplayValue');
       for (var j=0;j<aBrk_VolTrk.length;j++) {
@@ -426,64 +426,102 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
 
           try {
             _ft = _segDataMain[dataFNConv['FT']];
-            // caculate non-aggregated and directional values
-            switch(measureParams['agg']) {
-              case 'none':
-                _mainValue = eval(numeratorDirT.replaceAll('obj','_segDataMain')) / eval(denominatorDirT.replaceAll('obj','_segDataMain'));
-                if (curScenarioComp!='none') {
-                  _compValue = eval(numeratorDirT.replaceAll('obj','_segDataComp')) / eval(denominatorDirT.replaceAll('obj','_segDataComp'));
-                }
-                break;
-              case 'sum':
-              case 'min':
-              case 'max':
-                _mainValue_Dir1 = eval(numeratorDir1.replaceAll('obj','_segDataMain')) / eval(denominatorDir1.replaceAll('obj','_segDataMain'));
-                _mainValue_Dir2 = eval(numeratorDir2.replaceAll('obj','_segDataMain')) / eval(denominatorDir2.replaceAll('obj','_segDataMain'));
-                if (curScenarioComp!='none') {
-                  _compValue_Dir1 = eval(numeratorDir1.replaceAll('obj','_segDataComp')) / eval(denominatorDir1.replaceAll('obj','_segDataComp'));
-                  _compValue_Dir2 = eval(numeratorDir2.replaceAll('obj','_segDataComp')) / eval(denominatorDir2.replaceAll('obj','_segDataComp'));
-                }
-            }
-
-            // calculate for aggregated results
-            switch(measureParams['agg']) {
-              case 'sum':
-                  _mainValue += _mainValue_Dir1 + _mainValue_Dir2;
-                  _compValue += _compValue_Dir1 + _compValue_Dir2;
-                break;
-              case 'min':
-                _mainValue = Math.min(_mainValue_Dir1, _mainValue_Dir2);
-                _compValue = Math.min(_compValue_Dir1, _compValue_Dir2);
-                break;
-              case 'max':
-                _mainValue = Math.max(_mainValue_Dir1, _mainValue_Dir2);
-                _compValue = Math.max(_compValue_Dir1, _compValue_Dir2);
-                break;
-              default:
-                // code block
-            }
           } catch(err) {
-            // error
+            if (curScenarioComp!='none') {
+              try {
+                _ft = _segDataComp[dataFNConv['FT']];
+              } catch(err) {
+
+              }
+            }
           }
 
-          
-          // calculate final display value based on selection (absolute or change)
-          try {
-            if (curPCOption=='Abs') { // absolute change
-            _dispValue = _mainValue - _compValue;
-            } else { // percent change
-              if (_compValue >0) _dispValue = ((_mainValue - _compValue) / _compValue) * 100;
+          if (_ft>0) {
+            
+            // main value
+            try {
+              // caculate non-aggregated and directional values
+              switch(measureParams['agg']) {
+                case 'none':
+                  _mainValue = eval(numeratorDirT.replaceAll('obj','_segDataMain')) / eval(denominatorDirT.replaceAll('obj','_segDataMain'));
+                  break;
+                case 'sum':
+                case 'min':
+                case 'max':
+                  _mainValue_Dir1 = eval(numeratorDir1.replaceAll('obj','_segDataMain')) / eval(denominatorDir1.replaceAll('obj','_segDataMain'));
+                  _mainValue_Dir2 = eval(numeratorDir2.replaceAll('obj','_segDataMain')) / eval(denominatorDir2.replaceAll('obj','_segDataMain'));
+              }
+
+              // calculate for aggregated results
+              switch(measureParams['agg']) {
+                case 'sum':
+                    _mainValue += _mainValue_Dir1 + _mainValue_Dir2;
+                  break;
+                case 'min':
+                  _mainValue = Math.min(_mainValue_Dir1, _mainValue_Dir2);
+                  break;
+                case 'max':
+                  _mainValue = Math.max(_mainValue_Dir1, _mainValue_Dir2);
+                  break;
+                default:
+                  // code block
+              }
+            } catch(err) {
+              // error
             }
-          } catch(err) {
-            _dispValue = _mainValue;
+
+            // comp value
+            if (curScenarioComp!='none') {  
+              try {
+                // caculate non-aggregated and directional values
+                switch(measureParams['agg']) {
+                  case 'none':
+                    _compValue = eval(numeratorDirT.replaceAll('obj','_segDataComp')) / eval(denominatorDirT.replaceAll('obj','_segDataComp'));
+                    break;
+                  case 'sum':
+                  case 'min':
+                  case 'max':
+                    _compValue_Dir1 = eval(numeratorDir1.replaceAll('obj','_segDataComp')) / eval(denominatorDir1.replaceAll('obj','_segDataComp'));
+                    _compValue_Dir2 = eval(numeratorDir2.replaceAll('obj','_segDataComp')) / eval(denominatorDir2.replaceAll('obj','_segDataComp'));
+                }
+
+                // calculate for aggregated results
+                switch(measureParams['agg']) {
+                  case 'sum':
+                      _compValue += _compValue_Dir1 + _compValue_Dir2;
+                    break;
+                  case 'min':
+                    _compValue = Math.min(_compValue_Dir1, _compValue_Dir2);
+                    break;
+                  case 'max':
+                    _compValue = Math.max(_compValue_Dir1, _compValue_Dir2);
+                    break;
+                  default:
+                    // code block
+                }
+              } catch(err) {
+                // error
+              }
+            }
+
+            // calculate final display value based on selection (absolute or change)
+            try {
+              if (curPCOption=='Abs') { // absolute change
+              _dispValue = _mainValue - _compValue;
+              } else { // percent change
+                if (_compValue>0) _dispValue = ((_mainValue - _compValue) / _compValue) * 100;
+              }
+            } catch(err) {
+              _dispValue = _mainValue;
+            }
+
+            // set final display value
+            updateFeature.attributes['DisplayValue'] = _dispValue;
+            updateFeature.attributes['FT'] = _ft;
+
+            // add feature to graphics layer
+            tttR.map.graphics.add(updateFeature);
           }
-
-          // set final display value
-          updateFeature.attributes['DisplayValue'] = _dispValue;
-          updateFeature.attributes['FT'] = _ft;
-
-          // add feature to graphics layer
-          tttR.map.graphics.add(updateFeature);
         }
 
         lyrSegments.setRenderer(rendererRoad);
