@@ -6,14 +6,15 @@
 //'obj' is place holder for record object
 //agg is how to combine both directions
 var dRoadOptions = [
-  {value:"Lanes"    ,label:"Lanes"                      , rndr: 'Lanes'        , agg:"sum" , numerator  : "obj['Dx_LANES']", denominator: "1"},
-  {value:"Vol"      ,label:"Daily Volume (2-Way)"       , rndr: 'Vol'          , agg:"none", numerator  : "obj['DY_VOL']", denominator: "1"},
-  {value:"AMSpd"    ,label:"AM Period Speeds % FreeFlow", rndr: 'Percent'      , agg:"min" , numerator  : "obj['Dx_AM_SPD'] * 100", denominator: "obj['FF_SPD']"},
-  {value:"PMSpd"    ,label:"PM Period Speeds % FreeFlow", rndr: 'Percent'      , agg:"min" , numerator:   "obj['Dx_AM_SPD'] * 100", denominator: "obj['FF_SPD']"},
-//{value:"AMVC"     ,label:"AM Period V/C Ratio"        , rndr: 'VC'           , agg:"max" , numerator  : "obj['Dx_AM_VOL'] + (0.5 * obj['Dx_AM_MD']) + obj['Dx_AM_HV']", denominator: "3 * obj['Dx_CAP1HL'] * obj['Dx_LANES']" }, //PCE in numerator MD * 1.5 and HV * 2
-//{value:"PMVC"     ,label:"PM Period V/C Ratio"        , rndr: 'VC'           , agg:"max" , numerator:   "obj['Dx_PM_VOL'] + (0.5 * obj['Dx_PM_MD']) + obj['Dx_PM_HV']", denominator: "3 * obj['Dx_CAP1HL'] * obj['Dx_LANES']" }, //PCE in numerator MD * 1.5 and HV * 2
-  {value:"VolTrk"   ,label:"Daily MD & HV Trucks"       , rndr: 'VolTrk'       , agg:"none", numerator  : "(obj['DY_MD'] + obj['DY_HV'])", denominator: "1"},
-  {value:"VolTrkPer",label:"Daily % MD & HV Trucks"     , rndr: 'Percent_Truck', agg:"none", numerator  : "(obj['DY_MD'] + obj['DY_HV']) * 100", denominator: "obj['DY_VOL']"}
+  {value:"Lanes"          ,label:"Lanes"                      , rndr: 'Lanes'        , agg:"sum" , numerator  : "obj['Dx_LANES']", denominator: "1"},
+  {value:"FT"             ,label:"Functional Type"            , rndr: 'FT'           , agg:"sum" , numerator  : "obj['Dx_FT']", denominator: "1"},
+  {value:"Vol"            ,label:"Daily Volume (2-Way)"       , rndr: 'Vol'          , agg:"none", numerator  : "obj['DY_VOL']", denominator: "1"},
+  {value:"AMSpd"          ,label:"AM Period Speeds % FreeFlow", rndr: 'Percent'      , agg:"min" , numerator  : "obj['Dx_AM_SPD'] * 100", denominator: "obj['FF_SPD']"},
+  {value:"PMSpd"          ,label:"PM Period Speeds % FreeFlow", rndr: 'Percent'      , agg:"min" , numerator:   "obj['Dx_AM_SPD'] * 100", denominator: "obj['FF_SPD']"},
+//{value:"AMVC"           ,label:"AM Period V/C Ratio"        , rndr: 'VC'           , agg:"max" , numerator  : "obj['Dx_AM_VOL'] + (0.5 * obj['Dx_AM_MD']) + obj['Dx_AM_HV']", denominator: "3 * obj['Dx_CAP1HL'] * obj['Dx_LANES']" }, //PCE in numerator MD * 1.5 and HV * 2
+//{value:"PMVC"           ,label:"PM Period V/C Ratio"        , rndr: 'VC'           , agg:"max" , numerator:   "obj['Dx_PM_VOL'] + (0.5 * obj['Dx_PM_MD']) + obj['Dx_PM_HV']", denominator: "3 * obj['Dx_CAP1HL'] * obj['Dx_LANES']" }, //PCE in numerator MD * 1.5 and HV * 2
+  {value:"VolTrk"         ,label:"Daily MD & HV Trucks"       , rndr: 'VolTrk'       , agg:"none", numerator  : "(obj['DY_MD'] + obj['DY_HV'])", denominator: "1"},
+  {value:"VolTrkPer"      ,label:"Daily % MD & HV Trucks"     , rndr: 'Percent_Truck', agg:"none", numerator  : "(obj['DY_MD'] + obj['DY_HV']) * 100", denominator: "obj['DY_VOL']"}
 ];
 var curRoadOption       = "Vol";
 
@@ -32,6 +33,8 @@ var iPixelSelectionTolerance = 5;
 
 var renderer_Lanes;
 var renderer_Lanes_Change;
+var renderer_FT;
+var renderer_FT_Change;
 var renderer_Vol;
 var renderer_Vol_Change;
 var renderer_VolTrk;
@@ -175,21 +178,44 @@ function(declare, BaseWidget, LayerInfos, registry, dom, domStyle, dijit, Chart,
         renderer_Lanes.addBreak(aBrk_Lanes[j]);
       }
       var aBrk_Lanes_Change = new Array(
-        {minValue: -99, maxValue: -4, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[0]), 5.0000), label: "-4 or More Lanes"},
-        {minValue:  -3, maxValue: -3, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[1]), 3.7500), label: "-3 Lanes"        },
-        {minValue:  -2, maxValue: -2, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[2]), 2.5000), label: "-2 Lanes"        },
-        {minValue:  -1, maxValue: -1, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[3]), 1.2500), label: "-1 Lane"         },
-        {minValue:   0, maxValue:  0, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[4]), 0.6250), label: "No Change"       },
-        {minValue:   1, maxValue:  1, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[5]), 1.2500), label: "+1 Lane"         },
-        {minValue:   2, maxValue:  2, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[6]), 2.5000), label: "+2 Lanes"        },
-        {minValue:   3, maxValue:  3, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[7]), 3.7500), label: "+3 Lanes"        },
-        {minValue:   4, maxValue: 99, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(aCR_Change9[8]), 5.0000), label: "+4 or More Lanes"}
+        {minValue: -99, maxValue: -4, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#FF3300"), 5.0000), label: "-4 or More Lanes"},
+        {minValue:  -3, maxValue: -3, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#FF6611"), 3.7500), label: "-3 Lanes"        },
+        {minValue:  -2, maxValue: -2, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#FF9933"), 2.5000), label: "-2 Lanes"        },
+        {minValue:  -1, maxValue: -1, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#FFCC66"), 1.2500), label: "-1 Lane"         },
+        {minValue:   0, maxValue:  0, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#CFCFCF"), 0.6250), label: "No Change"       },
+        {minValue:   1, maxValue:  1, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#66FF99"), 1.2500), label: "+1 Lane"         },
+        {minValue:   2, maxValue:  2, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#33FF66"), 2.5000), label: "+2 Lanes"        },
+        {minValue:   3, maxValue:  3, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#00FF33"), 3.7500), label: "+3 Lanes"        },
+        {minValue:   4, maxValue: 99, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#00CC33"), 5.0000), label: "+4 or More Lanes"}
       );
       renderer_Lanes_Change = new ClassBreaksRenderer(null, 'DisplayValue');
       for (var j=0;j<aBrk_Lanes_Change.length;j++) {
         renderer_Lanes_Change.addBreak(aBrk_Lanes_Change[j]);
       }
 
+      //FT Renderers
+      var aBrk_FT = new Array(
+        {minValue:  2, maxValue:  2.9, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[1]), 1.25), label:"Principal Arterial"},
+        {minValue:  3, maxValue:  3.9, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[2]), 2.00), label:"Minor Arterial"    },
+        {minValue:  4, maxValue:  4.9, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[3]), 2.75), label:"Major Collector"   },
+        {minValue:  5, maxValue:  5.9, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[4]), 4.00), label:"Minor Collector"   },
+        {minValue: 11, maxValue: 19.9, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[6]), 6.00), label:"Expressway"        },
+        {minValue: 20, maxValue: 20.9, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[7]), 8.00), label:"Managed Motorway"  },
+        {minValue: 30, maxValue: 30.9, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex(bertColorData[8]), 8.00), label:"Freeway"           },
+      );
+      renderer_FT = new ClassBreaksRenderer(null, 'DisplayValue');
+      for (var j=0;j<aBrk_FT.length;j++) {
+        renderer_FT.addBreak(aBrk_FT[j]);
+      }
+      var aBrk_FT_Change = new Array(
+        {minValue:   0, maxValue:    0, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#CFCFCF"), 0.6250), label: "No Change"},
+        {minValue: -99, maxValue: -.01, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#FF1111"), 2.5000), label: "Change"   },
+        {minValue: .01, maxValue:   99, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#FF1111"), 2.5000), label: "Change"   }
+      );
+      renderer_FT_Change = new ClassBreaksRenderer(null, 'DisplayValue');
+      for (var j=0;j<aBrk_FT_Change.length;j++) {
+        renderer_FT_Change.addBreak(aBrk_FT_Change[j]);
+      }
       // Percent Renderers
       var aBrk_Percent = new Array(
         {minValue:0.000001, maxValue:       10, symbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, Color.fromHex("#000000"       ), 5.50), label:"Less than 10%"},
